@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { community, getActiveCampaigns } from "@/data";
+import { community, getActiveCampaigns, getProfile } from "@/data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -12,6 +12,8 @@ import {
   ArrowUpRight,
   Heart,
   Target,
+  MessageSquare,
+  CalendarDays,
 } from "lucide-react";
 
 const { aggregates, leaderboard, trending } = community;
@@ -253,6 +255,70 @@ export default function CommunityPage() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* ─── Activity Feed ─── */}
+        <div className="mt-12 lg:mt-16" data-testid="community-activity-feed">
+          <div className="mb-5 flex items-center gap-3">
+            <MessageSquare className="h-5 w-5 text-primary" />
+            <h2 className="text-2xl font-serif font-semibold text-foreground">
+              Recent activity
+            </h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {activeCampaigns
+              .flatMap((c) =>
+                (c.updates || []).map((u) => ({
+                  ...u,
+                  campaignId: c.id,
+                  campaignTitle: c.title,
+                  organizerId: c.organizerId,
+                  organizerName: getProfile(c.organizerId)?.name,
+                  organizerAvatar: getProfile(c.organizerId)?.avatar,
+                }))
+              )
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .slice(0, 6)
+              .map((update) => (
+                <Link
+                  key={update.id}
+                  to={`/campaign/${update.campaignId}`}
+                  className="block"
+                >
+                  <Card className="h-full border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
+                    <CardContent className="flex gap-3 p-4">
+                      <Avatar className="h-8 w-8 shrink-0 border border-white shadow-sm">
+                        <AvatarImage
+                          src={update.organizerAvatar}
+                          alt={update.organizerName}
+                        />
+                        <AvatarFallback className="text-xs">
+                          {update.organizerName?.[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-foreground truncate">
+                          {update.title}
+                        </p>
+                        <p className="mt-0.5 text-xs text-muted-foreground truncate">
+                          {update.organizerName} &middot; {update.campaignTitle}
+                        </p>
+                        <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground line-clamp-2">
+                          {update.content}
+                        </p>
+                        <p className="mt-1.5 flex items-center gap-1 text-[0.6875rem] text-muted-foreground/60">
+                          <CalendarDays className="h-3 w-3" />
+                          {new Date(update.date + "T00:00:00").toLocaleDateString(
+                            "en-US",
+                            { month: "short", day: "numeric" }
+                          )}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+          </div>
         </div>
 
         {/* ─── Active Campaigns Grid ─── */}

@@ -11,7 +11,6 @@ import {
   Award,
   MapPin,
   CalendarDays,
-  Users,
   Heart,
   TrendingUp,
   ThumbsUp,
@@ -381,35 +380,51 @@ export default function ProfilePage() {
             </div>
           )}
 
-          {/* Lifetime totals */}
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div
-              className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center"
-              data-testid="profile-total-raised"
-            >
-              <p className="text-2xl font-serif text-foreground">
-                {formatCurrency(profile.stats.totalRaised)}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">total raised</p>
-            </div>
-            <div className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center">
-              <p className="text-2xl font-serif text-foreground">
-                {profile.stats.campaignsOrganized}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">organized</p>
-            </div>
-            <div className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center">
-              <p className="text-2xl font-serif text-foreground">
-                {formatCurrency(profile.stats.totalDonated)}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">donated</p>
-            </div>
-            <div className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center">
-              <p className="text-2xl font-serif text-foreground">
-                <Users className="mx-auto mb-1 h-5 w-5 text-muted-foreground" />
-                {profile.recommendedBy}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">recommendations</p>
+          {/* Network Impact */}
+          <div
+            className="mt-10 rounded-3xl bg-gradient-to-r from-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground sm:p-8"
+            data-testid="profile-network-impact"
+          >
+            <p className="text-xs font-medium uppercase tracking-widest text-primary-foreground/60">
+              Total network impact
+            </p>
+            <p className="mt-2 text-4xl font-serif sm:text-5xl">
+              {formatCurrency(
+                profile.stats.totalRaised + profile.stats.totalDonated
+              )}
+            </p>
+            <p className="mt-2 text-sm text-primary-foreground/75">
+              raised and donated across {profile.stats.campaignsOrganized}{" "}
+              campaigns - recommended by {profile.recommendedBy} donors
+            </p>
+            <div className="mt-5 grid grid-cols-3 gap-3">
+              <div className="rounded-2xl bg-white/10 p-4 text-center">
+                <p className="text-xl font-serif">
+                  {formatCurrency(profile.stats.totalRaised)}
+                </p>
+                <p className="mt-1 text-xs text-primary-foreground/60">
+                  raised
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/10 p-4 text-center">
+                <p className="text-xl font-serif">
+                  {formatCurrency(profile.stats.totalDonated)}
+                </p>
+                <p className="mt-1 text-xs text-primary-foreground/60">
+                  donated
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/10 p-4 text-center">
+                <p className="text-xl font-serif">
+                  {profile.stats.campaignsFunded}
+                  <span className="text-sm font-sans">
+                    /{profile.stats.campaignsOrganized}
+                  </span>
+                </p>
+                <p className="mt-1 text-xs text-primary-foreground/60">
+                  funded
+                </p>
+              </div>
             </div>
           </div>
         </div>

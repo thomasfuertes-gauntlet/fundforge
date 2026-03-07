@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getCampaign, getProfile, getDonationsByCampaign } from "@/data";
+import { getCampaign, getProfile, getDonationsByCampaign, community } from "@/data";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -20,6 +20,9 @@ import {
   MessageCircle,
   ChevronDown,
   ChevronUp,
+  Trophy,
+  Zap,
+  Target,
 } from "lucide-react";
 
 function formatRelativeTime(timestamp) {
@@ -68,6 +71,9 @@ export default function CampaignPage() {
   const organizer = getProfile(campaign.organizerId);
   const donations = getDonationsByCampaign(campaign.id);
   const progressPercent = Math.min(Math.round((campaign.raised / campaign.goal) * 100), 100);
+  const leaderboardEntry = community.leaderboard.find(
+    (e) => e.activeCampaignId === campaign.id
+  );
   const visibleUpdates = showAllUpdates
     ? campaign.updates
     : (campaign.updates || []).slice(0, 2);
@@ -308,6 +314,81 @@ export default function CampaignPage() {
                     className="h-3 bg-primary/15"
                     data-testid="campaign-progress"
                   />
+
+                  {/* Stretch Goal */}
+                  {campaign.stretchGoal && (
+                    <div
+                      className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4"
+                      data-testid="campaign-stretch-goal"
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-amber-900">
+                        <Target className="h-4 w-4" />
+                        Stretch goal: {formatCurrency(campaign.stretchGoal.amount)}
+                      </div>
+                      <p className="mt-1 text-xs text-amber-800/70">
+                        {campaign.stretchGoal.label}
+                      </p>
+                      {campaign.raised >= campaign.goal && (
+                        <div className="mt-2">
+                          <Progress
+                            value={Math.min(
+                              Math.round(
+                                ((campaign.raised - campaign.goal) /
+                                  (campaign.stretchGoal.amount - campaign.goal)) *
+                                  100
+                              ),
+                              100
+                            )}
+                            className="h-2 bg-amber-200/50 [&>div]:bg-amber-500"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Matching Sponsor */}
+                  {campaign.matchingSponsor && (
+                    <div
+                      className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-secondary/60 p-4"
+                      data-testid="campaign-matching-sponsor"
+                    >
+                      <Zap className="h-5 w-5 shrink-0 text-accent" />
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">
+                          {campaign.matchingSponsor.multiplier}x Match from{" "}
+                          {campaign.matchingSponsor.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatCurrency(campaign.matchingSponsor.remaining)}{" "}
+                          in matching funds remaining
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Leaderboard Prompt */}
+                  {leaderboardEntry && leaderboardEntry.rank > 1 && (
+                    <Link
+                      to="/community"
+                      className="block"
+                      data-testid="campaign-leaderboard-prompt"
+                    >
+                      <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-muted/30 p-4 transition-colors hover:bg-muted/60">
+                        <Trophy className="h-5 w-5 shrink-0 text-primary/60" />
+                        <p className="text-sm text-muted-foreground">
+                          Help{" "}
+                          <span className="font-semibold text-foreground">
+                            {organizer?.name}
+                          </span>{" "}
+                          reach #1 - currently{" "}
+                          <span className="font-semibold text-primary">
+                            #{leaderboardEntry.rank}
+                          </span>{" "}
+                          on the leaderboard
+                        </p>
+                      </div>
+                    </Link>
+                  )}
 
                   {/* Stat Cards */}
                   <div className="grid grid-cols-2 gap-3">
