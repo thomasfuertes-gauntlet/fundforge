@@ -1,0 +1,536 @@
+[
+  {
+    "id": "campaign-1",
+    "organizerId": "profile-1",
+    "title": "Grow a Rooftop Garden for 400 Neighborhood Families",
+    "category": "Urban Agriculture",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 120000,
+    "raised": 86400,
+    "backerCount": 1248,
+    "averageGift": 69,
+    "createdAt": "2026-01-15",
+    "endsAt": "2026-03-19",
+    "daysLeft": 12,
+    "weeklyMomentum": 22,
+    "story": [
+      "Three years ago, the roof of the old Eastside Cannery was a gravel wasteland. Pigeons roosted in the stairwell, and the only things growing were weeds pushing through cracks in the parapet. Today that same roof holds 2,400 square feet of raised beds, a rainwater collection system, and a small greenhouse that extends the growing season by eight weeks. Over 120 families harvest from it every month.",
+      "This campaign is about doing it again, bigger, on the warehouse at 14th and Division.",
+      "The Division Street warehouse sits on the border of four census tracts. Three of them qualify as USDA food deserts, meaning residents travel more than a mile to reach a full-service grocery store. The nearest farmers market runs only on Saturday mornings, June through September. For the 400 families within walking distance of this building, fresh produce is a car trip, a bus transfer, or a luxury.",
+      "We have a signed lease with the building owner, Renata Vasquez, who has agreed to a 10-year community use agreement at $1 per year. The structural engineer's report confirms the roof can support 22 inches of growing medium across 4,800 square feet. The city's Bureau of Environmental Services has pre-approved our stormwater management plan, which routes overflow into a bioswale on the south side of the building.",
+      "Here is what the money covers. The first $45,000 goes to structural reinforcement and waterproof membrane installation. This is the unsexy part, and it is the most important. A roof garden that leaks is a lawsuit, not a community asset. We are working with Greenroof Systems NW, the same contractor who built the Eastside Cannery installation. They warranty their membrane work for 25 years.",
+      "The next $35,000 covers soil, beds, irrigation, and the greenhouse kit. We are using a modular raised bed system from a local fabricator, welded from recycled steel. Each bed is 4 feet by 12 feet and holds 18 inches of custom growing medium. The drip irrigation system runs off the rainwater cisterns, with municipal backup for dry spells. The greenhouse is a 12-by-20 polycarbonate kit that we will assemble with volunteer labor.",
+      "The remaining $40,000 funds the first two years of operation: a part-time garden manager, seeds and starts, tool maintenance, composting infrastructure, and community education programming. We run monthly workshops on container gardening, food preservation, and nutrition. Last year at the Cannery garden, 83% of workshop attendees reported eating more vegetables at home within three months.",
+      "We are not building a demonstration project. We are building food infrastructure that outlasts any single grant cycle. The lease runs through 2036. The raised beds last 15 years. The membrane lasts 25. Every dollar you contribute buys something that will still be feeding families when the kids in this neighborhood are graduating high school.",
+      "If you have been to the Cannery garden, you know what this looks like when it works. If you have not, come by on a Tuesday evening. The beds are full of kale and chard right now, and someone usually brings coffee."
+    ],
+    "updates": [
+      {
+        "id": "update-1-1",
+        "date": "2026-03-05",
+        "title": "Construction Starts Next Week",
+        "content": "The membrane crew from Greenroof Systems NW is scheduled to begin on March 12. We finalized the waterproofing spec last week and ordered materials. Weather looks clear through the 20th."
+      },
+      {
+        "id": "update-1-2",
+        "date": "2026-02-20",
+        "title": "We Passed 70% - Thank You",
+        "content": "86 new backers joined this week alone. We also received a $5,000 match from the Portland Community Foundation, which is reflected in the current total. The structural reinforcement phase is fully funded."
+      },
+      {
+        "id": "update-1-3",
+        "date": "2026-02-01",
+        "title": "Site Assessment Complete",
+        "content": "The engineer's report came back clean. Roof load capacity exceeds our requirements by 30%. We also confirmed the rainwater cistern placement with the Bureau of Environmental Services."
+      },
+      {
+        "id": "update-1-4",
+        "date": "2026-01-20",
+        "title": "Campaign Launch - Here We Go",
+        "content": "After six months of planning, permits, and lease negotiations, we are live. Thank you to the 142 people who backed us in the first 48 hours. That early momentum matters more than you know."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Ari Lewis",
+        "text": "I backed Maya's Cannery garden two years ago and watched my neighbors start cooking with fresh greens for the first time. She does what she says she'll do.",
+        "date": "2026-02-18"
+      },
+      {
+        "donorName": "Rachel Kim",
+        "text": "The weekly updates alone are worth it. You always know exactly where the money is going and what's happening on site.",
+        "date": "2026-02-25"
+      }
+    ]
+  },
+  {
+    "id": "campaign-2",
+    "organizerId": "profile-2",
+    "title": "Neighborhood Solar Co-op: Clean Energy for 200 Homes",
+    "category": "Renewable Energy",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 200000,
+    "raised": 162800,
+    "backerCount": 1892,
+    "averageGift": 86,
+    "createdAt": "2025-12-01",
+    "endsAt": "2026-03-30",
+    "daysLeft": 23,
+    "weeklyMomentum": 18,
+    "story": [
+      "The average electricity bill in the Eastside neighborhood of Austin hit $287 last July. For a household earning $42,000 a year, that is 8% of gross income going to keep the lights on and the AC running. Meanwhile, Austin Energy's residential solar rebate program has a two-year waitlist, and most private installers require a credit score above 680 to finance a system.",
+      "We are building a solar cooperative that bypasses both problems.",
+      "The model is straightforward. We pool funds from this campaign with a low-interest loan from the Austin Community Development Corporation to purchase solar panel systems in bulk. Bulk purchasing drops the per-watt cost from $2.80 to $1.95, a 30% savings. Each participating household gets a 5kW rooftop system installed by licensed electricians from IBEW Local 520, and pays back the cost through their energy savings over seven years. After that, the electricity is theirs, free.",
+      "We have already signed agreements with 147 households. The remaining 53 slots will fill from our waitlist once this campaign closes. Every home has been assessed for roof condition, shading, and electrical panel capacity. Forty-two homes needed panel upgrades, which are included in the project budget.",
+      "The numbers work like this. A 5kW system in Austin generates roughly 7,000 kWh per year. At Austin Energy's current residential rate of $0.11 per kWh, that is $770 in annual savings per household. Over the seven-year payback period, each household saves a net $1,390 after covering their share of installation costs. After year seven, they save $770 annually for the remaining 18-year warranty life of the panels. Total lifetime savings per home: over $15,000.",
+      "For the 200 homes combined, that is $3 million in energy savings over the system lifetime and 2,800 metric tons of avoided CO2 emissions. We worked those numbers with Austin Energy's own calculator and had them verified by an independent energy auditor.",
+      "The $200,000 goal covers the gap between our bulk purchase price and the ACDC loan. Specifically: $120,000 for the 42 electrical panel upgrades that the loan does not cover, $45,000 for permitting and interconnection fees across 200 installations, $20,000 for project management and quality assurance over the 8-month installation timeline, and $15,000 for a reserve fund to cover warranty claims in the first two years.",
+      "This is my fifth community infrastructure campaign. The previous four all delivered on time and on budget. I post updates every week during active projects. You can read the full post-project reports for the Youth Coding Workshop, the River Walk murals, the Community Greenhouse, and the Makers Space on my profile page.",
+      "Every household in the co-op signs a simple participation agreement. They grant roof access for installation and maintenance, agree to the seven-year payback schedule deducted from their energy savings, and commit to keeping trees trimmed away from the panels. In exchange, they own their system outright after year seven. No liens, no financing companies, no credit checks. The co-op structure means neighbors hold each other accountable, and it means the project scales. If this works for 200 homes in Eastside, there is no reason it cannot work for 2,000 homes across Austin.",
+      "If 200 homes generating their own clean electricity sounds ambitious, it is. But the engineering is proven, the financing structure works, and the families are ready. We just need to close the funding gap."
+    ],
+    "updates": [
+      {
+        "id": "update-2-1",
+        "date": "2026-03-03",
+        "title": "First 50 Homes Have Panels on the Roof",
+        "content": "Installation crews completed the southeast cluster ahead of schedule. All 50 systems passed city inspection on the first try. We are seeing 15-20% higher output than projected thanks to the unusually clear February."
+      },
+      {
+        "id": "update-2-2",
+        "date": "2026-02-15",
+        "title": "Panel Installation Underway",
+        "content": "IBEW Local 520 crews started on February 10. We are running two crews of four, each completing 3-4 installations per day. The bulk panel shipment from Q Cells arrived without damage."
+      },
+      {
+        "id": "update-2-3",
+        "date": "2026-01-28",
+        "title": "All Permits Approved",
+        "content": "200 residential solar permits approved by the City of Austin. This is the largest single batch they have processed. We also locked in our interconnection agreements with Austin Energy."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Lisa Chang",
+        "text": "Jonas ran the Community Greenhouse campaign two years ago. Everything he promised was delivered, on time, documented. I trust his project management completely.",
+        "date": "2026-02-10"
+      },
+      {
+        "donorName": "Chris Walker",
+        "text": "My family is one of the 200 households. Our July electric bill was $312. This project changes our monthly budget in a real way.",
+        "date": "2026-01-15"
+      }
+    ]
+  },
+  {
+    "id": "campaign-3",
+    "organizerId": "profile-3",
+    "title": "Clean Water Commons: Filtration for Riverside District",
+    "category": "Environmental",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 95000,
+    "raised": 72450,
+    "backerCount": 986,
+    "averageGift": 73,
+    "createdAt": "2026-01-20",
+    "endsAt": "2026-04-07",
+    "daysLeft": 31,
+    "weeklyMomentum": 28,
+    "story": [
+      "In September 2025, routine water testing at Riverside Elementary showed lead concentrations of 22 parts per billion in three drinking fountains. The EPA action level is 15 ppb. The school shut off those fountains and started distributing bottled water. Five months later, they are still distributing bottled water.",
+      "The fountains were not the problem. The problem is the service lines connecting 340 homes and 12 public buildings in the Riverside District to the city main. These galvanized steel pipes were installed in 1968 and are corroding from the inside. The city's infrastructure replacement plan has the Riverside District scheduled for 2031. That is five years of families drinking water that may contain unsafe lead levels.",
+      "We are not waiting until 2031. This campaign funds point-of-use filtration systems for every affected address, plus a community water quality monitoring network that will generate public data until the pipes are replaced.",
+      "Each household receives an under-sink reverse osmosis system certified to NSF/ANSI Standard 58, which removes 99% of lead. The systems cost $340 installed, including a five-year filter subscription. For the 12 public buildings, we are installing higher-capacity commercial units at $1,800 each. Total filtration cost: $137,400, of which $42,400 is covered by a grant from the California Water Resources Control Board.",
+      "The remaining $95,000 from this campaign covers the gap, plus the monitoring network. We are deploying 28 continuous water quality sensors across the district. These IoT sensors measure lead, copper, pH, and turbidity every 15 minutes and publish results to a public dashboard. Residents can check their block's water quality on their phone. The sensors cost $890 each and are manufactured by a startup out of MIT called Hydrosense. They have already been deployed in Flint, Michigan and Newark, New Jersey.",
+      "I have been studying water quality in this district for three years as part of my research at UC Riverside. My lab published the initial contamination findings that led to the school fountain shutdowns. I know these pipes, I know this water, and I know exactly what filtration technology works for this specific contamination profile.",
+      "Four of my five previous campaigns have reached their goals. The one that fell short, the Fish Passage Project, taught me to be more conservative with timelines. The scope was right but the construction season was too short. I have built that lesson into this project: all 340 residential installations can be completed in 12 weeks by a team of four plumbers, and we have contracts signed with two licensed firms.",
+      "The monitoring network is just as important as the filters. Right now, residents only learn about water quality problems when someone happens to run a test. Our sensor grid changes that. If lead levels spike on a given block, the dashboard alerts residents within 15 minutes. The data is also shared with the city's Department of Public Utilities, creating a public record that strengthens the case for accelerating the pipe replacement timeline. Three city council members have already cited our preliminary sensor data in their budget proposals for 2027.",
+      "Every family in the Riverside District deserves to turn on their kitchen faucet without wondering what is in the water. The city says 2031. We say now."
+    ],
+    "updates": [
+      {
+        "id": "update-3-1",
+        "date": "2026-03-01",
+        "title": "First 80 Homes Have Filtration Installed",
+        "content": "Both plumbing crews are ahead of schedule. Homeowner satisfaction surveys show 100% approval so far. The under-sink units are nearly invisible and residents report noticeably better water taste."
+      },
+      {
+        "id": "update-3-2",
+        "date": "2026-02-15",
+        "title": "Monitoring Sensors Deployed",
+        "content": "All 28 Hydrosense sensors are live and publishing to our public dashboard. Early data confirms our lab findings: lead levels in the southeast quadrant average 19 ppb, with spikes to 31 ppb after periods of low flow."
+      },
+      {
+        "id": "update-3-3",
+        "date": "2026-01-28",
+        "title": "Equipment Has Arrived",
+        "content": "340 under-sink RO units and 12 commercial filtration systems delivered to our staging warehouse. Filter subscriptions confirmed with the manufacturer through 2031."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Alex Rivera",
+        "text": "Elena presented her water quality data at our neighborhood meeting. The science is solid and the plan is practical. This is exactly the kind of direct action our district needs.",
+        "date": "2026-02-05"
+      }
+    ]
+  },
+  {
+    "id": "campaign-4",
+    "organizerId": "profile-4",
+    "title": "Tech Tutoring Center for Underserved Youth",
+    "category": "Education",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 60000,
+    "raised": 38200,
+    "backerCount": 498,
+    "averageGift": 77,
+    "createdAt": "2026-02-01",
+    "endsAt": "2026-04-15",
+    "daysLeft": 39,
+    "weeklyMomentum": 12,
+    "story": [
+      "Last spring, I asked my AP Computer Science class how many of them had a quiet place at home to practice coding. Out of 34 students, nine raised their hands. The rest work on shared family computers in kitchens and living rooms, often after 9 PM when younger siblings are asleep. Two students told me they do most of their homework on their phones.",
+      "These are students who passed a competitive entrance exam to get into this course. They have the ability. What they lack is a place to work.",
+      "This campaign funds a dedicated tutoring and computer lab space in the Pilsen neighborhood of Chicago's Lower West Side. We have secured a two-year lease on a 1,200-square-foot storefront at 18th and Ashland, four blocks from Benito Juarez Community Academy. The space will hold 20 workstations, a small meeting area for group projects, and a loaner laptop checkout counter.",
+      "The $60,000 covers buildout, equipment, and the first year of operations. Specifically: $18,000 for 20 refurbished workstations sourced through PCs for People, a nonprofit refurbisher. Each machine runs Linux Mint with a full development environment pre-configured. $12,000 for furniture, networking, electrical upgrades, and security. $8,000 for 30 Chromebooks for the loaner program. $22,000 for twelve months of rent, utilities, internet, and a part-time center coordinator.",
+      "The center will be open Monday through Saturday, 3 PM to 8 PM on school days and 10 AM to 6 PM on Saturdays. Volunteer tutors from the Illinois Institute of Technology and UIC have already committed to staffing rotations. I will be on site three evenings a week myself.",
+      "We are not starting from scratch. The Community WiFi Network campaign I ran last year brought free internet to 380 households in this same neighborhood. The Laptop Drive put 120 refurbished machines into students' hands. The STEM Library stocked three branch libraries with books, kits, and coding resources. Each of those projects solved one piece of the puzzle. But none of them gave students what they actually need most: a quiet room with a working computer and someone nearby who can help when they get stuck.",
+      "The tutoring center fills that gap. We have already mapped the curriculum to align with Chicago Public Schools' CS pathway, so students can use their time at the center to work on actual class assignments. The volunteer tutors are not just CS majors. We specifically recruited students who grew up in neighborhoods like Pilsen, who understand what it means to learn to code without a desk of your own. That representation matters. When a 14-year-old sees a tutor who looks like them and came from the same blocks, the message is clear: this path is open to you.",
+      "If we hit our stretch goal of $75,000, the additional $15,000 funds a summer intensive program: six weeks, 30 students, building real portfolio projects. Last summer I ran a smaller version out of the school library. Four of those students are now interning at local tech companies. Imagine what happens when they have a proper space to work in."
+    ],
+    "updates": [
+      {
+        "id": "update-4-1",
+        "date": "2026-03-01",
+        "title": "Lease Signed, Buildout Begins",
+        "content": "Keys in hand as of yesterday. Electrical upgrades start this week. The storefront has great natural light and the landlord agreed to cover the cost of repainting the exterior."
+      },
+      {
+        "id": "update-4-2",
+        "date": "2026-02-15",
+        "title": "20 Volunteer Tutors Confirmed",
+        "content": "IIT and UIC CS departments have committed 20 volunteer tutors for the spring semester. We have enough coverage for every open hour with two tutors on site."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Priya Desai",
+        "text": "My daughter used the laptops from Samir's device drive last year. Having a real workspace to go to after school would change everything for her and her friends.",
+        "date": "2026-02-20"
+      }
+    ]
+  },
+  {
+    "id": "campaign-5",
+    "organizerId": "profile-1",
+    "title": "Rooftop Classrooms for Eastside Elementary",
+    "category": "Education",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 84000,
+    "raised": 84200,
+    "backerCount": 1128,
+    "averageGift": 75,
+    "createdAt": "2025-03-10",
+    "endedAt": "2025-05-15",
+    "weeklyMomentum": 0,
+    "summary": "Converted unused rooftop space at Eastside Elementary into outdoor classrooms and a teaching garden. Three classrooms now serve 280 students for science and environmental literacy courses."
+  },
+  {
+    "id": "campaign-6",
+    "organizerId": "profile-1",
+    "title": "Community Tool Library",
+    "category": "Community",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 20000,
+    "raised": 23400,
+    "backerCount": 312,
+    "averageGift": 75,
+    "createdAt": "2024-09-01",
+    "endedAt": "2024-11-10",
+    "weeklyMomentum": 0,
+    "summary": "Established a lending library of power tools, gardening equipment, and construction supplies. Over 600 residents have borrowed items in the first year, saving an estimated $180,000 in individual purchases."
+  },
+  {
+    "id": "campaign-7",
+    "organizerId": "profile-1",
+    "title": "Neighborhood Seed Vault",
+    "category": "Urban Agriculture",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 15000,
+    "raised": 15600,
+    "backerCount": 198,
+    "averageGift": 79,
+    "createdAt": "2024-04-01",
+    "endedAt": "2024-06-15",
+    "weeklyMomentum": 0,
+    "summary": "Created a community seed library with over 200 locally adapted vegetable and herb varieties. Free seed packets distributed to 400 households in the first growing season."
+  },
+  {
+    "id": "campaign-8",
+    "organizerId": "profile-1",
+    "title": "Urban Bee Sanctuary",
+    "category": "Environmental",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 30000,
+    "raised": 31200,
+    "backerCount": 412,
+    "averageGift": 76,
+    "createdAt": "2025-06-01",
+    "endedAt": "2025-08-20",
+    "weeklyMomentum": 0,
+    "summary": "Installed 12 managed beehives and pollinator gardens across three community sites. First honey harvest yielded 180 pounds, distributed free to participating families."
+  },
+  {
+    "id": "campaign-9",
+    "organizerId": "profile-1",
+    "title": "Free Little Pantry Network",
+    "category": "Community",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 18000,
+    "raised": 18600,
+    "backerCount": 256,
+    "averageGift": 73,
+    "createdAt": "2024-01-15",
+    "endedAt": "2024-03-30",
+    "weeklyMomentum": 0,
+    "summary": "Built and stocked 15 weatherproof free pantry stations across the Eastside neighborhood. Stations are restocked twice weekly by a volunteer rotation of 45 neighbors."
+  },
+  {
+    "id": "campaign-10",
+    "organizerId": "profile-1",
+    "title": "Playground Accessibility Renovation",
+    "category": "Community",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 40000,
+    "raised": 42800,
+    "backerCount": 587,
+    "averageGift": 73,
+    "createdAt": "2023-08-01",
+    "endedAt": "2023-10-15",
+    "weeklyMomentum": 0,
+    "summary": "Redesigned the Eastside Park playground with wheelchair-accessible equipment, sensory play areas, and rubberized surfacing. Now serves 12 children with mobility needs who previously could not use the park."
+  },
+  {
+    "id": "campaign-11",
+    "organizerId": "profile-2",
+    "title": "Youth Coding Workshop Space",
+    "category": "Education",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 45000,
+    "raised": 45000,
+    "backerCount": 623,
+    "averageGift": 72,
+    "createdAt": "2025-01-15",
+    "endedAt": "2025-04-01",
+    "weeklyMomentum": 0,
+    "summary": "Converted a vacant storefront into a free coding workshop for teens. 84 students completed the first 12-week cohort, with 23 building portfolio projects that earned them internship interviews."
+  },
+  {
+    "id": "campaign-12",
+    "organizerId": "profile-2",
+    "title": "Public Art Installation: River Walk Murals",
+    "category": "Arts & Culture",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 25000,
+    "raised": 28500,
+    "backerCount": 387,
+    "averageGift": 74,
+    "createdAt": "2024-06-01",
+    "endedAt": "2024-08-15",
+    "weeklyMomentum": 0,
+    "summary": "Commissioned seven local artists to paint murals along the River Walk trail. The murals span 840 linear feet and depict the neighborhood's history from the 1920s to present."
+  },
+  {
+    "id": "campaign-13",
+    "organizerId": "profile-2",
+    "title": "Community Greenhouse Project",
+    "category": "Urban Agriculture",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 50000,
+    "raised": 52300,
+    "backerCount": 698,
+    "averageGift": 75,
+    "createdAt": "2025-05-01",
+    "endedAt": "2025-07-30",
+    "weeklyMomentum": 0,
+    "summary": "Built a 2,000-square-foot community greenhouse with year-round growing capacity. 60 families hold growing plots, producing an estimated 4,000 pounds of vegetables annually."
+  },
+  {
+    "id": "campaign-14",
+    "organizerId": "profile-2",
+    "title": "Makers Space Renovation",
+    "category": "Community",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 35000,
+    "raised": 38400,
+    "backerCount": 521,
+    "averageGift": 74,
+    "createdAt": "2024-02-01",
+    "endedAt": "2024-04-15",
+    "weeklyMomentum": 0,
+    "summary": "Renovated and equipped a community makers space with 3D printers, laser cutter, woodworking tools, and electronics bench. 200 members now use the space weekly."
+  },
+  {
+    "id": "campaign-15",
+    "organizerId": "profile-3",
+    "title": "River Cleanup Initiative",
+    "category": "Environmental",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 40000,
+    "raised": 42000,
+    "backerCount": 578,
+    "averageGift": 73,
+    "createdAt": "2025-03-01",
+    "endedAt": "2025-05-15",
+    "weeklyMomentum": 0,
+    "summary": "Organized 14 weekend cleanup events along 8 miles of the Santa Ana River channel. 900 volunteers removed 12 tons of debris and invasive vegetation."
+  },
+  {
+    "id": "campaign-16",
+    "organizerId": "profile-3",
+    "title": "Wetland Restoration Fund",
+    "category": "Environmental",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 35000,
+    "raised": 35600,
+    "backerCount": 467,
+    "averageGift": 76,
+    "createdAt": "2025-06-01",
+    "endedAt": "2025-08-30",
+    "weeklyMomentum": 0,
+    "summary": "Restored 3.5 acres of degraded wetland habitat along Riverside's western canal. Native plant survival rate at 6 months is 91%, and bird surveys show 14 species returning to the site."
+  },
+  {
+    "id": "campaign-17",
+    "organizerId": "profile-3",
+    "title": "Fish Passage Project",
+    "category": "Environmental",
+    "status": "unfunded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 25000,
+    "raised": 18200,
+    "backerCount": 243,
+    "averageGift": 75,
+    "createdAt": "2024-09-01",
+    "endedAt": "2024-11-30",
+    "weeklyMomentum": 0,
+    "summary": "Attempted to install fish ladders at two canal diversion points. Raised 73% of goal but construction season ended before permits cleared. Funds returned to donors."
+  },
+  {
+    "id": "campaign-18",
+    "organizerId": "profile-3",
+    "title": "Water Quality Monitoring Stations",
+    "category": "Environmental",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 8000,
+    "raised": 8500,
+    "backerCount": 112,
+    "averageGift": 76,
+    "createdAt": "2024-04-01",
+    "endedAt": "2024-06-01",
+    "weeklyMomentum": 0,
+    "summary": "Deployed initial water quality sensors at 6 locations across the Riverside District. Data from these sensors provided the evidence base for the Clean Water Commons campaign."
+  },
+  {
+    "id": "campaign-19",
+    "organizerId": "profile-3",
+    "title": "Youth Environmental Science Camp",
+    "category": "Education",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 7500,
+    "raised": 7850,
+    "backerCount": 98,
+    "averageGift": 80,
+    "createdAt": "2023-12-01",
+    "endedAt": "2024-02-15",
+    "weeklyMomentum": 0,
+    "summary": "Ran a two-week summer science camp for 40 middle school students focused on watershed ecology. Students conducted real water sampling and presented findings to the Riverside city council."
+  },
+  {
+    "id": "campaign-20",
+    "organizerId": "profile-4",
+    "title": "Community WiFi Network",
+    "category": "Technology",
+    "status": "funded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 50000,
+    "raised": 52000,
+    "backerCount": 712,
+    "averageGift": 73,
+    "createdAt": "2025-03-01",
+    "endedAt": "2025-06-01",
+    "weeklyMomentum": 0,
+    "summary": "Installed a mesh WiFi network covering 8 square blocks of the Pilsen neighborhood. 380 households now have free internet access with speeds averaging 50 Mbps."
+  },
+  {
+    "id": "campaign-21",
+    "organizerId": "profile-4",
+    "title": "Laptop Drive for Students",
+    "category": "Education",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 25000,
+    "raised": 28600,
+    "backerCount": 389,
+    "averageGift": 74,
+    "createdAt": "2025-06-01",
+    "endedAt": "2025-08-15",
+    "weeklyMomentum": 0,
+    "summary": "Distributed 120 refurbished laptops to students in the Pilsen neighborhood. Each device came with a pre-configured development environment and a one-year warranty from PCs for People."
+  },
+  {
+    "id": "campaign-22",
+    "organizerId": "profile-4",
+    "title": "Digital Literacy Workshop Series",
+    "category": "Education",
+    "status": "unfunded",
+    "heroImage": "/images/hero-campaign.jpg",
+    "goal": 30000,
+    "raised": 22000,
+    "backerCount": 298,
+    "averageGift": 74,
+    "createdAt": "2024-09-01",
+    "endedAt": "2024-12-01",
+    "weeklyMomentum": 0,
+    "summary": "Planned a 24-week workshop series covering basic digital skills for adults. Raised 73% of goal. Ran a scaled-down 12-week version using the funds raised, serving 45 participants."
+  },
+  {
+    "id": "campaign-23",
+    "organizerId": "profile-4",
+    "title": "STEM Library Collection",
+    "category": "Education",
+    "status": "funded",
+    "heroImage": "/images/campaign-detail.jpg",
+    "goal": 15000,
+    "raised": 16000,
+    "backerCount": 212,
+    "averageGift": 75,
+    "createdAt": "2024-03-01",
+    "endedAt": "2024-05-15",
+    "weeklyMomentum": 0,
+    "summary": "Donated 800 STEM books, kits, and subscriptions to three branch libraries in Pilsen. Checkout rates for STEM materials increased 340% in the first six months."
+  }
+]

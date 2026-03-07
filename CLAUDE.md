@@ -58,12 +58,50 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 
 UX-first. Three polished pages with JSON fixtures as the data layer. No backend required for V1 - structured data lives in `data/` folder as importable JSON. Backend API is V2/optional.
 
-## Stack (reference uses, we may adapt)
+## Stack
 
-See fundforge.md "Technical Stack" for full options. Reference repo uses:
-- Frontend: React 19 + CRA + CRACO + Tailwind 3 + shadcn/ui + React Router
-- Data layer: JSON fixtures in `data/` (campaigns, profiles, donors, trust scores)
-- Analytics: instrumentation (page views, conversion events, Web Vitals, error tracking)
+- **Frontend:** React 19 + Vite 7 + Tailwind 3 + shadcn/ui + React Router 7
+- **Why Vite over CRA/CRACO:** CRA is deprecated, Vite gives instant HMR and faster builds (846ms production build)
+- **Data layer:** JSON fixtures in `app/src/data/` (campaigns, profiles, donations, community)
+- **Analytics:** instrumentation (page views, conversion events, Web Vitals, error tracking)
+- **Dev server:** `cd app && npx vite` (port 5173)
+- **Build:** `cd app && npx vite build`
+
+## File Structure
+
+```
+app/                          # Our codebase (Vite React project)
+  src/
+    components/ui/            # shadcn/ui components (ported from design/ reference)
+    data/                     # JSON fixtures + index.js with lookup helpers
+      profiles.json           # 4 organizer profiles with trust data
+      campaigns.json          # 23 campaigns (4 active + 17 funded + 2 unfunded)
+      donations.json          # 15 recent donations across active campaigns
+      community.json          # Precomputed aggregates, leaderboard, trending
+      index.js                # Re-exports + getProfile(), getCampaign(), etc.
+    lib/utils.js              # cn() utility (clsx + tailwind-merge)
+    pages/                    # Route-level components
+      CampaignPage.jsx        # /campaign/:id
+      CommunityPage.jsx       # /community
+      ProfilePage.jsx         # /profile/:id
+    App.jsx                   # Router + providers
+    main.jsx                  # Entry point + BrowserRouter
+    index.css                 # Tailwind + HSL CSS variables
+  tailwind.config.js          # Design tokens (fonts, colors, radius, shadows)
+  vite.config.js              # Path alias @/ -> src/
+design/                       # Reference repo (read-only)
+```
+
+### shadcn/ui Components Available
+
+Button (with accent variant for donate), Card, Badge, Avatar, Progress, Dialog, Tabs, Separator, Tooltip, Sonner (toast)
+
+### Deviations from Reference
+
+- Vite instead of CRA/CRACO (faster, modern)
+- Removed `next-themes` dependency from Sonner (no dark mode needed for V1)
+- Added `accent` Button variant for donate/CTA actions (amber #D97706)
+- Progress bar height increased to h-3 (from h-2) per design_guidelines.json
 
 ## Deliverables (see fundforge.md for full requirements)
 
@@ -100,7 +138,34 @@ Preset amounts: $25, $50, $100, $250, custom. Opens modal, simulated flow with s
 ### Momentum/Badges
 Weekly momentum = % change in total raised over 7 days. Growth badge shown when momentum > 20%.
 
+### Data Model
+
+**Cross-references:** `campaign.organizerId` -> `profile.id`, `donation.campaignId` -> `campaign.id`, `community.leaderboard[].profileId` -> `profile.id`. Use helpers in `data/index.js` (`getProfile`, `getCampaign`, `getCampaignsByOrganizer`, `getDonationsByCampaign`).
+
+**Consistency guarantees (verified by script):**
+- Trust scores match formula output for all 4 profiles
+- `averageGift = Math.round(raised / backerCount)` for all active campaigns
+- `community.aggregates.totalRaised` = sum of all 23 campaigns = $970,600
+- Per-organizer totalRaised matches sum of their campaigns
+- Fulfillment rates match funded/total past campaign ratios
+- Leaderboard ranking uses `totalRaised * (trustScore / 100)`, not raw dollars
+- Trending badges only on campaigns with weeklyMomentum > 20%
+
+**Trust enhancements implemented (3 of 7 required):**
+1. Tiered verification: `verificationDetails: { email, identity, trackRecord }`
+2. Donor testimonials: embedded in campaign objects as `testimonials[]`
+3. Campaign update timeline: embedded as `updates[]` (2-4 per active campaign)
+
+**Images:** 4 images downloaded locally to `app/public/images/` from design reference. 2 avatars (female, male) shared across profiles. Need unique images per profile/campaign in polish pass.
+
+### Environment Notes
+- `npm install` (not `npm ci`) for initial scaffold - no lockfile exists yet
+- Data consistency script pattern: write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
+- All commands run from `app/` directory (`cd app` first or use full paths)
+- Deploy target: Cloudflare Pages (static SPA, free tier, edge CDN). Add `public/_redirects` with `/* /index.html 200` for SPA routing.
+
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.
 - `design_guidelines.json` has `instructions_to_main_agent` - these are for the reference builder, not us.
 - Card hover shadow in design_guidelines.json uses green-tinted rgba(15,60,50,0.08) - normalized during this session.
+- Campaign stories use `string[]` (array of paragraphs) not a single string. Render as `<p>` tags.

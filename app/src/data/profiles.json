@@ -1,0 +1,126 @@
+[
+  {
+    "id": "profile-1",
+    "name": "Maya Chen",
+    "title": "Community Architect & Urban Farmer",
+    "bio": "Maya has spent the last decade transforming vacant lots and neglected rooftops into productive green spaces across Portland. She holds a Master's in Urban Planning from Portland State and previously managed the city's Office of Community Gardens. Her campaigns consistently exceed their goals because she treats every backer like a neighbor, not a transaction.",
+    "avatar": "/images/avatar-female.jpg",
+    "roles": ["organizer", "donor"],
+    "memberSince": "2023-03-15",
+    "location": "Portland, OR",
+    "verified": true,
+    "verificationLevel": "track_record",
+    "verificationDetails": {
+      "email": true,
+      "identity": true,
+      "trackRecord": true
+    },
+    "followers": 3842,
+    "trust": {
+      "score": 93,
+      "fulfillmentRate": 100,
+      "updateConsistency": 91,
+      "repeatDonorConfidence": 85
+    },
+    "stats": {
+      "campaignsOrganized": 7,
+      "campaignsFunded": 6,
+      "totalRaised": 302200,
+      "totalDonated": 4850
+    },
+    "recommendedBy": 47
+  },
+  {
+    "id": "profile-2",
+    "name": "Jonas Reid",
+    "title": "Sustainability Engineer & Maker",
+    "bio": "Jonas left a senior role at an energy consultancy to focus on grassroots infrastructure projects in Austin. He's an electrical engineer by training who believes the fastest path to equitable energy access is neighbor-to-neighbor cooperation. When he's not wiring solar panels, he mentors first-time campaign organizers through the FundForge community program.",
+    "avatar": "/images/avatar-male.jpg",
+    "roles": ["organizer", "donor", "mentor"],
+    "memberSince": "2022-08-20",
+    "location": "Austin, TX",
+    "verified": true,
+    "verificationLevel": "track_record",
+    "verificationDetails": {
+      "email": true,
+      "identity": true,
+      "trackRecord": true
+    },
+    "followers": 5120,
+    "trust": {
+      "score": 89,
+      "fulfillmentRate": 100,
+      "updateConsistency": 85,
+      "repeatDonorConfidence": 78
+    },
+    "stats": {
+      "campaignsOrganized": 5,
+      "campaignsFunded": 4,
+      "totalRaised": 327000,
+      "totalDonated": 12200
+    },
+    "recommendedBy": 62
+  },
+  {
+    "id": "profile-3",
+    "name": "Elena Ortiz",
+    "title": "Environmental Scientist & Watershed Advocate",
+    "bio": "Elena is a water quality researcher at UC Riverside who channels her fieldwork into direct community action. She launched her first campaign after discovering unsafe lead levels in the Riverside District's aging infrastructure. Four of her five completed campaigns have exceeded their funding goals.",
+    "avatar": "/images/avatar-female.jpg",
+    "roles": ["organizer"],
+    "memberSince": "2023-11-01",
+    "location": "Riverside, CA",
+    "verified": true,
+    "verificationLevel": "identity",
+    "verificationDetails": {
+      "email": true,
+      "identity": true,
+      "trackRecord": false
+    },
+    "followers": 1876,
+    "trust": {
+      "score": 84,
+      "fulfillmentRate": 80,
+      "updateConsistency": 90,
+      "repeatDonorConfidence": 82
+    },
+    "stats": {
+      "campaignsOrganized": 6,
+      "campaignsFunded": 4,
+      "totalRaised": 184600,
+      "totalDonated": 1500
+    },
+    "recommendedBy": 28
+  },
+  {
+    "id": "profile-4",
+    "name": "Samir Patel",
+    "title": "Tech Educator & Digital Equity Advocate",
+    "bio": "Samir spent eight years teaching computer science at Chicago public schools before realizing the biggest barrier wasn't curriculum but access. His campaigns focus on closing the digital divide through community WiFi, device drives, and hands-on tutoring centers. Three of his four completed campaigns have hit their goals.",
+    "avatar": "/images/avatar-male.jpg",
+    "roles": ["organizer", "donor"],
+    "memberSince": "2024-01-10",
+    "location": "Chicago, IL",
+    "verified": true,
+    "verificationLevel": "identity",
+    "verificationDetails": {
+      "email": true,
+      "identity": true,
+      "trackRecord": false
+    },
+    "followers": 982,
+    "trust": {
+      "score": 77,
+      "fulfillmentRate": 75,
+      "updateConsistency": 82,
+      "repeatDonorConfidence": 76
+    },
+    "stats": {
+      "campaignsOrganized": 5,
+      "campaignsFunded": 3,
+      "totalRaised": 156800,
+      "totalDonated": 3200
+    },
+    "recommendedBy": 15
+  }
+]

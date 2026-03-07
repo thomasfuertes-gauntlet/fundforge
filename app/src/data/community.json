@@ -1,0 +1,83 @@
+{
+  "_consistency_notes": {
+    "totalRaised": "Sum of all 23 campaigns: active (86400+162800+72450+38200=359850) + past Maya (84200+23400+15600+31200+18600+42800=215800) + past Jonas (45000+28500+52300+38400=164200) + past Elena (42000+35600+18200+8500+7850=112150) + past Samir (52000+28600+22000+16000=118600) = 970600",
+    "totalDonors": "Sum of all backerCounts is 12855. Estimated unique donors at ~85% (accounting for repeat donors across campaigns) = 10927",
+    "averageGift": "970600 / 12855 = 75.50, rounded to 76",
+    "leaderboardRanking": "Composite: totalRaised * (trustScore / 100). Jonas: 327000*0.89=291030, Maya: 302200*0.93=281046, Elena: 184600*0.84=155064, Samir: 156800*0.77=120736"
+  },
+  "aggregates": {
+    "totalRaised": 970600,
+    "totalDonors": 10927,
+    "activeCampaigns": 4,
+    "completedCampaigns": 19,
+    "fundedCampaigns": 17,
+    "averageGift": 76,
+    "averageFundingRate": 89
+  },
+  "leaderboard": [
+    {
+      "profileId": "profile-2",
+      "rank": 1,
+      "name": "Jonas Reid",
+      "avatar": "/images/avatar-male.jpg",
+      "totalRaised": 327000,
+      "trustScore": 89,
+      "weeklyTrend": 18,
+      "activeCampaignId": "campaign-2",
+      "campaignsFunded": 4
+    },
+    {
+      "profileId": "profile-1",
+      "rank": 2,
+      "name": "Maya Chen",
+      "avatar": "/images/avatar-female.jpg",
+      "totalRaised": 302200,
+      "trustScore": 93,
+      "weeklyTrend": 22,
+      "activeCampaignId": "campaign-1",
+      "campaignsFunded": 6
+    },
+    {
+      "profileId": "profile-3",
+      "rank": 3,
+      "name": "Elena Ortiz",
+      "avatar": "/images/avatar-female.jpg",
+      "totalRaised": 184600,
+      "trustScore": 84,
+      "weeklyTrend": 28,
+      "activeCampaignId": "campaign-3",
+      "campaignsFunded": 4
+    },
+    {
+      "profileId": "profile-4",
+      "rank": 4,
+      "name": "Samir Patel",
+      "avatar": "/images/avatar-male.jpg",
+      "totalRaised": 156800,
+      "trustScore": 77,
+      "weeklyTrend": 12,
+      "activeCampaignId": "campaign-4",
+      "campaignsFunded": 3
+    }
+  ],
+  "trending": [
+    {
+      "campaignId": "campaign-3",
+      "title": "Clean Water Commons: Filtration for Riverside District",
+      "organizerName": "Elena Ortiz",
+      "tag": "Fastest Growth",
+      "weeklyMomentum": 28,
+      "weeklyRaised": 15680,
+      "weeklyDonors": 218
+    },
+    {
+      "campaignId": "campaign-1",
+      "title": "Grow a Rooftop Garden for 400 Neighborhood Families",
+      "organizerName": "Maya Chen",
+      "tag": "Trending",
+      "weeklyMomentum": 22,
+      "weeklyRaised": 15600,
+      "weeklyDonors": 186
+    }
+  ]
+}
