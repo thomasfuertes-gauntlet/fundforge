@@ -225,6 +225,13 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **Dev mode:** Structured console output with `%c` styling. In production, swap `emit()` for POST endpoint.
 - **Scroll depth:** Fires once per milestone per campaign per session (deduped via Set)
 
+### Deployment
+- **URL:** https://fundforge.tomfuertes.workers.dev
+- **Platform:** Cloudflare Workers (static assets, not Pages)
+- **Config:** `app/wrangler.jsonc` - SPA fallback via `not_found_handling: "single-page-application"`
+- **Deploy command:** `cd app && npx wrangler deploy`
+- **Build first:** `cd app && npx vite build` (dist/ must exist)
+
 ### Polish Pass (completed)
 - **Images:** `loading="lazy"` on detail/grid images, `fetchPriority="high"` on campaign hero (LCP candidate)
 - **ScrollToTop:** Resets scroll on route change via `useLocation` + `useEffect`

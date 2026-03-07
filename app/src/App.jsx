@@ -7,6 +7,7 @@ import CampaignPage from "@/pages/CampaignPage";
 import CommunityPage from "@/pages/CommunityPage";
 import ProfilePage from "@/pages/ProfilePage";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import HomePage from "@/pages/HomePage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,7 +27,8 @@ function App() {
           <Route path="/campaign/:id" element={<CampaignPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
-          <Route path="*" element={<Navigate to="/campaign/campaign-1" replace />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </ErrorBoundary>
       <Toaster position="bottom-right" />
