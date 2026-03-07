@@ -88,7 +88,7 @@ app/                          # Our codebase (Vite React project)
       analytics.js            # Event bus, session UUID, Web Vitals, error tracking
       useAnalytics.js         # React hooks: usePageView, useScrollDepth
     pages/                    # Route-level components
-      HomePage.jsx            # / - minimal intro landing page
+      HomePage.jsx            # / - hero stats, ecosystem cards, trust model, tech stack
       CampaignPage.jsx        # /campaign/:id
       CommunityPage.jsx       # /community
       ProfilePage.jsx         # /profile/:id
@@ -164,7 +164,7 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 2. Donor testimonials: embedded in campaign objects as `testimonials[]`
 3. Campaign update timeline: embedded as `updates[]` (2-4 per active campaign)
 
-**Images:** 4 images downloaded locally to `app/public/images/` from design reference. 2 avatars (female, male) shared across profiles. Need unique images per profile/campaign in polish pass.
+**Images:** 8 images in `app/public/images/`. 4 unique per-profile avatars (avatar-maya.jpg, avatar-jonas.jpg, avatar-elena.jpg, avatar-samir.jpg) from Unsplash + 2 campaign images from design reference. Old shared avatars (avatar-female.jpg, avatar-male.jpg) are unused.
 
 ### Stretch Features (from stretch.md behavioral economics analysis)
 - `campaign.stretchGoal: { amount, label }` on campaigns 1-2 - secondary progress bar when goal exceeded
@@ -245,6 +245,16 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **Body:** `overflow-x: hidden` prevents horizontal scroll from any edge-case overflow
 - **Build:** Clean, 144KB gzipped JS, no warnings
 
+### Data Field Gotcha
+- Trust data is nested: `profile.trust.score`, `profile.trust.fulfillmentRate`, etc. NOT `profile.trustScore`.
+- Community leaderboard has a flat `trustScore` field (duplicated for display). Don't confuse the two.
+
+### GoFundMe Reference Pages (from spec.md)
+- Campaign: https://www.gofundme.com/f/realtime-alerts-for-wildfire-safety-r5jkk
+- Community: https://www.gofundme.com/communities/watch-duty
+- Profile: https://www.gofundme.com/u/janahan
+- `stretch.md` has behavioral economics analysis of all three (goal-gradient, competitive altruism, signaling theory)
+
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.
 - `design_guidelines.json` has `instructions_to_main_agent` - these are for the reference builder, not us.
@@ -255,3 +265,5 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.
 - Workers static assets: `_redirects` file causes "infinite loop" validation error. Use `not_found_handling: "single-page-application"` in wrangler.jsonc instead.
 - `git rm` stages deletions - don't re-add the deleted path in `git add` or it errors with "pathspec did not match".
+- `design/frontend/` uses CRA/CRACO which is broken on Node 22+ (`ajv-keywords` MODULE_NOT_FOUND). Don't try to `npm start` it. Use the Emergent preview or Vite wrapper instead.
+- Playwright on sites with cookie/privacy overlays: `run-code "async page => { await page.evaluate(() => { document.querySelectorAll('div').forEach(el => { const s = getComputedStyle(el); if (s.position === 'fixed' && s.zIndex > 100) el.remove(); }); document.body.style.overflow = 'auto'; }); }"`
