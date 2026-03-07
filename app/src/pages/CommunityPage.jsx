@@ -341,6 +341,7 @@ export default function CommunityPage() {
                     <img
                       src={c.heroImage}
                       alt={c.title}
+                      loading="lazy"
                       className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
                     />
                   </div>

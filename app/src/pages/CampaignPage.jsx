@@ -99,6 +99,7 @@ export default function CampaignPage() {
                   src={campaign.heroImage}
                   alt={campaign.title}
                   className="h-full w-full object-cover object-center"
+                  fetchPriority="high"
                   data-testid="campaign-hero-image"
                 />
               </div>
@@ -201,6 +202,7 @@ export default function CampaignPage() {
                         <img
                           src={img}
                           alt={`${campaign.title} detail ${i + 1}`}
+                          loading="lazy"
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
@@ -274,7 +276,7 @@ export default function CampaignPage() {
                   <button
                     type="button"
                     onClick={() => setShowAllUpdates((v) => !v)}
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                    className="inline-flex items-center gap-1.5 py-2 text-sm font-medium text-primary hover:underline"
                     data-testid="toggle-updates"
                   >
                     {showAllUpdates ? (

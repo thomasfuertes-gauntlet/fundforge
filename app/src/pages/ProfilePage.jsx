@@ -148,7 +148,7 @@ export default function ProfilePage() {
               </p>
 
               {/* Stats Row */}
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <div
                   className="rounded-2xl border border-border/60 bg-muted/40 p-4"
                   data-testid="profile-followers"
@@ -183,7 +183,7 @@ export default function ProfilePage() {
 
               {/* Verification Steps */}
               <div
-                className="flex items-center gap-2"
+                className="flex flex-wrap items-center gap-2"
                 data-testid="profile-verification-steps"
               >
                 {VERIFICATION_STEPS.map((step, i) => {
@@ -193,11 +193,11 @@ export default function ProfilePage() {
                     <div key={step.key} className="flex items-center gap-2">
                       {i > 0 && (
                         <div
-                          className={`h-px w-6 ${verified ? "bg-primary/40" : "bg-border"}`}
+                          className={`hidden h-px w-6 sm:block ${verified ? "bg-primary/40" : "bg-border"}`}
                         />
                       )}
                       <div
-                        className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium ${
+                        className={`flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium ${
                           verified
                             ? "bg-secondary text-primary"
                             : "bg-muted/40 text-muted-foreground"
@@ -284,6 +284,7 @@ export default function ProfilePage() {
                         <img
                           src={c.heroImage}
                           alt={c.title}
+                          loading="lazy"
                           className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
                         />
                       </div>
@@ -399,7 +400,7 @@ export default function ProfilePage() {
               raised and donated across {profile.stats.campaignsOrganized}{" "}
               campaigns - recommended by {profile.recommendedBy} donors
             </p>
-            <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
               <div className="rounded-2xl bg-white/10 p-4 text-center">
                 <p className="text-xl font-serif">
                   {formatCurrency(profile.stats.totalRaised)}
