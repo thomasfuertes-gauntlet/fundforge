@@ -82,7 +82,10 @@ app/                          # Our codebase (Vite React project)
       donations.json          # 15 recent donations across active campaigns
       community.json          # Precomputed aggregates, leaderboard, trending
       index.js                # Re-exports + getProfile(), getCampaign(), etc.
-    lib/utils.js              # cn() utility (clsx + tailwind-merge)
+    lib/
+      utils.js                # cn() utility (clsx + tailwind-merge)
+      analytics.js            # Event bus, session UUID, Web Vitals, error tracking
+      useAnalytics.js         # React hooks: usePageView, useScrollDepth
     pages/                    # Route-level components
       CampaignPage.jsx        # /campaign/:id
       CommunityPage.jsx       # /community
@@ -196,6 +199,24 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - **Default route:** `/` redirects to `/campaign/campaign-1`.
 - **Cross-page links:** Campaign organizer card -> `/profile/:id`. Community leaderboard -> `/profile/:id`. Community trending + active grid -> `/campaign/:id`. Profile campaign history -> `/campaign/:id`.
 - **Sticky offset:** Donate panel uses `lg:top-20` (80px) to clear the 56px header.
+
+### Instrumentation
+Event taxonomy (all events include sessionId, timestamp, url):
+
+| Event | Payload | Why |
+|---|---|---|
+| `page_view` | page, params, referrer, viewport | Funnel analysis: community -> campaign -> donate |
+| `donate_click` | campaignId | Conversion intent (modal opened) |
+| `donate_complete` | campaignId, amount | Conversion (donation confirmed) |
+| `share_click` | campaignId | Viral coefficient measurement |
+| `scroll_depth` | campaignId, milestone (25/50/75/100) | Content engagement - do donors read the story? |
+| `web_vital` | name (LCP/FID/CLS/INP/TTFB), value, rating | Performance budget monitoring |
+| `error` | message, source, line, col | Reliability - unhandled errors + promise rejections |
+
+- **Session UUID:** `crypto.randomUUID()` persisted in sessionStorage, ties all events to one visit
+- **Web Vitals:** Lazy-loaded via dynamic import, code-split into 5.8KB chunk
+- **Dev mode:** Structured console output with `%c` styling. In production, swap `emit()` for POST endpoint.
+- **Scroll depth:** Fires once per milestone per campaign per session (deduped via Set)
 
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { usePageView } from "@/lib/useAnalytics";
 import { community, getActiveCampaigns, getProfile } from "@/data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +35,7 @@ function initials(name) {
 }
 
 export default function CommunityPage() {
+  usePageView("community");
   const activeCampaigns = getActiveCampaigns();
 
   return (

@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { usePageView } from "@/lib/useAnalytics";
 import { getProfile, getCampaignsByOrganizer } from "@/data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -52,6 +53,7 @@ const VERIFICATION_STEPS = [
 
 export default function ProfilePage() {
   const { id } = useParams();
+  usePageView("profile", { id });
   const profile = getProfile(id);
 
   if (!profile) {

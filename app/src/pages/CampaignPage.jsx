@@ -9,6 +9,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import DonateModal from "@/components/DonateModal";
 import { toast } from "@/components/ui/sonner";
+import { usePageView, useScrollDepth } from "@/lib/useAnalytics";
+import { trackDonateClick, trackShareClick } from "@/lib/analytics";
 import {
   Heart,
   Share2,
@@ -58,6 +60,9 @@ export default function CampaignPage() {
   const { id } = useParams();
   const [donateOpen, setDonateOpen] = useState(false);
   const [showAllUpdates, setShowAllUpdates] = useState(false);
+
+  usePageView("campaign", { id });
+  useScrollDepth(id);
 
   const campaign = getCampaign(id);
   if (!campaign) {
@@ -417,7 +422,7 @@ export default function CampaignPage() {
                     variant="accent"
                     size="lg"
                     className="w-full shadow-[0_20px_44px_rgba(217,119,6,0.25)]"
-                    onClick={() => setDonateOpen(true)}
+                    onClick={() => { trackDonateClick(campaign.id); setDonateOpen(true); }}
                     data-testid="donate-button"
                   >
                     <Heart className="h-5 w-5" />
@@ -429,6 +434,7 @@ export default function CampaignPage() {
                     size="lg"
                     className="w-full"
                     onClick={() => {
+                      trackShareClick(campaign.id);
                       navigator.clipboard?.writeText(window.location.href);
                       toast.success("Link copied to clipboard!");
                     }}
@@ -485,6 +491,7 @@ export default function CampaignPage() {
       <DonateModal
         open={donateOpen}
         onOpenChange={setDonateOpen}
+        campaignId={campaign.id}
         campaignTitle={campaign.title}
       />
     </div>

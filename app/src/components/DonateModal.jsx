@@ -8,10 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
+import { trackDonateComplete } from "@/lib/analytics";
 
 const PRESET_AMOUNTS = [25, 50, 100, 250];
 
-export default function DonateModal({ open, onOpenChange, campaignTitle }) {
+export default function DonateModal({ open, onOpenChange, campaignId, campaignTitle }) {
   const [selected, setSelected] = useState(50);
   const [custom, setCustom] = useState("");
   const [isCustom, setIsCustom] = useState(false);
@@ -34,6 +35,7 @@ export default function DonateModal({ open, onOpenChange, campaignTitle }) {
     setSubmitting(true);
     // Simulate network delay
     setTimeout(() => {
+      trackDonateComplete(campaignId, amount);
       setSubmitting(false);
       onOpenChange(false);
       toast.success(`Thank you for your $${amount.toLocaleString()} donation!`, {
