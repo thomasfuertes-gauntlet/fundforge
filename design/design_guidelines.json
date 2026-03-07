@@ -1,0 +1,140 @@
+{
+  "identity": {
+    "name": "E1",
+    "archetype": "The Anti-AI Designer",
+    "tone": "Premium, Trustworthy, Editorial, Human-Centric",
+    "mission": "Create a crowdfunding interface that feels like a high-end magazine, not a generic SaaS dashboard."
+  },
+  "design_system": {
+    "typography": {
+      "font_family": {
+        "heading": "Libre Baskerville, serif",
+        "body": "Manrope, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "imports": [
+        "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      ],
+      "scale": {
+        "h1": "text-5xl md:text-6xl font-bold tracking-tight leading-[1.1]",
+        "h2": "text-3xl md:text-4xl font-bold tracking-tight",
+        "h3": "text-2xl font-semibold tracking-normal",
+        "body_lg": "text-lg leading-relaxed text-muted-foreground",
+        "body_base": "text-base leading-relaxed text-muted-foreground",
+        "caption": "text-sm font-medium tracking-wide uppercase text-muted-foreground"
+      }
+    },
+    "colors": {
+      "palette": {
+        "primary": {
+          "DEFAULT": "#0F3C32",
+          "foreground": "#FFFFFF",
+          "description": "Deep Forest Green - Evokes stability, wealth, and nature."
+        },
+        "secondary": {
+          "DEFAULT": "#E8F3F1",
+          "foreground": "#0F3C32",
+          "description": "Mint Foam - Soft background for contrast."
+        },
+        "accent": {
+          "DEFAULT": "#D97706",
+          "foreground": "#FFFFFF",
+          "description": "Amber - Warm, urgent but trustworthy action color."
+        },
+        "background": {
+          "DEFAULT": "#F9FAFB",
+          "paper": "#FFFFFF"
+        },
+        "text": {
+          "primary": "#111827",
+          "secondary": "#4B5563",
+          "tertiary": "#9CA3AF"
+        },
+        "border": {
+          "DEFAULT": "#E5E7EB",
+          "focus": "#0F3C32"
+        }
+      },
+      "gradients": {
+        "trust_beam": "linear-gradient(to right, #0F3C32, #115E59)",
+        "soft_overlay": "linear-gradient(to bottom, transparent, rgba(15, 60, 50, 0.05))"
+      }
+    },
+    "spacing": {
+      "container_padding": "p-6 md:p-12 lg:p-16",
+      "section_gap": "gap-12 md:gap-24",
+      "element_gap": "gap-4 md:gap-8"
+    },
+    "shapes": {
+      "radius": {
+        "default": "rounded-md",
+        "button": "rounded-full",
+        "card": "rounded-xl",
+        "image": "rounded-sm"
+      },
+      "border": {
+        "default": "border border-border",
+        "active": "border-2 border-primary"
+      }
+    },
+    "shadows": {
+      "card": "shadow-[0_2px_8px_rgba(0,0,0,0.04)]",
+      "hover": "shadow-[0_12px_24px_rgba(15,60,50,0.08)]",
+      "glass": "shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-md border border-white/20"
+    }
+  },
+  "layout_strategies": {
+    "grid_bento": "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[minmax(180px,auto)]",
+    "campaign_split": "grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start",
+    "editorial_text": "max-w-prose mx-auto lg:mx-0"
+  },
+  "components": {
+    "Button": {
+      "styles": {
+        "primary": "bg-[#0F3C32] text-white hover:bg-[#082821] rounded-full px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5",
+        "secondary": "bg-[#E8F3F1] text-[#0F3C32] hover:bg-[#D1E7E2] rounded-full px-6 py-3 font-medium transition-colors",
+        "outline": "border-2 border-[#0F3C32] text-[#0F3C32] hover:bg-[#0F3C32] hover:text-white rounded-full px-6 py-3 font-medium transition-all"
+      }
+    },
+    "Card": {
+      "styles": {
+        "base": "bg-white rounded-xl border border-gray-100 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_rgba(15,60,50,0.08)] transition-all duration-300",
+        "feature": "bg-[#F9FAFB] rounded-xl border border-transparent hover:border-[#E5E7EB] p-8 transition-colors"
+      }
+    },
+    "ProgressBar": {
+      "styles": {
+        "container": "h-3 w-full bg-gray-100 rounded-full overflow-hidden",
+        "fill": "h-full bg-[#0F3C32] transition-all duration-1000 ease-out"
+      }
+    }
+  },
+  "assets": {
+    "images": {
+      "hero_campaign": "https://images.unsplash.com/photo-1628243989859-db92e2de1340?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHw0fHxjb21tdW5pdHklMjBnYXJkZW4lMjB1cmJhbiUyMHJvb2Z0b3AlMjBzdXN0YWluYWJsZXxlbnwwfHx8fDE3NzI4OTgyNDB8MA&ixlib=rb-4.1.0&q=85",
+      "campaign_secondary": "https://images.unsplash.com/photo-1759722144505-b2f89f94bf8e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHwxfHxjb21tdW5pdHklMjBnYXJkZW4lMjB1cmJhbiUyMHJvb2Z0b3AlMjBzdXN0YWluYWJsZXxlbnwwfHx8fDE3NzI4OTgyNDB8MA&ixlib=rb-4.1.0&q=85",
+      "avatar_female": "https://images.unsplash.com/photo-1548544507-7de0e7a931d6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA0MTJ8MHwxfHNlYXJjaHw0fHxkaXZlcnNlJTIwcHJvZmVzc2lvbmFsJTIwaGVhZHNob3QlMjBwb3J0cmFpdCUyMHNtaWxpbmclMjBuYXR1cmFsJTIwbGlnaHR8ZW58MHx8fHwxNzcyODk4MjQxfDA&ixlib=rb-4.1.0&q=85",
+      "avatar_male": "https://images.unsplash.com/photo-1658909835269-e76abd3ffb5d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA0MTJ8MHwxfHNlYXJjaHwzfHxkaXZlcnNlJTIwcHJvZmVzc2lvbmFsJTIwaGVhZHNob3QlMjBwb3J0cmFpdCUyMHNtaWxpbmclMjBuYXR1cmFsJTIwbGlnaHR8ZW58MHx8fHwxNzcyODk4MjQxfDA&ixlib=rb-4.1.0&q=85"
+    },
+    "icons": {
+      "library": "lucide-react",
+      "style": "stroke-width={1.5} className='w-5 h-5'"
+    }
+  },
+  "instructions_to_main_agent": [
+    "IMMEDIATELY add the font import to your global CSS file: @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@200;300;400;500;600;700;800&display=swap');",
+    "Set the font-family in tailwind.config.js to match these fonts (serif for headings, sans for body).",
+    "Use the provided colors to override the existing Shadcn/Tailwind 'primary' and 'secondary' colors if possible, or create new utility classes.",
+    "The page should be a 'Single Page Showcase' divided into distinct sections: Design System (Tokens), Campaign (Conversion), Community (Leaderboard), Profile (Trust).",
+    "Do NOT use pure black (#000000). Use #0F3C32 (Deep Green) or #111827 (Gray 900) for dark text.",
+    "Use 'data-testid' attributes for all interactive elements (buttons, inputs, cards).",
+    "Ensure the 'Donate' button uses the Accent color (#D97706) to stand out against the Primary Green.",
+    "For the Leaderboard, use the 'Bento' grid layout strategy."
+  ],
+  "universal_guidelines": [
+    "Do not center align everything. Use left alignment for body text to maintain readability.",
+    "Use ample whitespace. Section padding should be at least py-20.",
+    "Micro-interactions: Add hover states to all cards (lift up + shadow increase).",
+    "Accessibility: Ensure text contrast ratios are met. Use the specific hex codes provided."
+  ]
+}
