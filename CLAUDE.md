@@ -72,7 +72,9 @@ UX-first. Three polished pages with JSON fixtures as the data layer. No backend 
 ```
 app/                          # Our codebase (Vite React project)
   src/
-    components/ui/            # shadcn/ui components (ported from design/ reference)
+    components/
+      ui/                     # shadcn/ui components (ported from design/ reference)
+      DonateModal.jsx         # Preset amount modal ($25/$50/$100/$250/custom) with simulated flow
     data/                     # JSON fixtures + index.js with lookup helpers
       profiles.json           # 4 organizer profiles with trust data
       campaigns.json          # 23 campaigns (4 active + 17 funded + 2 unfunded)
@@ -163,6 +165,30 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - Data consistency script pattern: write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
 - All commands run from `app/` directory (`cd app` first or use full paths)
 - Deploy target: Cloudflare Pages (static SPA, free tier, edge CDN). Add `public/_redirects` with `/* /index.html 200` for SPA routing.
+
+### Campaign Page Structure
+- **Layout:** 7-col story + 5-col sticky donate panel (stacked on mobile)
+- **Left column:** Hero image card -> badges (category, days left, trending) -> title -> organizer card (links to profile) -> story paragraphs -> detail images -> testimonials -> update timeline (collapsed to 2, expandable)
+- **Right column:** Sticky panel with progress bar, raised/goal, backer count, avg gift stat cards, donate CTA (amber), share button, recent donations feed (top 5 with relative timestamps + messages)
+- **DonateModal:** Standalone component at `components/DonateModal.jsx`. Preset grid ($25/$50/$100/$250) + custom input. 800ms simulated delay, success toast via sonner. Reusable for other pages.
+- **Relative time:** `formatRelativeTime()` uses a fixed "now" of `2026-03-07T17:00:00Z` matching fixture dates, not `Date.now()`. This keeps the UI stable for demos.
+- **Organizer card links** to `/profile/:id` for cross-page navigation.
+
+### Community Page Structure
+- **Layout:** Bento grid `lg:grid-cols-12` - metrics (4-col) + trending (3-col) + leaderboard (5-col). Stacks vertically on mobile.
+- **Metrics card:** Dark primary hero stat for total raised, sky-blue donors card, secondary row for avg gift + funding rate. All data from `community.aggregates` (precomputed, no runtime math).
+- **Trending card:** Links to `/campaign/:id`. Shows weekly momentum %, weekly raised, organizer name, tag badge (Fastest Growth / Trending).
+- **Leaderboard card:** Links to `/profile/:id`. Shows rank, avatar, name, campaigns funded, trust score, total raised, weekly trend arrow. Ranked by `totalRaised * (trustScore / 100)` (precomputed).
+- **Active campaigns grid:** Below bento grid. 4-col card grid with hero image, category badge, title, progress bar, raised/days left. Cards have hover lift animation.
+- **Currency formatting:** `formatCurrency()` abbreviates to $K/$M for large values in community context (vs full numbers on campaign page where precision matters).
+
+### Profile Page Structure
+- **Layout:** Two-section page. Top: identity header + trust composition panel in `lg:grid-cols-[1fr_1fr]`. Bottom: campaign history grid.
+- **Identity header (left):** Avatar, name, title, role badges, verified badge, location/member-since/recommendations meta, bio, stats row (followers/funded/trust score), verification step indicator (email -> identity -> track record).
+- **Trust panel (right):** Dark gradient card (`from-primary via-primary to-sky`). Shows all 3 trust inputs with progress bars + percentages. Formula explanation box at bottom: `fulfillment (40%) + update consistency (30%) + repeat donor confidence (30%)`.
+- **Verification steps:** Stepped pill indicator showing which tiers are verified. Two profiles have all 3 (track_record), two have only email + identity.
+- **Campaign history:** Active campaigns as image cards with progress bars (same pattern as Community page). Past campaigns as text-only cards with funded/not-funded badge, year, raised amount, backer count, summary.
+- **Lifetime totals:** 4-col stat strip at bottom (total raised, organized, donated, recommendations).
 
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.

@@ -1,65 +1,417 @@
-import { useParams } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useParams, Link } from "react-router-dom";
+import { getProfile, getCampaignsByOrganizer } from "@/data";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import {
+  ShieldCheck,
+  Mail,
+  UserCheck,
+  Award,
+  MapPin,
+  CalendarDays,
+  Users,
+  Heart,
+  TrendingUp,
+  ThumbsUp,
+} from "lucide-react";
+
+function formatCurrency(value) {
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
+  return `$${value.toLocaleString()}`;
+}
+
+function formatNumber(value) {
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
+  return value.toLocaleString();
+}
+
+function initials(name) {
+  return name.split(" ").map((w) => w[0]).join("").toUpperCase();
+}
+
+function formatMemberSince(dateStr) {
+  return new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+}
+
+const TRUST_METRICS = [
+  { key: "fulfillmentRate", label: "Fulfillment history", icon: Award },
+  { key: "updateConsistency", label: "Update consistency", icon: CalendarDays },
+  { key: "repeatDonorConfidence", label: "Repeat donor confidence", icon: Heart },
+];
+
+const VERIFICATION_STEPS = [
+  { key: "email", label: "Email", icon: Mail },
+  { key: "identity", label: "Identity", icon: UserCheck },
+  { key: "trackRecord", label: "Track record", icon: Award },
+];
 
 export default function ProfilePage() {
   const { id } = useParams();
+  const profile = getProfile(id);
+
+  if (!profile) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-lg text-muted-foreground">Profile not found.</p>
+      </div>
+    );
+  }
+
+  const campaigns = getCampaignsByOrganizer(profile.id);
+  const activeCampaigns = campaigns.filter((c) => c.status === "active");
+  const pastCampaigns = campaigns.filter((c) => c.status !== "active");
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
-        <div className="flex items-center gap-6">
-          <Avatar className="h-20 w-20" data-testid="profile-avatar">
-            <AvatarImage src="" alt="Profile" />
-            <AvatarFallback className="text-2xl">U{id}</AvatarFallback>
-          </Avatar>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-              User Profile
-            </h1>
-            <p className="mt-1 text-lg text-muted-foreground">
-              Member since 2024
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-          <Card data-testid="trust-score-card">
-            <CardHeader>
-              <CardTitle className="text-lg">Trust Score</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold font-sans text-primary">
-                  85
-                </span>
-                <Badge variant="secondary">Verified</Badge>
-              </div>
-              <Progress value={85} />
-            </CardContent>
-          </Card>
-
-          <Card data-testid="profile-stats-card">
-            <CardHeader>
-              <CardTitle className="text-lg">Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div>
-                  <p className="text-2xl font-bold font-sans text-primary">3</p>
-                  <p className="text-sm text-muted-foreground">Campaigns</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold font-sans text-primary">
-                    $2,450
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-16">
+        {/* ─── Identity Header + Trust Panel ─── */}
+        <Card
+          className="overflow-hidden border-white/70 bg-white/90"
+          data-testid="profile-header-card"
+        >
+          <CardContent className="grid gap-8 p-5 sm:p-6 lg:grid-cols-[1fr_1fr] lg:p-8">
+            {/* Left: Identity */}
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center gap-4">
+                <Avatar
+                  className="h-20 w-20 border-4 border-secondary shadow-sm"
+                  data-testid="profile-avatar"
+                >
+                  <AvatarImage src={profile.avatar} alt={profile.name} />
+                  <AvatarFallback className="text-xl">
+                    {initials(profile.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    {profile.verified && (
+                      <Badge
+                        className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary"
+                        data-testid="profile-verified-badge"
+                      >
+                        <ShieldCheck className="mr-1 h-3 w-3" />
+                        Verified
+                      </Badge>
+                    )}
+                    {profile.roles.map((role) => (
+                      <Badge
+                        key={role}
+                        variant="outline"
+                        className="rounded-full px-2.5 py-0.5 text-xs capitalize"
+                      >
+                        {role}
+                      </Badge>
+                    ))}
+                  </div>
+                  <h1
+                    className="text-3xl font-bold tracking-tight sm:text-4xl"
+                    data-testid="profile-name"
+                  >
+                    {profile.name}
+                  </h1>
+                  <p className="text-sm text-muted-foreground">
+                    {profile.title}
                   </p>
-                  <p className="text-sm text-muted-foreground">Total Raised</p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+
+              {/* Meta */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="h-3.5 w-3.5" /> {profile.location}
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <CalendarDays className="h-3.5 w-3.5" /> Member since{" "}
+                  {formatMemberSince(profile.memberSince)}
+                </span>
+                {profile.recommendedBy > 0 && (
+                  <span className="inline-flex items-center gap-1">
+                    <ThumbsUp className="h-3.5 w-3.5" /> {profile.recommendedBy}{" "}
+                    recommendations
+                  </span>
+                )}
+              </div>
+
+              {/* Bio */}
+              <p
+                className="text-[0.9375rem] leading-relaxed text-muted-foreground"
+                data-testid="profile-bio"
+              >
+                {profile.bio}
+              </p>
+
+              {/* Stats Row */}
+              <div className="grid grid-cols-3 gap-3">
+                <div
+                  className="rounded-2xl border border-border/60 bg-muted/40 p-4"
+                  data-testid="profile-followers"
+                >
+                  <p className="text-2xl font-serif text-foreground">
+                    {formatNumber(profile.followers)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">followers</p>
+                </div>
+                <div
+                  className="rounded-2xl border border-border/60 bg-muted/40 p-4"
+                  data-testid="profile-campaigns-funded"
+                >
+                  <p className="text-2xl font-serif text-foreground">
+                    {profile.stats.campaignsFunded}
+                  </p>
+                  <p className="text-xs text-muted-foreground">funded</p>
+                </div>
+                <div
+                  className="rounded-2xl border border-secondary bg-secondary/50 p-4"
+                  data-testid="profile-trust-score"
+                >
+                  <p className="text-2xl font-serif text-primary">
+                    {profile.trust.score}
+                    <span className="text-base font-sans text-muted-foreground">
+                      /100
+                    </span>
+                  </p>
+                  <p className="text-xs text-muted-foreground">trust</p>
+                </div>
+              </div>
+
+              {/* Verification Steps */}
+              <div
+                className="flex items-center gap-2"
+                data-testid="profile-verification-steps"
+              >
+                {VERIFICATION_STEPS.map((step, i) => {
+                  const verified = profile.verificationDetails[step.key];
+                  const Icon = step.icon;
+                  return (
+                    <div key={step.key} className="flex items-center gap-2">
+                      {i > 0 && (
+                        <div
+                          className={`h-px w-6 ${verified ? "bg-primary/40" : "bg-border"}`}
+                        />
+                      )}
+                      <div
+                        className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium ${
+                          verified
+                            ? "bg-secondary text-primary"
+                            : "bg-muted/40 text-muted-foreground"
+                        }`}
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                        {step.label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right: Trust Composition Panel */}
+            <div
+              className="rounded-3xl bg-gradient-to-br from-primary via-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground"
+              data-testid="profile-trust-panel"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-widest text-primary-foreground/60">
+                    Trust composition
+                  </p>
+                  <h2 className="mt-2 text-xl font-serif leading-snug sm:text-2xl">
+                    Reputation built through fulfillment, transparency, and
+                    repeat support.
+                  </h2>
+                </div>
+                <ShieldCheck className="h-8 w-8 shrink-0 text-primary-foreground/40" />
+              </div>
+
+              <div className="mt-6 space-y-5">
+                {TRUST_METRICS.map(({ key, label, icon: Icon }) => (
+                  <div key={key} data-testid={`trust-metric-${key}`}>
+                    <div className="mb-2 flex items-center justify-between text-sm text-primary-foreground/75">
+                      <span className="inline-flex items-center gap-1.5">
+                        <Icon className="h-3.5 w-3.5" />
+                        {label}
+                      </span>
+                      <span className="font-medium text-primary-foreground">
+                        {profile.trust[key]}%
+                      </span>
+                    </div>
+                    <Progress
+                      value={profile.trust[key]}
+                      className="h-2 bg-white/15 [&>div]:bg-white"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 rounded-2xl bg-white/10 p-4">
+                <p className="text-xs leading-relaxed text-primary-foreground/70">
+                  Score formula: fulfillment (40%) + update consistency (30%) +
+                  repeat donor confidence (30%) ={" "}
+                  <span className="font-semibold text-primary-foreground">
+                    {profile.trust.score}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ─── Campaign History ─── */}
+        <div className="mt-12 lg:mt-16">
+          {/* Active Campaigns */}
+          {activeCampaigns.length > 0 && (
+            <div className="mb-10">
+              <h2 className="mb-5 text-2xl font-serif font-semibold text-foreground">
+                Active campaigns
+              </h2>
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {activeCampaigns.map((c) => (
+                  <Link
+                    key={c.id}
+                    to={`/campaign/${c.id}`}
+                    className="block"
+                    data-testid={`profile-campaign-${c.id}`}
+                  >
+                    <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                      <div className="aspect-[16/10] overflow-hidden">
+                        <img
+                          src={c.heroImage}
+                          alt={c.title}
+                          className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                        />
+                      </div>
+                      <CardContent className="space-y-3 p-4">
+                        <div className="flex items-center gap-2">
+                          <Badge className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary">
+                            {c.category}
+                          </Badge>
+                          {c.weeklyMomentum > 20 && (
+                            <Badge className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs text-amber-900 hover:bg-amber-50">
+                              <TrendingUp className="mr-0.5 h-3 w-3" />
+                              Trending
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
+                          {c.title}
+                        </p>
+                        <Progress
+                          value={Math.min(
+                            Math.round((c.raised / c.goal) * 100),
+                            100
+                          )}
+                          className="h-2 bg-primary/15"
+                        />
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span className="font-medium text-foreground">
+                            {formatCurrency(c.raised)} of{" "}
+                            {formatCurrency(c.goal)}
+                          </span>
+                          <span>{c.daysLeft} days left</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Past Campaigns */}
+          {pastCampaigns.length > 0 && (
+            <div>
+              <div className="mb-5 flex items-center gap-3">
+                <h2 className="text-2xl font-serif font-semibold text-foreground">
+                  Campaign history
+                </h2>
+                <Badge className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground hover:bg-muted">
+                  {pastCampaigns.length} past
+                </Badge>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {pastCampaigns.map((c) => (
+                  <Card
+                    key={c.id}
+                    className="border-white/70 bg-white/90 transition-shadow duration-300 hover:shadow-md"
+                    data-testid={`profile-past-${c.id}`}
+                  >
+                    <CardContent className="space-y-3 p-5">
+                      <div className="flex items-center justify-between gap-2">
+                        <Badge
+                          className={`rounded-full px-2.5 py-0.5 text-xs ${
+                            c.status === "funded"
+                              ? "bg-secondary text-secondary-foreground hover:bg-secondary"
+                              : "bg-muted text-muted-foreground hover:bg-muted"
+                          }`}
+                        >
+                          {c.status === "funded" ? "Funded" : "Not funded"}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(
+                            (c.endedAt || c.createdAt) + "T00:00:00"
+                          ).getFullYear()}
+                        </span>
+                      </div>
+                      <p className="font-semibold leading-snug text-foreground">
+                        {c.title}
+                      </p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span className="font-medium text-foreground">
+                          {formatCurrency(c.raised)}
+                        </span>
+                        <span>
+                          {c.backerCount.toLocaleString()} backers
+                        </span>
+                      </div>
+                      {c.summary && (
+                        <p className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
+                          {c.summary}
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Lifetime totals */}
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div
+              className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center"
+              data-testid="profile-total-raised"
+            >
+              <p className="text-2xl font-serif text-foreground">
+                {formatCurrency(profile.stats.totalRaised)}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">total raised</p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center">
+              <p className="text-2xl font-serif text-foreground">
+                {profile.stats.campaignsOrganized}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">organized</p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center">
+              <p className="text-2xl font-serif text-foreground">
+                {formatCurrency(profile.stats.totalDonated)}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">donated</p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-white/90 p-5 text-center">
+              <p className="text-2xl font-serif text-foreground">
+                <Users className="mx-auto mb-1 h-5 w-5 text-muted-foreground" />
+                {profile.recommendedBy}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">recommendations</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
