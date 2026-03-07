@@ -74,6 +74,7 @@ app/                          # Our codebase (Vite React project)
   src/
     components/
       ui/                     # shadcn/ui components (ported from design/ reference)
+      SiteHeader.jsx          # Sticky header with logo + nav pills (active state via pathname match)
       DonateModal.jsx         # Preset amount modal ($25/$50/$100/$250/custom) with simulated flow
     data/                     # JSON fixtures + index.js with lookup helpers
       profiles.json           # 4 organizer profiles with trust data
@@ -189,6 +190,12 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - **Verification steps:** Stepped pill indicator showing which tiers are verified. Two profiles have all 3 (track_record), two have only email + identity.
 - **Campaign history:** Active campaigns as image cards with progress bars (same pattern as Community page). Past campaigns as text-only cards with funded/not-funded badge, year, raised amount, backer count, summary.
 - **Lifetime totals:** 4-col stat strip at bottom (total raised, organized, donated, recommendations).
+
+### Navigation
+- **SiteHeader:** Sticky header with blur backdrop, text logo ("FundForge" + Users icon), 3 nav pills (Campaign, Community, Profile). Active state detected via `pathname.startsWith(match)`. Labels hidden on mobile (icon-only).
+- **Default route:** `/` redirects to `/campaign/campaign-1`.
+- **Cross-page links:** Campaign organizer card -> `/profile/:id`. Community leaderboard -> `/profile/:id`. Community trending + active grid -> `/campaign/:id`. Profile campaign history -> `/campaign/:id`.
+- **Sticky offset:** Donate panel uses `lg:top-20` (80px) to clear the 56px header.
 
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.

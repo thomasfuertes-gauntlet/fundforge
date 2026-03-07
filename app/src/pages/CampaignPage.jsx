@@ -279,7 +279,7 @@ export default function CampaignPage() {
 
           {/* ─── Right Column: Sticky Donate Panel ─── */}
           <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-8">
+            <div className="lg:sticky lg:top-20">
               <Card
                 className="border-white/70 bg-white/95 shadow-sm"
                 data-testid="donate-panel"
