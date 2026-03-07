@@ -225,6 +225,17 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **Dev mode:** Structured console output with `%c` styling. In production, swap `emit()` for POST endpoint.
 - **Scroll depth:** Fires once per milestone per campaign per session (deduped via Set)
 
+### Polish Pass (completed)
+- **Images:** `loading="lazy"` on detail/grid images, `fetchPriority="high"` on campaign hero (LCP candidate)
+- **ScrollToTop:** Resets scroll on route change via `useLocation` + `useEffect`
+- **ErrorBoundary:** Class component wrapping routes, renders fallback with "Back to home" button
+- **Responsive:** Verification steps `flex-wrap` on mobile (connectors hidden <sm), stats/network-impact grids go 2-col on small screens
+- **Touch targets:** Update toggle has `py-2` for 44px+ tap area, verification pills have `py-2`
+- **SPA routing:** `public/_redirects` with `/* /index.html 200` for Cloudflare Pages
+- **Meta:** Description + theme-color added, Vite favicon removed
+- **Body:** `overflow-x: hidden` prevents horizontal scroll from any edge-case overflow
+- **Build:** Clean, 144KB gzipped JS, no warnings
+
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.
 - `design_guidelines.json` has `instructions_to_main_agent` - these are for the reference builder, not us.
