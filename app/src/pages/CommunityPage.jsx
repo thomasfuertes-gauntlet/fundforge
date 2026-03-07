@@ -50,9 +50,12 @@ export default function CommunityPage() {
           <h1 className="mt-4 text-4xl font-bold tracking-tight leading-snug sm:text-5xl md:text-6xl">
             Community Hub
           </h1>
-          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Where social proof meets impact. See who's raising, what's trending,
-            and how the community is growing.
+          <p className="mt-3 text-xl font-serif leading-snug text-foreground/80">
+            A leaderboard that rewards momentum without losing warmth.
+          </p>
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+            See who's raising, what's trending, and how the community is
+            growing. Impact measured through trust, not just dollars.
           </p>
         </div>
 
@@ -144,7 +147,7 @@ export default function CommunityPage() {
                   >
                     <div className="rounded-2xl border border-border/60 bg-muted/30 p-4 transition-all duration-200 hover:bg-muted/60 hover:shadow-sm">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-semibold leading-snug text-foreground">
+                        <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
                           {item.title}
                         </p>
                         <Badge
