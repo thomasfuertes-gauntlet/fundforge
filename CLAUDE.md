@@ -164,8 +164,15 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 
 **Images:** 4 images downloaded locally to `app/public/images/` from design reference. 2 avatars (female, male) shared across profiles. Need unique images per profile/campaign in polish pass.
 
+### Stretch Features (from stretch.md behavioral economics analysis)
+- `campaign.stretchGoal: { amount, label }` on campaigns 1-2 - secondary progress bar when goal exceeded
+- `campaign.matchingSponsor: { name, multiplier, remaining }` on campaign-3 - 2x match badge near donate CTA
+- Leaderboard prompt on campaign page - "Help X reach #1" linking to /community (only shows when rank > 1)
+- Activity feed on community page - aggregates `updates[]` from active campaigns, sorted by date, top 6
+- Network Impact hero card on profile page replaces old lifetime totals strip - shows totalRaised + totalDonated combined
+
 ### Environment Notes
-- `npm install` (not `npm ci`) for initial scaffold - no lockfile exists yet
+- Lockfile exists - `npm ci` is now valid for clean installs
 - Data consistency script pattern: write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
 - All commands run from `app/` directory (`cd app` first or use full paths)
 - Deploy target: Cloudflare Pages (static SPA, free tier, edge CDN). Add `public/_redirects` with `/* /index.html 200` for SPA routing.
@@ -192,7 +199,7 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - **Trust panel (right):** Dark gradient card (`from-primary via-primary to-sky`). Shows all 3 trust inputs with progress bars + percentages. Formula explanation box at bottom: `fulfillment (40%) + update consistency (30%) + repeat donor confidence (30%)`.
 - **Verification steps:** Stepped pill indicator showing which tiers are verified. Two profiles have all 3 (track_record), two have only email + identity.
 - **Campaign history:** Active campaigns as image cards with progress bars (same pattern as Community page). Past campaigns as text-only cards with funded/not-funded badge, year, raised amount, backer count, summary.
-- **Lifetime totals:** 4-col stat strip at bottom (total raised, organized, donated, recommendations).
+- **Network Impact:** Dark gradient hero card at bottom showing totalRaised + totalDonated as combined headline, with raised/donated/funded breakdown in frosted sub-cards.
 
 ### Navigation
 - **SiteHeader:** Sticky header with blur backdrop, text logo ("FundForge" + Users icon), 3 nav pills (Campaign, Community, Profile). Active state detected via `pathname.startsWith(match)`. Labels hidden on mobile (icon-only).
@@ -223,3 +230,6 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - `design_guidelines.json` has `instructions_to_main_agent` - these are for the reference builder, not us.
 - Card hover shadow in design_guidelines.json uses green-tinted rgba(15,60,50,0.08) - normalized during this session.
 - Campaign stories use `string[]` (array of paragraphs) not a single string. Render as `<p>` tags.
+- `npx vite build` must run from `app/` directory - running from repo root fails silently with "could not resolve entry module."
+- Dynamic import of a module that's also statically imported elsewhere causes a Vite warning - use static imports.
+- `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.
