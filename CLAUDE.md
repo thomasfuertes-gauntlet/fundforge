@@ -76,6 +76,7 @@ app/                          # Our codebase (Vite React project)
       ui/                     # shadcn/ui components (ported from design/ reference)
       SiteHeader.jsx          # Sticky header with logo + nav pills (active state via pathname match)
       DonateModal.jsx         # Preset amount modal ($25/$50/$100/$250/custom) with simulated flow
+      ErrorBoundary.jsx       # Wraps routes, renders fallback on crash
     data/                     # JSON fixtures + index.js with lookup helpers
       profiles.json           # 4 organizer profiles with trust data
       campaigns.json          # 23 campaigns (4 active + 17 funded + 2 unfunded)
@@ -87,6 +88,7 @@ app/                          # Our codebase (Vite React project)
       analytics.js            # Event bus, session UUID, Web Vitals, error tracking
       useAnalytics.js         # React hooks: usePageView, useScrollDepth
     pages/                    # Route-level components
+      HomePage.jsx            # / - minimal intro landing page
       CampaignPage.jsx        # /campaign/:id
       CommunityPage.jsx       # /community
       ProfilePage.jsx         # /profile/:id
@@ -175,7 +177,8 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - Lockfile exists - `npm ci` is now valid for clean installs
 - Data consistency script pattern: write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
 - All commands run from `app/` directory (`cd app` first or use full paths)
-- Deploy target: Cloudflare Pages (static SPA, free tier, edge CDN). Add `public/_redirects` with `/* /index.html 200` for SPA routing.
+- Deploy target: Cloudflare Workers static assets. SPA fallback in `wrangler.jsonc`, not `_redirects` (causes infinite loop with Workers).
+- No root `package.json` - all npm commands run from `app/`. `wrangler.jsonc` lives in `app/` alongside `node_modules`.
 
 ### Campaign Page Structure
 - **Layout:** 7-col story + 5-col sticky donate panel (stacked on mobile)
@@ -203,7 +206,7 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 
 ### Navigation
 - **SiteHeader:** Sticky header with blur backdrop, text logo ("FundForge" + Users icon), 3 nav pills (Campaign, Community, Profile). Active state detected via `pathname.startsWith(match)`. Labels hidden on mobile (icon-only).
-- **Default route:** `/` redirects to `/campaign/campaign-1`.
+- **Default route:** `/` renders HomePage (minimal intro with nav buttons). Unknown routes redirect to `/`.
 - **Cross-page links:** Campaign organizer card -> `/profile/:id`. Community leaderboard -> `/profile/:id`. Community trending + active grid -> `/campaign/:id`. Profile campaign history -> `/campaign/:id`.
 - **Sticky offset:** Donate panel uses `lg:top-20` (80px) to clear the 56px header.
 
@@ -229,8 +232,7 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **URL:** https://fundforge.tomfuertes.workers.dev
 - **Platform:** Cloudflare Workers (static assets, not Pages)
 - **Config:** `app/wrangler.jsonc` - SPA fallback via `not_found_handling: "single-page-application"`
-- **Deploy command:** `cd app && npx wrangler deploy`
-- **Build first:** `cd app && npx vite build` (dist/ must exist)
+- **Deploy command:** `cd app && npm run deploy` (builds + deploys in one step)
 
 ### Polish Pass (completed)
 - **Images:** `loading="lazy"` on detail/grid images, `fetchPriority="high"` on campaign hero (LCP candidate)
@@ -238,7 +240,7 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **ErrorBoundary:** Class component wrapping routes, renders fallback with "Back to home" button
 - **Responsive:** Verification steps `flex-wrap` on mobile (connectors hidden <sm), stats/network-impact grids go 2-col on small screens
 - **Touch targets:** Update toggle has `py-2` for 44px+ tap area, verification pills have `py-2`
-- **SPA routing:** `public/_redirects` with `/* /index.html 200` for Cloudflare Pages
+- **SPA routing:** Handled by `wrangler.jsonc` `not_found_handling` (not `_redirects`)
 - **Meta:** Description + theme-color added, Vite favicon removed
 - **Body:** `overflow-x: hidden` prevents horizontal scroll from any edge-case overflow
 - **Build:** Clean, 144KB gzipped JS, no warnings
@@ -251,3 +253,5 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - `npx vite build` must run from `app/` directory - running from repo root fails silently with "could not resolve entry module."
 - Dynamic import of a module that's also statically imported elsewhere causes a Vite warning - use static imports.
 - `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.
+- Workers static assets: `_redirects` file causes "infinite loop" validation error. Use `not_found_handling: "single-page-application"` in wrangler.jsonc instead.
+- `git rm` stages deletions - don't re-add the deleted path in `git add` or it errors with "pathspec did not match".
