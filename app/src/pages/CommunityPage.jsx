@@ -503,16 +503,17 @@ export default function CommunityPage() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {activeCampaigns
-              .flatMap((c) =>
-                (c.updates || []).map((u) => ({
+              .flatMap((c) => {
+                const org = getProfile(c.organizerId);
+                return (c.updates || []).map((u) => ({
                   ...u,
                   campaignId: c.id,
                   campaignTitle: c.title,
                   organizerId: c.organizerId,
-                  organizerName: getProfile(c.organizerId)?.name,
-                  organizerAvatar: getProfile(c.organizerId)?.avatar,
-                }))
-              )
+                  organizerName: org?.name,
+                  organizerAvatar: org?.avatar,
+                }));
+              })
               .sort((a, b) => new Date(b.date) - new Date(a.date))
               .slice(0, 6)
               .map((update) => (
