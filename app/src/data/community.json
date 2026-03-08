@@ -1,14 +1,14 @@
 {
   "_consistency_notes": {
-    "totalRaised": "Sum of all 23 campaigns: active (86400+162800+72450+38200=359850) + past Maya (84200+23400+15600+31200+18600+42800=215800) + past Jonas (45000+28500+52300+38400=164200) + past Elena (42000+35600+18200+8500+7850=112150) + past Samir (52000+28600+22000+16000=118600) = 970600",
-    "totalDonors": "Sum of all backerCounts is 12855. Estimated unique donors at ~85% (accounting for repeat donors across campaigns) = 10927",
-    "averageGift": "970600 / 12855 = 75.50, rounded to 76",
-    "leaderboardRanking": "Composite: totalRaised * (trustScore / 100). Jonas: 327000*0.89=291030, Maya: 302200*0.93=281046, Elena: 184600*0.84=155064, Samir: 156800*0.77=120736"
+    "totalRaised": "Sum of all 26 campaigns: active (86400+162800+72450+38200+52000+48000+18000=477850) + past Maya (84200+23400+15600+31200+18600+42800=215800) + past Jonas (45000+28500+52300+38400=164200) + past Elena (42000+35600+18200+8500+7850=112150) + past Samir (52000+28600+22000+16000=118600) = 1088600",
+    "totalDonors": "Sum of all backerCounts is 14385. Estimated unique donors at ~85% (accounting for repeat donors across campaigns) = 12227",
+    "averageGift": "1088600 / 14385 = 75.67, rounded to 76",
+    "leaderboardRanking": "Composite: totalRaised * (trustScore / 100). Jonas: 375000*0.89=333750, Maya: 354200*0.93=329406, Elena: 184600*0.84=155064, Samir: 174800*0.77=134596"
   },
   "aggregates": {
-    "totalRaised": 970600,
-    "totalDonors": 10927,
-    "activeCampaigns": 4,
+    "totalRaised": 1088600,
+    "totalDonors": 12227,
+    "activeCampaigns": 7,
     "completedCampaigns": 19,
     "fundedCampaigns": 17,
     "averageGift": 76,
@@ -20,9 +20,9 @@
       "rank": 1,
       "name": "Jonas Reid",
       "avatar": "/images/avatar-jonas.jpg",
-      "totalRaised": 327000,
+      "totalRaised": 375000,
       "trustScore": 89,
-      "weeklyTrend": 18,
+      "weeklyTrend": 25,
       "activeCampaignId": "campaign-2",
       "campaignsFunded": 4
     },
@@ -31,7 +31,7 @@
       "rank": 2,
       "name": "Maya Chen",
       "avatar": "/images/avatar-maya.jpg",
-      "totalRaised": 302200,
+      "totalRaised": 354200,
       "trustScore": 93,
       "weeklyTrend": 22,
       "activeCampaignId": "campaign-1",
@@ -53,7 +53,7 @@
       "rank": 4,
       "name": "Samir Patel",
       "avatar": "/images/avatar-samir.jpg",
-      "totalRaised": 156800,
+      "totalRaised": 174800,
       "trustScore": 77,
       "weeklyTrend": 12,
       "activeCampaignId": "campaign-4",
@@ -69,6 +69,15 @@
       "weeklyMomentum": 28,
       "weeklyRaised": 15680,
       "weeklyDonors": 218
+    },
+    {
+      "campaignId": "campaign-25",
+      "title": "Eastside Maker Lab: Open-Access Fabrication for All",
+      "organizerName": "Jonas Reid",
+      "tag": "Trending",
+      "weeklyMomentum": 25,
+      "weeklyRaised": 9600,
+      "weeklyDonors": 112
     },
     {
       "campaignId": "campaign-1",
