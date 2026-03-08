@@ -214,7 +214,7 @@ export default function CampaignPage() {
                   {campaign.story.map((paragraph, i) => (
                     <p
                       key={i}
-                      className="text-base leading-relaxed text-muted-foreground sm:text-[1.0625rem] sm:leading-8"
+                      className="text-base leading-relaxed text-muted-foreground sm:text-lg sm:leading-8"
                     >
                       {paragraph}
                     </p>
@@ -274,7 +274,7 @@ export default function CampaignPage() {
                       <CardContent className="flex gap-4 p-5">
                         <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary/40" />
                         <div>
-                          <p className="text-[0.9375rem] leading-relaxed text-muted-foreground italic">
+                          <p className="text-sm leading-relaxed text-muted-foreground italic">
                             "{t.text}"
                           </p>
                           <p className="mt-2 text-sm font-medium text-foreground">
