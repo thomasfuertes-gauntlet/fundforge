@@ -1,15 +1,16 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import CampaignPage from "@/pages/CampaignPage";
-import CommunityPage from "@/pages/CommunityPage";
-import ProfilePage from "@/pages/ProfilePage";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import HomePage from "@/pages/HomePage";
 import NotFound from "@/components/NotFound";
+
+const CampaignPage = lazy(() => import("@/pages/CampaignPage"));
+const CommunityPage = lazy(() => import("@/pages/CommunityPage"));
+const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
+const HomePage = lazy(() => import("@/pages/HomePage"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,6 +27,7 @@ function App() {
       <SiteHeader />
       <ErrorBoundary>
         <main id="main-content">
+        <Suspense fallback={<div className="min-h-screen" />}>
         <Routes>
           <Route path="/campaign/:id" element={<CampaignPage />} />
           <Route path="/community" element={<CommunityPage />} />
@@ -33,6 +35,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
         </main>
       </ErrorBoundary>
       <SiteFooter />
