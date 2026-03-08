@@ -16,6 +16,7 @@ import {
   Target,
   MessageSquare,
   CalendarDays,
+  Crown,
 } from "lucide-react";
 
 const { aggregates, leaderboard, trending } = community;
@@ -222,59 +223,103 @@ export default function CommunityPage() {
                 </Badge>
               </div>
 
-              <div className="space-y-3">
-                {leaderboard.map((entry) => (
-                  <Link
-                    key={entry.profileId}
-                    to={`/profile/${entry.profileId}`}
-                    className="block"
-                    data-testid={`leaderboard-${entry.profileId}`}
-                  >
-                    <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-muted/30 px-4 py-3 transition-all duration-200 hover:bg-muted/60 hover:shadow-sm sm:gap-4">
-                      {/* Rank */}
-                      <p className="w-7 text-center text-sm font-bold text-muted-foreground">
-                        {entry.rank}
-                      </p>
+              {/* Podium - top 3 */}
+              <div
+                className="flex items-end justify-center gap-3"
+                data-testid="leaderboard-podium"
+              >
+                {[leaderboard[1], leaderboard[0], leaderboard[2]].map(
+                  (entry, i) => {
+                    const isFirst = i === 1;
+                    const colors = [
+                      "border-slate-300 bg-slate-50",
+                      "border-amber-300 bg-amber-50",
+                      "border-orange-300 bg-orange-50",
+                    ];
+                    return (
+                      <Link
+                        key={entry.profileId}
+                        to={`/profile/${entry.profileId}`}
+                        className="block flex-1"
+                        data-testid={`podium-${entry.rank}`}
+                      >
+                        <div
+                          className={`flex flex-col items-center rounded-2xl border-2 p-3 transition-all duration-200 hover:shadow-md ${colors[i]} ${isFirst ? "pb-5" : ""}`}
+                        >
+                          {isFirst && (
+                            <Crown className="mb-1 h-5 w-5 text-amber-500" strokeWidth={1.5} />
+                          )}
+                          <Avatar
+                            className={`border-2 border-white shadow-sm ${isFirst ? "h-14 w-14" : "h-11 w-11"}`}
+                          >
+                            <AvatarImage src={entry.avatar} alt={entry.name} />
+                            <AvatarFallback>{initials(entry.name)}</AvatarFallback>
+                          </Avatar>
+                          <p className="mt-2 text-center text-xs font-semibold leading-tight text-foreground">
+                            {entry.name.split(" ")[0]}
+                          </p>
+                          <p className="mt-1 text-sm font-serif font-semibold text-primary">
+                            {formatCurrency(entry.totalRaised)}
+                          </p>
+                          <p className="text-[0.625rem] text-muted-foreground">
+                            #{entry.rank}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  }
+                )}
+              </div>
 
-                      {/* Avatar */}
-                      <Avatar className="h-10 w-10 border border-white shadow-sm sm:h-11 sm:w-11">
-                        <AvatarImage src={entry.avatar} alt={entry.name} />
-                        <AvatarFallback>{initials(entry.name)}</AvatarFallback>
-                      </Avatar>
-
-                      {/* Name + trend */}
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-semibold text-foreground">
-                          {entry.name}
+              {/* Remaining ranks */}
+              {leaderboard.length > 3 && (
+                <div className="space-y-3">
+                  {leaderboard.slice(3).map((entry) => (
+                    <Link
+                      key={entry.profileId}
+                      to={`/profile/${entry.profileId}`}
+                      className="block"
+                      data-testid={`leaderboard-${entry.profileId}`}
+                    >
+                      <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-muted/30 px-4 py-3 transition-all duration-200 hover:bg-muted/60 hover:shadow-sm">
+                        <p className="w-7 text-center text-sm font-bold text-muted-foreground">
+                          {entry.rank}
                         </p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <span className="inline-flex items-center gap-0.5">
-                            <Heart className="h-3 w-3" />
-                            {entry.campaignsFunded} funded
-                          </span>
-                          <span className="inline-flex items-center gap-0.5">
-                            <Target className="h-3 w-3" />
-                            {entry.trustScore} trust
-                          </span>
+                        <Avatar className="h-10 w-10 border border-white shadow-sm">
+                          <AvatarImage src={entry.avatar} alt={entry.name} />
+                          <AvatarFallback>{initials(entry.name)}</AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-semibold text-foreground">
+                            {entry.name}
+                          </p>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <span className="inline-flex items-center gap-0.5">
+                              <Heart className="h-3 w-3" />
+                              {entry.campaignsFunded} funded
+                            </span>
+                            <span className="inline-flex items-center gap-0.5">
+                              <Target className="h-3 w-3" />
+                              {entry.trustScore} trust
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-base font-serif font-semibold text-primary">
+                            {formatCurrency(entry.totalRaised)}
+                          </p>
+                          {entry.weeklyTrend > 0 && (
+                            <p className="flex items-center justify-end gap-0.5 text-xs text-primary/70">
+                              <ArrowUpRight className="h-3 w-3" />
+                              +{entry.weeklyTrend}%
+                            </p>
+                          )}
                         </div>
                       </div>
-
-                      {/* Amount + weekly trend */}
-                      <div className="text-right">
-                        <p className="text-base font-serif font-semibold text-primary sm:text-lg">
-                          {formatCurrency(entry.totalRaised)}
-                        </p>
-                        {entry.weeklyTrend > 0 && (
-                          <p className="flex items-center justify-end gap-0.5 text-xs text-primary/70">
-                            <ArrowUpRight className="h-3 w-3" />
-                            +{entry.weeklyTrend}%
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

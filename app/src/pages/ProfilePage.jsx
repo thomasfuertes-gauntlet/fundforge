@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
-import { getProfile, getCampaignsByOrganizer } from "@/data";
+import { getProfile, getCampaignsByOrganizer, profiles } from "@/data";
 import NotFound from "@/components/NotFound";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -60,6 +60,7 @@ export default function ProfilePage() {
   if (!profile) return <NotFound type="profile" />;
 
   const campaigns = getCampaignsByOrganizer(profile.id);
+  const otherProfiles = profiles.filter((p) => p.id !== profile.id);
   const activeCampaigns = campaigns.filter((c) => c.status === "active");
   const pastCampaigns = campaigns.filter((c) => c.status !== "active");
 
@@ -425,6 +426,50 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
+
+          {/* Discover more organizers */}
+          {otherProfiles.length > 0 && (
+            <div className="mt-10" data-testid="discover-organizers">
+              <h2 className="mb-5 text-2xl font-serif font-semibold text-foreground">
+                Discover more organizers
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {otherProfiles.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/profile/${p.id}`}
+                    className="block"
+                    data-testid={`discover-${p.id}`}
+                  >
+                    <Card className="border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                      <CardContent className="flex items-center gap-4 p-4">
+                        <Avatar className="h-12 w-12 border-2 border-secondary shadow-sm">
+                          <AvatarImage src={p.avatar} alt={p.name} />
+                          <AvatarFallback>{initials(p.name)}</AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-semibold text-foreground">
+                            {p.name}
+                          </p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {p.title}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-serif text-primary">
+                            {p.trust.score}
+                          </p>
+                          <p className="text-[0.625rem] text-muted-foreground">
+                            trust
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
