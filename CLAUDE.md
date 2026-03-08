@@ -166,6 +166,17 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 
 **Images:** 8 images in `app/public/images/`. 4 unique per-profile avatars (avatar-maya.jpg, avatar-jonas.jpg, avatar-elena.jpg, avatar-samir.jpg) from Unsplash + 2 campaign images from design reference. Old shared avatars (avatar-female.jpg, avatar-male.jpg) are unused.
 
+### SWOT Analysis (swot.md)
+- External UX analysis, three reliability tiers: GoFundMe analysis lines 1-85 (medium), blind speculation lines 206-251 (low - analyst couldn't render SPA), screenshot analysis lines 256-321 (mixed - strengths accurate, recs mostly wrong)
+- 8 of 12 "missing feature" recs already exist in the codebase. Adversarial collaboration debate validated this across 3 independent lenses.
+- Three genuine gaps: (1) sticky mobile donate CTA, (2) post-donation retention loop, (3) campaign grid filtering as scaling story
+- Interview narrative: flip "community page has cognitive load" - FundForge solves GoFundMe's problem by design with bento grid IA
+
+### Behavioral Economics Task References
+- `stretch.md` has game theory / behavioral economics analysis of all three page types (goal-gradient, anchoring, bandwagon, competitive altruism, signaling theory)
+- Tasks #6-#17 reference specific concepts from stretch.md - each UI enhancement doubles as an interview talking point
+- Key patterns: donation anchoring (averageGift field), goal-gradient urgency (>75% funded), share impact quantification, staggered animation for bandwagon effect
+
 ### Stretch Features (from stretch.md behavioral economics analysis)
 - `campaign.stretchGoal: { amount, label }` on campaigns 1-2 - secondary progress bar when goal exceeded
 - `campaign.matchingSponsor: { name, multiplier, remaining }` on campaign-3 - 2x match badge near donate CTA
@@ -187,6 +198,7 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - **DonateModal:** Standalone component at `components/DonateModal.jsx`. Preset grid ($25/$50/$100/$250) + custom input. 800ms simulated delay, success toast via sonner. Reusable for other pages.
 - **Relative time:** `formatRelativeTime()` uses a fixed "now" of `2026-03-07T17:00:00Z` matching fixture dates, not `Date.now()`. This keeps the UI stable for demos.
 - **Organizer card links** to `/profile/:id` for cross-page navigation.
+- **Mobile gap:** Donate panel stacks BELOW entire story on mobile (6-8 screen heights of scrolling). Task #4 adds `fixed bottom-0` sticky CTA for `< lg` breakpoint.
 
 ### Community Page Structure
 - **Layout:** Bento grid `lg:grid-cols-12` - metrics (4-col) + trending (3-col) + leaderboard (5-col). Stacks vertically on mobile.
@@ -270,6 +282,7 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - `lucide-react` deprecated brand icons (`Github`, `Twitter`, `Facebook`). Use `LucideGithub`/generic alternatives (`Send`, `Share2`). TS still shows deprecation warnings on `Lucide*` variants.
 - `useCountUp` IntersectionObserver threshold must be <= 0.1 for stats below the fold on mobile (375px). Higher thresholds cause counters to permanently show $0.
 - `replace_all` in Edit tool replaces ALL occurrences including display text and string literals. Use targeted edits for renames where the name also appears as user-visible text.
+- Profile "Email" pill is a **verification status indicator** (part of `VERIFICATION_STEPS` at ProfilePage.jsx:69), NOT a contact button. No email address is displayed anywhere. External reviewers consistently misread this.
 
 ### New Components (polish session)
 - `NotFound.jsx` - Shared 404 with contextual messages (campaign/profile/page types), links to community + home
