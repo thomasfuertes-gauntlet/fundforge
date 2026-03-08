@@ -16,6 +16,8 @@ import {
   Heart,
   TrendingUp,
   ThumbsUp,
+  MessageSquare,
+  Flame,
 } from "lucide-react";
 
 function formatCurrency(value) {
@@ -426,6 +428,85 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
+
+          {/* Recent Activity */}
+          {(() => {
+            const activity = campaigns
+              .flatMap((c) => [
+                // Campaign updates
+                ...(c.updates || []).map((u) => ({
+                  type: "update",
+                  date: u.date,
+                  title: u.title,
+                  subtitle: c.title,
+                  campaignId: c.id,
+                })),
+                // Campaign launched
+                {
+                  type: "launch",
+                  date: c.createdAt,
+                  title: `Started "${c.title}"`,
+                  subtitle: `Goal: ${formatCurrency(c.goal)}`,
+                  campaignId: c.id,
+                },
+              ])
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .slice(0, 5);
+
+            if (activity.length === 0) return null;
+
+            return (
+              <div className="mt-10" data-testid="profile-activity-feed">
+                <div className="mb-5 flex items-center gap-3">
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                  <h2 className="text-2xl font-serif font-semibold text-foreground">
+                    Recent activity
+                  </h2>
+                </div>
+                <div className="space-y-3">
+                  {activity.map((item, i) => (
+                    <Link
+                      key={i}
+                      to={`/campaign/${item.campaignId}`}
+                      className="block"
+                    >
+                      <Card className="border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
+                        <CardContent className="flex items-start gap-3 p-4">
+                          <div
+                            className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                              item.type === "launch"
+                                ? "bg-amber-50 text-amber-600"
+                                : "bg-secondary text-primary"
+                            }`}
+                          >
+                            {item.type === "launch" ? (
+                              <Flame className="h-4 w-4" />
+                            ) : (
+                              <CalendarDays className="h-4 w-4" />
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-semibold text-foreground">
+                              {item.title}
+                            </p>
+                            <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                              {item.subtitle}
+                            </p>
+                          </div>
+                          <p className="shrink-0 text-xs text-muted-foreground/60">
+                            {new Date(item.date + "T00:00:00").toLocaleDateString(
+                              "en-US",
+                              { month: "short", day: "numeric" }
+                            )}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Discover more organizers */}
           {otherProfiles.length > 0 && (

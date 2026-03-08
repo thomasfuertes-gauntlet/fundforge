@@ -68,22 +68,52 @@ export default function CommunityPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-16">
-        {/* Header */}
-        <div className="mb-12 max-w-2xl lg:mb-16">
-          <Badge variant="secondary" data-testid="community-badge">
-            <Flame className="mr-1 h-3.5 w-3.5" />
-            Live
-          </Badge>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight leading-snug sm:text-5xl md:text-6xl">
-            Community Hub
-          </h1>
-          <p className="mt-3 text-xl font-serif leading-snug text-foreground/80">
-            A leaderboard that rewards momentum without losing warmth.
-          </p>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-            See who's raising, what's trending, and how the community is
-            growing. Impact measured through trust, not just dollars.
-          </p>
+        {/* Hero Banner */}
+        <div
+          className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground sm:p-8 lg:mb-16"
+          data-testid="community-hero-banner"
+        >
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-xl">
+              <Badge className="rounded-full border border-white/20 bg-white/15 text-primary-foreground hover:bg-white/20">
+                <Flame className="mr-1 h-3.5 w-3.5" />
+                Live
+              </Badge>
+              <h1 className="mt-4 text-4xl font-bold tracking-tight leading-snug sm:text-5xl">
+                Community Hub
+              </h1>
+              <p className="mt-3 text-lg font-serif leading-snug text-primary-foreground/85">
+                A leaderboard that rewards momentum without losing warmth.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-primary-foreground/60">
+                See who's raising, what's trending, and how the community is
+                growing. Impact measured through trust, not just dollars.
+              </p>
+            </div>
+
+            {/* Avatar stack + stat */}
+            <div className="flex items-center gap-5">
+              <div className="flex -space-x-3">
+                {leaderboard.slice(0, 4).map((entry) => (
+                  <Avatar
+                    key={entry.profileId}
+                    className="h-11 w-11 border-2 border-primary shadow-md ring-2 ring-white/20"
+                  >
+                    <AvatarImage src={entry.avatar} alt={entry.name} />
+                    <AvatarFallback>{initials(entry.name)}</AvatarFallback>
+                  </Avatar>
+                ))}
+              </div>
+              <div>
+                <p className="text-2xl font-serif">
+                  {aggregates.activeCampaigns}
+                </p>
+                <p className="text-xs text-primary-foreground/60">
+                  active campaigns
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Bento Grid */}

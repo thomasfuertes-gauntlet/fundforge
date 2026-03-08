@@ -205,6 +205,28 @@ export default function CampaignPage() {
                     ))}
                   </div>
                 )}
+                {/* Story Reactions */}
+                <div
+                  className="flex flex-wrap items-center gap-3 border-t border-border/40 pt-5"
+                  data-testid="campaign-reactions"
+                >
+                  {[
+                    { icon: Heart, label: "hearts", factor: 0.38 },
+                    { icon: HeartHandshake, label: "prayers", factor: 0.22 },
+                    { icon: MessageCircle, label: "comments", factor: 0.06 },
+                  ].map(({ icon: Icon, label, factor }) => (
+                    <div
+                      key={label}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/30 px-3 py-1.5 text-sm text-muted-foreground"
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={1.5} />
+                      <span className="font-medium text-foreground">
+                        {Math.round(campaign.backerCount * factor).toLocaleString()}
+                      </span>
+                      {label}
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
