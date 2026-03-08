@@ -5,7 +5,8 @@ import NotFound from "@/components/NotFound";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
+import { AnimatedProgress } from "@/components/ui/progress";
+import { RevealOnScroll } from "@/components/RevealOnScroll";
 import {
   ShieldCheck,
   Mail,
@@ -250,6 +251,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Right: Trust Composition Panel */}
+            <RevealOnScroll>
             <div
               className="rounded-3xl bg-gradient-to-br from-primary via-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground"
               data-testid="profile-trust-panel"
@@ -268,7 +270,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="mt-6 space-y-5">
-                {TRUST_METRICS.map(({ key, label, icon: Icon }) => (
+                {TRUST_METRICS.map(({ key, label, icon: Icon }, i) => (
                   <div key={key} data-testid={`trust-metric-${key}`}>
                     <div className="mb-2 flex items-center justify-between text-sm text-primary-foreground/75">
                       <span className="inline-flex items-center gap-1.5">
@@ -279,8 +281,9 @@ export default function ProfilePage() {
                         {profile.trust[key]}%
                       </span>
                     </div>
-                    <Progress
+                    <AnimatedProgress
                       value={profile.trust[key]}
+                      delay={i * 200}
                       className="h-2 bg-white/15 [&>div]:bg-white"
                     />
                   </div>
@@ -297,10 +300,12 @@ export default function ProfilePage() {
                 </p>
               </div>
             </div>
+            </RevealOnScroll>
           </CardContent>
         </Card>
 
         {/* ─── Campaign History ─── */}
+        <RevealOnScroll>
         <div className="mt-16 lg:mt-24">
           {/* Active Campaigns */}
           {activeCampaigns.length > 0 && (
@@ -340,7 +345,7 @@ export default function ProfilePage() {
                         <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
                           {c.title}
                         </p>
-                        <Progress
+                        <AnimatedProgress
                           value={Math.min(
                             Math.round((c.raised / c.goal) * 100),
                             100
@@ -421,6 +426,7 @@ export default function ProfilePage() {
           )}
 
           {/* Network Impact */}
+          <RevealOnScroll delay={150}>
           <div
             className="mt-10 rounded-3xl bg-gradient-to-r from-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground sm:p-8"
             data-testid="profile-network-impact"
@@ -467,6 +473,7 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
+          </RevealOnScroll>
 
           {/* Recent Activity */}
           {(() => {
@@ -591,6 +598,7 @@ export default function ProfilePage() {
             </div>
           )}
         </div>
+        </RevealOnScroll>
       </div>
     </div>
   );
