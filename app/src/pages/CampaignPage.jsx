@@ -8,10 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import DonateModal from "@/components/DonateModal";
-import { toast } from "@/components/ui/sonner";
+import ShareModal from "@/components/ShareModal";
 import NotFound from "@/components/NotFound";
 import { usePageView, useScrollDepth } from "@/lib/useAnalytics";
-import { trackDonateClick, trackShareClick } from "@/lib/analytics";
+import { trackDonateClick } from "@/lib/analytics";
 import {
   Heart,
   Share2,
@@ -60,6 +60,7 @@ function initials(name) {
 export default function CampaignPage() {
   const { id } = useParams();
   const [donateOpen, setDonateOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [showAllUpdates, setShowAllUpdates] = useState(false);
 
   usePageView("campaign", { id });
@@ -430,11 +431,7 @@ export default function CampaignPage() {
                     variant="outline"
                     size="lg"
                     className="w-full"
-                    onClick={() => {
-                      trackShareClick(campaign.id);
-                      navigator.clipboard?.writeText(window.location.href);
-                      toast.success("Link copied to clipboard!");
-                    }}
+                    onClick={() => setShareOpen(true)}
                     data-testid="share-button"
                   >
                     <Share2 className="h-5 w-5" />
@@ -488,6 +485,12 @@ export default function CampaignPage() {
       <DonateModal
         open={donateOpen}
         onOpenChange={setDonateOpen}
+        campaignId={campaign.id}
+        campaignTitle={campaign.title}
+      />
+      <ShareModal
+        open={shareOpen}
+        onOpenChange={setShareOpen}
         campaignId={campaign.id}
         campaignTitle={campaign.title}
       />
