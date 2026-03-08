@@ -246,37 +246,6 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **Config:** `app/wrangler.jsonc` - SPA fallback via `not_found_handling: "single-page-application"`
 - **Deploy command:** `cd app && npm run deploy` (builds + deploys in one step)
 
-### Polish Pass (completed)
-- **Images:** `loading="lazy"` on detail/grid images, `fetchPriority="high"` on campaign hero (LCP candidate)
-- **ScrollToTop:** Resets scroll on route change via `useLocation` + `useEffect`
-- **ErrorBoundary:** Class component wrapping routes, renders fallback with "Back to home" button
-- **Responsive:** Verification steps `flex-wrap` on mobile (connectors hidden <sm), stats/network-impact grids go 2-col on small screens
-- **Touch targets:** Update toggle has `py-2` for 44px+ tap area, verification pills have `py-2`
-- **SPA routing:** Handled by `wrangler.jsonc` `not_found_handling` (not `_redirects`)
-- **Meta:** Description + theme-color added, Vite favicon removed
-- **Body:** `overflow-x: hidden` prevents horizontal scroll from any edge-case overflow
-- **Build:** 156KB gzipped JS (512KB raw, Vite warns >500KB - route splitting is backlogged)
-
-### Sprint Session (17 tasks completed)
-- **CEO mode:** 4 parallel agents (campaign/modal/community/motion) with worktree isolation. File-ownership grouping prevents merge conflicts. 17 tasks in one pass.
-- **Worktree merge artifact:** Agent commits may capture snapshots but leave working tree diverged. Always `git diff` after agents finish to catch uncommitted code.
-- **Community.json is a merge conflict magnet:** Multiple agents + lead touching aggregates will conflict. Recalculate from source of truth (campaigns.json) during merge resolution.
-- **Campaign IDs 5-23 taken by past campaigns.** New active campaigns start at campaign-24+.
-- **7 active campaigns now** (was 4): campaign-1 (Maya, Urban Agriculture), campaign-2 (Jonas, Renewable Energy), campaign-3 (Elena, Environmental), campaign-4 (Samir, Education), campaign-24 (Maya, Community), campaign-25 (Jonas, Technology), campaign-26 (Samir, Arts & Culture).
-- **New components from sprint:** `RevealOnScroll.jsx` (fade-up on scroll), `AnimatedProgress` (in progress.jsx, value animates from 0 on IntersectionObserver)
-- **New CSS keyframes in index.css:** `scale-in` (celebration checkmark), `fade-slide-in` (donation feed stagger), `progress-glow` (goal-gradient pulse)
-- **DonateModal expanded:** Accepts `averageGift`, `backerCount`, `onShare` props. Post-donation success state with share CTA. Tracks `post_donate_action` event.
-- **ShareModal expanded:** Shows "$50 per share" impact metric below URL preview.
-- **CommunityPage extracted components:** `LeaderboardCard` (with Top/Trending tab toggle), `CampaignGrid` (with filter + sort pills)
-
-### Audit Findings (5 tasks pending #19-#23)
-- DonateModal custom input missing `aria-label` (H1)
-- Leaderboard tabs + filter pills missing ARIA roles (H2)
-- `formatCurrency`/`initials` duplicated in 3+ files (M1)
-- Gradient HSL `hsl(195,69%,27%)` hard-coded in 4 files instead of CSS var (M2)
-- Arbitrary font sizes `text-[1.0625rem]`, `text-[0.9375rem]`, `text-[0.625rem]` outside type scale (M5)
-- Story reactions look interactive but aren't (M4)
-
 ### Data Field Gotcha
 - Trust data is nested: `profile.trust.score`, `profile.trust.fulfillmentRate`, etc. NOT `profile.trustScore`.
 - Community leaderboard has a flat `trustScore` field (duplicated for display). Don't confuse the two.
@@ -303,17 +272,15 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - `useCountUp` IntersectionObserver threshold must be <= 0.1 for stats below the fold on mobile (375px). Higher thresholds cause counters to permanently show $0.
 - `replace_all` in Edit tool replaces ALL occurrences including display text and string literals. Use targeted edits for renames where the name also appears as user-visible text.
 - Profile "Email" pill is a **verification status indicator** (part of `VERIFICATION_STEPS` at ProfilePage.jsx:69), NOT a contact button. No email address is displayed anywhere. External reviewers consistently misread this.
-
-### New Components (polish session)
-- `NotFound.jsx` - Shared 404 with contextual messages (campaign/profile/page types), links to community + home
-- `SiteFooter.jsx` - Brand, GitHub link, live site link, tech stack line. In App.jsx above Toaster.
-- `ShareModal.jsx` - Dialog with 4 share options. Web Share API on mobile, clipboard fallback. Tracks `share_click`.
-- `useCountUp.js` - IntersectionObserver + rAF count-up hook. Returns `[ref, formattedDisplay]`. Ease-out cubic, fires once.
+- Campaign IDs 5-23 are taken by past campaigns. New active campaigns start at campaign-24+.
+- `community.json` aggregates are a merge conflict magnet when multiple agents edit campaigns. Recalculate from source of truth (campaigns.json) during merge resolution.
+- `DonateModal` accepts `averageGift`, `backerCount`, `onShare` props. Post-donation success state transitions within the same Dialog.
+- `AnimatedProgress` (exported from `progress.jsx`) supports `delay` prop for stagger. `RevealOnScroll.jsx` wraps sections with fade-up on IntersectionObserver.
 
 ### Design Spec Compliance
 - **Aligned:** CSS variables, fonts, Button variants (rounded-full, accent lift), Card shadows (green-tinted rgba), Progress h-3
 - **Spacing standard:** `px-6 md:px-12 lg:px-16` container padding, `py-20` minimum section padding, `mt-16 lg:mt-24` inter-section gaps
-- **Known deltas:** No gradient orb background, no glass-panel/editorial-card CSS utilities, primary/outline buttons missing hover lift, some cards override built-in shadow. Section-reveal scroll animations now implemented via RevealOnScroll.
+- **Known deltas:** No gradient orb background, no glass-panel/editorial-card CSS utilities, primary/outline buttons missing hover lift, some cards override built-in shadow
 - **Intentional deviations:** `tracking-widest` over spec's `tracking-wide` for eyebrows, `rounded-2xl` on detail images over spec's `rounded-sm`
 
 ## Design Context
