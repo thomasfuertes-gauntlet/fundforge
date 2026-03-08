@@ -236,6 +236,168 @@
     ]
   },
   {
+    "id": "campaign-24",
+    "organizerId": "profile-1",
+    "title": "Rebuild the Albina Community Center",
+    "category": "Community",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 85000,
+    "raised": 52000,
+    "backerCount": 683,
+    "averageGift": 76,
+    "createdAt": "2026-01-20",
+    "endsAt": "2026-03-22",
+    "daysLeft": 14,
+    "weeklyMomentum": 15,
+    "story": [
+      "The Albina Community Center on NE Martin Luther King Jr. Boulevard closed its doors in November 2025 after a pipe burst in the ceiling above the main hall and flooded three rooms. The building is 62 years old. The insurance covered water extraction and mold remediation, but the adjuster's report flagged $210,000 in deferred maintenance that the policy does not cover. The Albina Neighborhood Association has $128,000 in reserves. That leaves an $82,000 gap, and without it, the center stays closed.",
+      "This is the building where 14 community organizations meet every week. The after-school tutoring program for 85 kids from King Elementary. The senior lunch program that serves 40 meals every Wednesday. The weekend ESL classes that 60 adults attend. The teen basketball league that keeps 120 kids off the street from November through March. All of it has been displaced since the flood.",
+      "The $85,000 goal covers three things. First, $38,000 for the HVAC replacement. The existing system is the original 1963 installation. It was limping along before the flood, and the water damage finished it. We are installing a modern heat pump system that will cut the building's energy costs by 40% and eliminate the gas furnace entirely. The contractor is Eco Comfort PDX, the same company that retrofitted the Eastside Community Kitchen last year.",
+      "Second, $27,000 for the electrical panel upgrade and rewiring of the main hall and two meeting rooms. The current wiring is cloth-insulated aluminum from the original construction. It passed inspection in 2019, but the electrician who assessed the flood damage told us it is one bad connection away from a fire. We are replacing it with copper wiring to modern code, adding 20-amp circuits for the kitchen and AV equipment, and installing LED lighting throughout.",
+      "Third, $20,000 for the community kitchen renovation. The kitchen serves the senior lunch program, the weekend potlucks, and the cooking classes that the Portland Community College extension program runs here twice a month. The flood did not reach the kitchen directly, but the mold remediation required removing drywall in the adjacent hallway, and the contractor discovered termite damage in the shared wall. We are replacing the wall, adding a commercial exhaust hood that meets county health code, and resurfacing the counters.",
+      "I have been on the Albina Neighborhood Association board for four years and managed six campaigns through FundForge. Every one of them delivered on budget and on time. The Cannery rooftop garden, the tool library, the seed vault, the bee sanctuary, the free pantry network, the playground renovation. This community trusts me with their money because I show them exactly where it goes.",
+      "The center has been closed for four months. Every week that passes, another program finds a temporary home somewhere else, and the risk is that temporary becomes permanent. The senior lunch program moved to a church basement with no kitchen. The tutoring program is running out of a volunteer's living room. We need the center back, and we need it back right."
+    ],
+    "updates": [
+      {
+        "id": "update-24-1",
+        "date": "2026-03-04",
+        "title": "HVAC Contractor Confirmed",
+        "content": "Eco Comfort PDX has locked in our installation date for March 24. The heat pump units are in stock at their Portland warehouse. If we close the funding gap this week, work starts the day after the campaign ends."
+      },
+      {
+        "id": "update-24-2",
+        "date": "2026-02-18",
+        "title": "Electrical Assessment Complete",
+        "content": "The rewiring scope is finalized. 14 circuits in the main hall and meeting rooms, plus the kitchen upgrade. The electrician confirmed we can keep the existing conduit runs, which saves about $4,000 on labor."
+      },
+      {
+        "id": "update-24-3",
+        "date": "2026-02-01",
+        "title": "Insurance Settlement Received",
+        "content": "The Albina Neighborhood Association received the final insurance payout of $128,000. Combined with this campaign, we will have full coverage for the repair scope. No additional funding sources needed."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Patricia Okafor",
+        "text": "My kids have been in the after-school program at the Albina Center for three years. They ask me every week when it's opening back up. Maya will get this done.",
+        "date": "2026-02-22"
+      },
+      {
+        "donorName": "Robert Yamamoto",
+        "text": "I attend the Wednesday senior lunch. The church basement is fine, but it's not home. We need our center back.",
+        "date": "2026-03-01"
+      }
+    ]
+  },
+  {
+    "id": "campaign-25",
+    "organizerId": "profile-2",
+    "title": "Eastside Maker Lab: Open-Access Fabrication for All",
+    "category": "Technology",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 60000,
+    "raised": 48000,
+    "backerCount": 600,
+    "averageGift": 80,
+    "createdAt": "2026-01-10",
+    "endsAt": "2026-03-17",
+    "daysLeft": 9,
+    "weeklyMomentum": 25,
+    "story": [
+      "The closest maker space to East Austin is a 45-minute bus ride across town. It charges $150 a month for membership. For the independent fabricators, small-batch manufacturers, and student inventors on this side of the highway, that is not access. That is a barrier with a price tag.",
+      "We are opening the Eastside Maker Lab in a 2,800-square-foot warehouse at 7th and Chicon, three blocks from the Plaza Saltillo transit stop. The space will house a metal shop, a wood shop, a digital fabrication bay with two large-format 3D printers and a 60-watt laser cutter, an electronics bench, and a classroom area for workshops. Membership will be $40 per month, with a free tier for students and anyone earning below 200% of the federal poverty line.",
+      "The $60,000 goal covers buildout and the first eight months of operations. Here is the breakdown. $22,000 for equipment: two Prusa XL 3D printers, an OMTech 60W laser cutter, a SawStop table saw, a drill press, a MIG welder, and hand tools. We are buying the 3D printers and laser new for warranty coverage. The woodworking and metalworking tools are sourced through an industrial surplus dealer in San Marcos at 40% of retail.",
+      "Next, $18,000 for the space itself: first and last month's rent, electrical upgrades to support the metal shop's 220V circuits, dust collection ducting for the wood shop, ventilation for the laser cutter, and a compressed air system for the spray booth. The landlord is covering the cost of a new roll-up door on the loading dock side, which gives us material handling access.",
+      "The remaining $20,000 funds eight months of operations: utilities, insurance, consumables like filament and plywood, a part-time lab manager, and the free membership subsidy. After month eight, the lab needs to sustain itself on membership revenue. At our projected mix of 80 paid members and 30 free-tier users, monthly revenue covers monthly costs with a 12% margin. That is tight, but it matches the financial model of three comparable labs in Dallas, Houston, and San Antonio that are all still operating after 3+ years.",
+      "I ran the Makers Space Renovation campaign two years ago, which equipped a community workshop with 3D printers, a laser cutter, and woodworking tools. That space now has 200 weekly users. But it is on the west side of town, and the demand from East Austin has been consistent and unmet. Twelve people on the current Makers Space waitlist live within a mile of the Chicon location.",
+      "The fabrication economy is real. Three graduates of our west-side Makers Space now run small businesses: custom furniture, laser-cut signage, and 3D-printed prosthetic adapters. Two of them started with nothing more than an idea and free access to equipment. The Eastside Maker Lab is not a hobby shop. It is small-business infrastructure for a neighborhood that has been asking for it."
+    ],
+    "updates": [
+      {
+        "id": "update-25-1",
+        "date": "2026-03-06",
+        "title": "Equipment Ordered - Delivery March 18",
+        "content": "Both Prusa XL printers and the OMTech laser are ordered and shipping to the warehouse. The surplus dealer in San Marcos has our woodworking and metalworking package reserved. We pick it up Saturday."
+      },
+      {
+        "id": "update-25-2",
+        "date": "2026-02-20",
+        "title": "Lease Signed, Electrical Work Underway",
+        "content": "The warehouse at 7th and Chicon is ours. The electrician started the 220V circuit installations on Monday. Dust collection ducting arrives next week. We are on track for a soft opening in early April."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Angela Torres",
+        "text": "I've been driving to the west-side Makers Space for a year to prototype my product designs. Having a lab in East Austin changes everything for me and at least a dozen other makers I know.",
+        "date": "2026-02-25"
+      },
+      {
+        "donorName": "Derek Washington",
+        "text": "Jonas built the original Makers Space and it is still running strong two years later. He knows how to set these up to last.",
+        "date": "2026-03-02"
+      }
+    ]
+  },
+  {
+    "id": "campaign-26",
+    "organizerId": "profile-4",
+    "title": "Pilsen Youth Mural Festival",
+    "category": "Arts & Culture",
+    "status": "active",
+    "heroImage": "/images/hero-campaign.jpg",
+    "images": ["/images/campaign-detail.jpg"],
+    "goal": 45000,
+    "raised": 18000,
+    "backerCount": 247,
+    "averageGift": 73,
+    "createdAt": "2026-02-10",
+    "endsAt": "2026-04-05",
+    "daysLeft": 28,
+    "weeklyMomentum": 8,
+    "story": [
+      "Pilsen has more public murals per square mile than any neighborhood in Chicago. The tradition goes back to the 1960s, when Mexican-American artists transformed blank walls along 18th Street into declarations of identity, resistance, and pride. Fifty years later, those murals are fading. Nine were demolished in the last three years as buildings sold to developers. The ones that remain are weathered and cracking. And the generation of kids growing up in Pilsen today has never held a spray can or a brush on a scaffold.",
+      "The Pilsen Youth Mural Festival is a six-week program that pairs 30 high school students with six professional muralists to design and paint four large-scale public murals across the neighborhood. The students do not just assist. They drive the creative process: researching neighborhood history, sketching concepts, presenting proposals to community review panels, and executing the final works on walls up to 40 feet wide.",
+      "The $45,000 budget breaks down as follows. $18,000 for artist stipends: six professional muralists at $3,000 each for six weeks of mentorship, including two Saturdays of wall painting per mural. These are working artists from the Pilsen community. We are not importing talent. All six grew up within 10 blocks of the festival sites. $9,000 for materials: exterior-grade paint, primers, sealants, scaffolding rental, lifts, and safety equipment. We are using Novacolor mineral silicate paint, which resists UV degradation for 25+ years, twice the lifespan of conventional exterior acrylics.",
+      "Another $8,000 covers the student program: stipends of $200 per student for the six-week commitment, plus transit cards, meals during Saturday painting days, and printed portfolios of their work. These are not volunteers. They are apprentices learning a trade that has economic value. Three graduates of a similar program in the Bronx now work as professional muralists earning $60,000 to $80,000 a year.",
+      "The remaining $10,000 covers logistics, permits, insurance, a closing exhibition at the National Museum of Mexican Art, and a documentary short produced by students from Columbia College Chicago's film program. The documentary becomes a portfolio piece for the students and a fundraising asset for future cohorts.",
+      "I teach computer science, not art. But I have spent three years running campaigns in Pilsen, and the one thing I hear from students, parents, and community leaders is that the neighborhood's cultural identity is eroding. The WiFi network, the laptops, the tutoring center - those are infrastructure. This festival is about the soul of the neighborhood. The murals on 18th Street taught a generation of kids that their stories mattered enough to put on a wall. This program teaches the next generation to pick up the brush.",
+      "The four wall sites are confirmed. The building owners have signed permission agreements. The National Museum of Mexican Art is hosting the exhibition opening. The six muralists are committed. We just need the funding to make it happen this summer."
+    ],
+    "updates": [
+      {
+        "id": "update-26-1",
+        "date": "2026-03-05",
+        "title": "Student Applications Open",
+        "content": "We received 47 applications in the first three days for 30 spots. Benito Juarez Community Academy is promoting the program through their art department. Selection panel meets March 15."
+      },
+      {
+        "id": "update-26-2",
+        "date": "2026-02-20",
+        "title": "All Four Wall Sites Confirmed",
+        "content": "Building owners at 18th and Paulina, 19th and Ashland, Blue Island and Cermak, and Halsted and 18th have signed our permission agreements. Each wall gets a 10-year maintenance commitment from the property owner."
+      }
+    ],
+    "testimonials": [
+      {
+        "donorName": "Maria Gutierrez",
+        "text": "My father painted one of the original 18th Street murals in 1972. Seeing Pilsen's kids carry that tradition forward means everything to our family.",
+        "date": "2026-02-28"
+      },
+      {
+        "donorName": "Kevin O'Brien",
+        "text": "Samir's tech programs have transformed this neighborhood. Now he's tackling culture. The community center kids are already excited about applying.",
+        "date": "2026-03-03"
+      }
+    ]
+  },
+  {
     "id": "campaign-5",
     "organizerId": "profile-1",
     "title": "Rooftop Classrooms for Eastside Elementary",

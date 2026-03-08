@@ -23,9 +23,9 @@
       "repeatDonorConfidence": 85
     },
     "stats": {
-      "campaignsOrganized": 7,
+      "campaignsOrganized": 8,
       "campaignsFunded": 6,
-      "totalRaised": 302200,
+      "totalRaised": 354200,
       "totalDonated": 4850
     },
     "recommendedBy": 47
@@ -54,9 +54,9 @@
       "repeatDonorConfidence": 78
     },
     "stats": {
-      "campaignsOrganized": 5,
+      "campaignsOrganized": 6,
       "campaignsFunded": 4,
-      "totalRaised": 327000,
+      "totalRaised": 375000,
       "totalDonated": 12200
     },
     "recommendedBy": 62
@@ -116,9 +116,9 @@
       "repeatDonorConfidence": 76
     },
     "stats": {
-      "campaignsOrganized": 5,
+      "campaignsOrganized": 6,
       "campaignsFunded": 3,
-      "totalRaised": 156800,
+      "totalRaised": 174800,
       "totalDonated": 3200
     },
     "recommendedBy": 15
