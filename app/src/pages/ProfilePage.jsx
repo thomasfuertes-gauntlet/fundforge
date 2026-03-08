@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import { getProfile, getCampaignsByOrganizer } from "@/data";
+import NotFound from "@/components/NotFound";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -56,13 +57,7 @@ export default function ProfilePage() {
   usePageView("profile", { id });
   const profile = getProfile(id);
 
-  if (!profile) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-lg text-muted-foreground">Profile not found.</p>
-      </div>
-    );
-  }
+  if (!profile) return <NotFound type="profile" />;
 
   const campaigns = getCampaignsByOrganizer(profile.id);
   const activeCampaigns = campaigns.filter((c) => c.status === "active");

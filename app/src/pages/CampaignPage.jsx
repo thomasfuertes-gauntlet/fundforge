@@ -9,6 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import DonateModal from "@/components/DonateModal";
 import { toast } from "@/components/ui/sonner";
+import NotFound from "@/components/NotFound";
 import { usePageView, useScrollDepth } from "@/lib/useAnalytics";
 import { trackDonateClick, trackShareClick } from "@/lib/analytics";
 import {
@@ -65,13 +66,7 @@ export default function CampaignPage() {
   useScrollDepth(id);
 
   const campaign = getCampaign(id);
-  if (!campaign) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-lg text-muted-foreground">Campaign not found.</p>
-      </div>
-    );
-  }
+  if (!campaign) return <NotFound type="campaign" />;
 
   const organizer = getProfile(campaign.organizerId);
   const donations = getDonationsByCampaign(campaign.id);

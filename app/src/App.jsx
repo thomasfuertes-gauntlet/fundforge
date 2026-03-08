@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import SiteHeader from "@/components/SiteHeader";
@@ -8,6 +8,7 @@ import CommunityPage from "@/pages/CommunityPage";
 import ProfilePage from "@/pages/ProfilePage";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import HomePage from "@/pages/HomePage";
+import NotFound from "@/components/NotFound";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,7 +29,7 @@ function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
       <Toaster position="bottom-right" />
