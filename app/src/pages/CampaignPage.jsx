@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getCampaign, getProfile, getDonationsByCampaign, community } from "@/data";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import ShareModal from "@/components/ShareModal";
 import NotFound from "@/components/NotFound";
 import { usePageView, useScrollDepth } from "@/lib/useAnalytics";
 import { trackDonateClick } from "@/lib/analytics";
+import useCountUp from "@/lib/useCountUp";
+import { cn } from "@/lib/utils";
 import {
   Heart,
   Share2,
@@ -26,6 +28,8 @@ import {
   Trophy,
   Zap,
   Target,
+  BookOpen,
+  Flame,
 } from "lucide-react";
 
 function formatRelativeTime(timestamp) {
@@ -66,6 +70,22 @@ export default function CampaignPage() {
   usePageView("campaign", { id });
   useScrollDepth(id);
 
+  // Task #15: Scroll progress bar
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const rafRef = useRef(null);
+  const handleScroll = useCallback(() => {
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      setScrollProgress((scrollTop / (scrollHeight - clientHeight)) * 100);
+      rafRef.current = null;
+    });
+  }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   const campaign = getCampaign(id);
   if (!campaign) return <NotFound type="campaign" />;
 
@@ -78,6 +98,14 @@ export default function CampaignPage() {
   const visibleUpdates = showAllUpdates
     ? campaign.updates
     : (campaign.updates || []).slice(0, 2);
+
+  // Task #13: Reading time estimate
+  const readingTime = Math.ceil(campaign.story.join(" ").split(/\s+/).length / 200);
+
+  // Task #12: useCountUp for stat cards
+  const [raisedRef, raisedDisplay] = useCountUp(campaign.raised, { prefix: "$" });
+  const [backersRef, backersDisplay] = useCountUp(campaign.backerCount);
+  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign.averageGift, { prefix: "$" });
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,11 +138,31 @@ export default function CampaignPage() {
                     {campaign.category}
                   </Badge>
                   <Badge
-                    className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-900 hover:bg-sky-50"
+                    className={cn(
+                      "rounded-full border px-3 py-1",
+                      campaign.daysLeft <= 3
+                        ? "border-red-200 bg-red-50 text-red-900 hover:bg-red-50"
+                        : campaign.daysLeft <= 7
+                          ? "border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-50"
+                          : "border-sky-200 bg-sky-50 text-sky-900 hover:bg-sky-50"
+                    )}
                     data-testid="campaign-days-left"
                   >
-                    <Clock className="mr-1 h-3.5 w-3.5" />
-                    {campaign.daysLeft} days left
+                    {campaign.daysLeft <= 3 ? (
+                      <Flame className="mr-1 h-3.5 w-3.5" />
+                    ) : (
+                      <Clock className="mr-1 h-3.5 w-3.5" />
+                    )}
+                    {campaign.daysLeft <= 3
+                      ? `Final ${campaign.daysLeft} days!`
+                      : `${campaign.daysLeft} days left`}
+                  </Badge>
+                  <Badge
+                    className="rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-muted-foreground hover:bg-muted/30"
+                    data-testid="campaign-reading-time"
+                  >
+                    <BookOpen className="mr-1 h-3.5 w-3.5" />
+                    {readingTime} min read
                   </Badge>
                   {campaign.weeklyMomentum > 20 && (
                     <Badge
@@ -323,10 +371,11 @@ export default function CampaignPage() {
                     </p>
                     <div className="flex items-end justify-between gap-4">
                       <p
+                        ref={raisedRef}
                         className="text-4xl font-serif text-foreground"
                         data-testid="campaign-raised"
                       >
-                        {formatCurrency(campaign.raised)}
+                        {raisedDisplay}
                       </p>
                       <p className="text-sm text-muted-foreground" data-testid="campaign-goal">
                         of {formatCurrency(campaign.goal)} goal
@@ -336,9 +385,29 @@ export default function CampaignPage() {
 
                   <Progress
                     value={progressPercent}
-                    className="h-3 bg-primary/15"
+                    className={cn(
+                      "h-3 bg-primary/15",
+                      progressPercent >= 75 && "animate-progress-glow"
+                    )}
                     data-testid="campaign-progress"
                   />
+                  {progressPercent >= 90 ? (
+                    <Badge
+                      className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-primary hover:bg-primary/10"
+                      data-testid="campaign-urgency"
+                    >
+                      <TrendingUp className="mr-1 h-3.5 w-3.5" />
+                      Final push!
+                    </Badge>
+                  ) : progressPercent >= 75 ? (
+                    <Badge
+                      className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-primary hover:bg-primary/10"
+                      data-testid="campaign-urgency"
+                    >
+                      <TrendingUp className="mr-1 h-3.5 w-3.5" />
+                      Almost there!
+                    </Badge>
+                  ) : null}
 
                   {/* Stretch Goal */}
                   {campaign.stretchGoal && (
@@ -418,20 +487,22 @@ export default function CampaignPage() {
                   {/* Stat Cards */}
                   <div className="grid grid-cols-2 gap-3">
                     <div
+                      ref={backersRef}
                       className="rounded-2xl border border-border/60 bg-muted/40 p-4"
                       data-testid="campaign-backer-count"
                     >
                       <p className="text-2xl font-serif text-foreground">
-                        {campaign.backerCount.toLocaleString()}
+                        {backersDisplay}
                       </p>
                       <p className="text-sm text-muted-foreground">total backers</p>
                     </div>
                     <div
+                      ref={avgGiftRef}
                       className="rounded-2xl border border-border/60 bg-muted/40 p-4"
                       data-testid="campaign-avg-gift"
                     >
                       <p className="text-2xl font-serif text-foreground">
-                        {formatCurrency(campaign.averageGift)}
+                        {avgGiftDisplay}
                       </p>
                       <p className="text-sm text-muted-foreground">average gift</p>
                     </div>
@@ -471,10 +542,11 @@ export default function CampaignPage() {
                         </h3>
                         <HeartHandshake className="h-4 w-4 text-primary/50" />
                       </div>
-                      {donations.slice(0, 5).map((d) => (
+                      {donations.slice(0, 5).map((d, i) => (
                         <div
                           key={d.id}
-                          className="flex items-center justify-between rounded-2xl border border-secondary bg-secondary/40 px-4 py-3"
+                          className="flex items-center justify-between rounded-2xl border border-secondary bg-secondary/40 px-4 py-3 opacity-0 animate-fade-slide-in"
+                          style={{ animationDelay: `${i * 100}ms` }}
                           data-testid={`donation-${d.id}`}
                         >
                           <div className="min-w-0">
@@ -504,11 +576,50 @@ export default function CampaignPage() {
         </div>
       </div>
 
+      {/* Task #15: Scroll progress bar */}
+      <div className="fixed top-14 left-0 right-0 z-30 h-0.5 bg-accent/20">
+        <div
+          className="h-full bg-accent transition-[width] duration-75"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      {/* Task #4: Sticky mobile donate CTA */}
+      {!donateOpen && (
+        <div
+          className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white/95 backdrop-blur-sm border-t border-border/40 px-4 py-3 pb-[env(safe-area-inset-bottom)]"
+          data-testid="mobile-donate-cta"
+        >
+          <div className="flex items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <Progress value={progressPercent} className="h-1.5 bg-primary/15" />
+              <p className="mt-1 text-sm font-medium text-foreground truncate">
+                {formatCurrency(campaign.raised)}{" "}
+                <span className="text-muted-foreground font-normal">raised</span>
+              </p>
+            </div>
+            <Button
+              variant="accent"
+              size="sm"
+              className="shrink-0"
+              onClick={() => { trackDonateClick(campaign.id); setDonateOpen(true); }}
+              data-testid="mobile-donate-button"
+            >
+              <Heart className="h-4 w-4" />
+              Donate
+            </Button>
+          </div>
+        </div>
+      )}
+
       <DonateModal
         open={donateOpen}
         onOpenChange={setDonateOpen}
         campaignId={campaign.id}
         campaignTitle={campaign.title}
+        averageGift={campaign.averageGift}
+        backerCount={campaign.backerCount}
+        onShare={() => setShareOpen(true)}
       />
       <ShareModal
         open={shareOpen}
