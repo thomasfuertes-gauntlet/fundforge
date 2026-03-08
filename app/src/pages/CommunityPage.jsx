@@ -382,7 +382,7 @@ export default function CommunityPage() {
                   to={`/campaign/${update.campaignId}`}
                   className="block"
                 >
-                  <Card className="h-full border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
+                  <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
                     <CardContent className="flex gap-3 p-4">
                       <Avatar className="h-8 w-8 shrink-0 border border-white shadow-sm">
                         <AvatarImage

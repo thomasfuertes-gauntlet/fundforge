@@ -35,7 +35,7 @@ export default function SiteHeader() {
                 key={to}
                 to={to}
                 data-testid={`nav-${label.toLowerCase()}`}
-                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-all ${
+                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-medium transition-all ${
                   active
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"

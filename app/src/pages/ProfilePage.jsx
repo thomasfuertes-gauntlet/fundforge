@@ -561,9 +561,9 @@ export default function ProfilePage() {
                     className="block"
                     data-testid={`discover-${p.id}`}
                   >
-                    <Card className="border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <Card className="overflow-hidden border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                       <CardContent className="flex items-center gap-4 p-4">
-                        <Avatar className="h-12 w-12 border-2 border-secondary shadow-sm">
+                        <Avatar className="h-12 w-12 shrink-0 border-2 border-secondary shadow-sm">
                           <AvatarImage src={p.avatar} alt={p.name} />
                           <AvatarFallback>{initials(p.name)}</AvatarFallback>
                         </Avatar>

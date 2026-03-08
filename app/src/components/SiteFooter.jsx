@@ -25,7 +25,7 @@ export default function SiteFooter() {
               href="https://github.com/tomfuertes/gofundme-interview"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-1.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               data-testid="footer-github"
             >
               <LucideGithub className="h-4 w-4" />
@@ -35,7 +35,7 @@ export default function SiteFooter() {
               href="https://fundforge.tomfuertes.workers.dev"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-1.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               data-testid="footer-live"
             >
               <Globe className="h-4 w-4" />

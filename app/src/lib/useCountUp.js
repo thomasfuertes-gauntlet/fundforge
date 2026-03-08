@@ -30,7 +30,7 @@ export default function useCountUp(end, { duration = 1500, prefix = "", suffix =
         }
         requestAnimationFrame(tick);
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 }
     );
 
     observer.observe(el);
