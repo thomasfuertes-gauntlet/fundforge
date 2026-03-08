@@ -295,3 +295,32 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **Spacing standard:** `px-6 md:px-12 lg:px-16` container padding, `py-20` minimum section padding, `mt-16 lg:mt-24` inter-section gaps
 - **Known deltas (tasks #38-#45):** No gradient orb background, no glass-panel/editorial-card CSS utilities, no section-reveal scroll animations, primary/outline buttons missing hover lift, some cards override built-in shadow
 - **Intentional deviations:** `tracking-widest` over spec's `tracking-wide` for eyebrows, `rounded-2xl` on detail images over spec's `rounded-sm`
+
+## Design Context
+
+### Users
+GoFundMe engineering interviewers evaluating a one-week sprint. They'll review the live demo, source code, and commit history. The job-to-be-done: convince them this candidate ships polished, thoughtful products under time pressure. Secondary audience: anyone clicking the deployed URL from a resume or LinkedIn post.
+
+### Brand Personality
+**Trustworthy, Premium, Human.** The interface should feel like a high-end editorial magazine applied to crowdfunding - not a generic SaaS dashboard, not a startup MVP. Deep Forest Green (#0F3C32) anchors credibility. Amber (#D97706) creates warmth and urgency at conversion points. Serif headings (Libre Baskerville) signal editorial craft; sans body (Manrope) keeps it readable and modern.
+
+### Emotional Goals
+- **Delight + Innovation:** Behavioral economics patterns (anchoring, goal-gradient, bandwagon) should surprise interviewers. Animations should feel purposeful, not decorative. Each feature should double as an interview talking point.
+- **Confidence + Craft:** Pixel-level attention to spacing, typography hierarchy, and interaction polish. The demo should feel like a shipped product, not a prototype.
+
+### Anti-Patterns
+- No pure black (#000000) anywhere - use #0F3C32 or #111827
+- No center-aligned body text - left-align for readability
+- No generic placeholder content - all fixture data tells a coherent, specific story
+- No gratuitous animations - every motion serves a UX purpose (reveal, feedback, urgency)
+- No AI aesthetic tells - avoid generic gradients, over-rounded everything, empty padding
+
+### Design Principles
+1. **Trust is the product.** Every design decision should reinforce credibility: verified badges, transparent formulas, consistent data, real-sounding stories. The trust score isn't a feature - it's the thesis.
+2. **Editorial over dashboard.** Serif headings, story-first layouts, generous whitespace (py-20 minimum). Campaign pages read like longform journalism, not forms.
+3. **Conversion through psychology.** Amber donate buttons, anchoring text ("Most donors give $74"), goal-gradient urgency, social proof at decision points. Every behavioral pattern has a cite-able rationale from stretch.md.
+4. **Motion with meaning.** Progress bars animate on scroll (reveals progress), donation feed staggers in (implies activity), count-ups draw attention to impact numbers. No animation exists without a UX justification.
+5. **Data coherence over volume.** Four organizers with interconnected campaigns, consistent trust scores, cross-page links that resolve. A small world that feels complete beats a large world with gaps.
+
+### Accessibility Stance
+Awareness-level for interview context. Semantic HTML, reasonable contrast ratios, keyboard-navigable modals (Radix handles this). Note a11y in interview discussion but prioritize visual polish for the demo. `prefers-reduced-motion` is a backlog candidate, not a blocker.
