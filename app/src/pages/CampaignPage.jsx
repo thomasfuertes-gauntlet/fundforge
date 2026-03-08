@@ -576,8 +576,8 @@ export default function CampaignPage() {
         </div>
       </div>
 
-      {/* Task #15: Scroll progress bar */}
-      <div className="fixed top-14 left-0 right-0 z-30 h-0.5 bg-accent/20">
+      {/* Scroll progress bar (decorative) */}
+      <div className="fixed top-14 left-0 right-0 z-30 h-0.5 bg-accent/20" aria-hidden="true">
         <div
           className="h-full bg-accent transition-[width] duration-75"
           style={{ width: `${scrollProgress}%` }}

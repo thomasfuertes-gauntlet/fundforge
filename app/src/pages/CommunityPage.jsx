@@ -95,6 +95,7 @@ function CampaignGrid({ campaigns }) {
         {categories.map((cat) => (
           <button
             key={cat}
+            aria-pressed={activeFilter === cat}
             onClick={() => setActiveFilter(cat)}
             className={cn(
               "rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
@@ -111,6 +112,7 @@ function CampaignGrid({ campaigns }) {
         {["Most funded", "Ending soon"].map((sort) => (
           <button
             key={sort}
+            aria-pressed={activeSort === sort}
             onClick={() => setActiveSort(sort)}
             className={cn(
               "rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
@@ -201,10 +203,12 @@ function LeaderboardCard() {
         </div>
 
         {/* Tab row */}
-        <div className="flex gap-4 border-b border-border/40">
+        <div className="flex gap-4 border-b border-border/40" role="tablist">
           {LEADERBOARD_TABS.map((tab) => (
             <button
               key={tab}
+              role="tab"
+              aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
                 "pb-2 text-sm font-medium transition-colors border-b-2 -mb-px",

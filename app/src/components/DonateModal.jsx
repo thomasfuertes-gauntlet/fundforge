@@ -191,6 +191,7 @@ export default function DonateModal({
                   type="number"
                   min="1"
                   placeholder="Custom amount"
+                  aria-label="Custom donation amount"
                   value={custom}
                   onChange={(e) => {
                     setCustom(e.target.value);
