@@ -56,7 +56,6 @@ export default function CampaignPage() {
   usePageView("campaign", { id });
   useScrollDepth(id);
 
-  // Task #15: Scroll progress bar
   const [scrollProgress, setScrollProgress] = useState(0);
   const rafRef = useRef(null);
   const handleScroll = useCallback(() => {
@@ -85,10 +84,8 @@ export default function CampaignPage() {
     ? campaign.updates
     : (campaign.updates || []).slice(0, 2);
 
-  // Task #13: Reading time estimate
   const readingTime = Math.ceil(campaign.story.join(" ").split(/\s+/).length / 200);
 
-  // Task #12: useCountUp for stat cards
   const [raisedRef, raisedDisplay] = useCountUp(campaign.raised, { prefix: "$" });
   const [backersRef, backersDisplay] = useCountUp(campaign.backerCount);
   const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign.averageGift, { prefix: "$" });
@@ -249,16 +246,16 @@ export default function CampaignPage() {
                     { icon: HeartHandshake, label: "prayers", factor: 0.22 },
                     { icon: MessageCircle, label: "comments", factor: 0.06 },
                   ].map(({ icon: Icon, label, factor }) => (
-                    <div
+                    <span
                       key={label}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/30 px-3 py-1.5 text-sm text-muted-foreground"
+                      className="inline-flex items-center gap-1 text-sm text-muted-foreground"
                     >
-                      <Icon className="h-4 w-4" strokeWidth={1.5} />
+                      <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
                       <span className="font-medium text-foreground">
                         {Math.round(campaign.backerCount * factor).toLocaleString()}
                       </span>
                       {label}
-                    </div>
+                    </span>
                   ))}
                 </div>
               </CardContent>
