@@ -255,7 +255,27 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - **SPA routing:** Handled by `wrangler.jsonc` `not_found_handling` (not `_redirects`)
 - **Meta:** Description + theme-color added, Vite favicon removed
 - **Body:** `overflow-x: hidden` prevents horizontal scroll from any edge-case overflow
-- **Build:** Clean, 144KB gzipped JS, no warnings
+- **Build:** 156KB gzipped JS (512KB raw, Vite warns >500KB - route splitting is backlogged)
+
+### Sprint Session (17 tasks completed)
+- **CEO mode:** 4 parallel agents (campaign/modal/community/motion) with worktree isolation. File-ownership grouping prevents merge conflicts. 17 tasks in one pass.
+- **Worktree merge artifact:** Agent commits may capture snapshots but leave working tree diverged. Always `git diff` after agents finish to catch uncommitted code.
+- **Community.json is a merge conflict magnet:** Multiple agents + lead touching aggregates will conflict. Recalculate from source of truth (campaigns.json) during merge resolution.
+- **Campaign IDs 5-23 taken by past campaigns.** New active campaigns start at campaign-24+.
+- **7 active campaigns now** (was 4): campaign-1 (Maya, Urban Agriculture), campaign-2 (Jonas, Renewable Energy), campaign-3 (Elena, Environmental), campaign-4 (Samir, Education), campaign-24 (Maya, Community), campaign-25 (Jonas, Technology), campaign-26 (Samir, Arts & Culture).
+- **New components from sprint:** `RevealOnScroll.jsx` (fade-up on scroll), `AnimatedProgress` (in progress.jsx, value animates from 0 on IntersectionObserver)
+- **New CSS keyframes in index.css:** `scale-in` (celebration checkmark), `fade-slide-in` (donation feed stagger), `progress-glow` (goal-gradient pulse)
+- **DonateModal expanded:** Accepts `averageGift`, `backerCount`, `onShare` props. Post-donation success state with share CTA. Tracks `post_donate_action` event.
+- **ShareModal expanded:** Shows "$50 per share" impact metric below URL preview.
+- **CommunityPage extracted components:** `LeaderboardCard` (with Top/Trending tab toggle), `CampaignGrid` (with filter + sort pills)
+
+### Audit Findings (5 tasks pending #19-#23)
+- DonateModal custom input missing `aria-label` (H1)
+- Leaderboard tabs + filter pills missing ARIA roles (H2)
+- `formatCurrency`/`initials` duplicated in 3+ files (M1)
+- Gradient HSL `hsl(195,69%,27%)` hard-coded in 4 files instead of CSS var (M2)
+- Arbitrary font sizes `text-[1.0625rem]`, `text-[0.9375rem]`, `text-[0.625rem]` outside type scale (M5)
+- Story reactions look interactive but aren't (M4)
 
 ### Data Field Gotcha
 - Trust data is nested: `profile.trust.score`, `profile.trust.fulfillmentRate`, etc. NOT `profile.trustScore`.
@@ -293,7 +313,7 @@ Event taxonomy (all events include sessionId, timestamp, url):
 ### Design Spec Compliance
 - **Aligned:** CSS variables, fonts, Button variants (rounded-full, accent lift), Card shadows (green-tinted rgba), Progress h-3
 - **Spacing standard:** `px-6 md:px-12 lg:px-16` container padding, `py-20` minimum section padding, `mt-16 lg:mt-24` inter-section gaps
-- **Known deltas (tasks #38-#45):** No gradient orb background, no glass-panel/editorial-card CSS utilities, no section-reveal scroll animations, primary/outline buttons missing hover lift, some cards override built-in shadow
+- **Known deltas:** No gradient orb background, no glass-panel/editorial-card CSS utilities, primary/outline buttons missing hover lift, some cards override built-in shadow. Section-reveal scroll animations now implemented via RevealOnScroll.
 - **Intentional deviations:** `tracking-widest` over spec's `tracking-wide` for eyebrows, `rounded-2xl` on detail images over spec's `rounded-sm`
 
 ## Design Context
