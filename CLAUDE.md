@@ -267,3 +267,18 @@ Event taxonomy (all events include sessionId, timestamp, url):
 - `git rm` stages deletions - don't re-add the deleted path in `git add` or it errors with "pathspec did not match".
 - `design/frontend/` uses CRA/CRACO which is broken on Node 22+ (`ajv-keywords` MODULE_NOT_FOUND). Don't try to `npm start` it. Use the Emergent preview or Vite wrapper instead.
 - Playwright on sites with cookie/privacy overlays: `run-code "async page => { await page.evaluate(() => { document.querySelectorAll('div').forEach(el => { const s = getComputedStyle(el); if (s.position === 'fixed' && s.zIndex > 100) el.remove(); }); document.body.style.overflow = 'auto'; }); }"`
+- `lucide-react` deprecated brand icons (`Github`, `Twitter`, `Facebook`). Use `LucideGithub`/generic alternatives (`Send`, `Share2`). TS still shows deprecation warnings on `Lucide*` variants.
+- `useCountUp` IntersectionObserver threshold must be <= 0.1 for stats below the fold on mobile (375px). Higher thresholds cause counters to permanently show $0.
+- `replace_all` in Edit tool replaces ALL occurrences including display text and string literals. Use targeted edits for renames where the name also appears as user-visible text.
+
+### New Components (polish session)
+- `NotFound.jsx` - Shared 404 with contextual messages (campaign/profile/page types), links to community + home
+- `SiteFooter.jsx` - Brand, GitHub link, live site link, tech stack line. In App.jsx above Toaster.
+- `ShareModal.jsx` - Dialog with 4 share options. Web Share API on mobile, clipboard fallback. Tracks `share_click`.
+- `useCountUp.js` - IntersectionObserver + rAF count-up hook. Returns `[ref, formattedDisplay]`. Ease-out cubic, fires once.
+
+### Design Spec Compliance
+- **Aligned:** CSS variables, fonts, Button variants (rounded-full, accent lift), Card shadows (green-tinted rgba), Progress h-3
+- **Spacing standard:** `px-6 md:px-12 lg:px-16` container padding, `py-20` minimum section padding, `mt-16 lg:mt-24` inter-section gaps
+- **Known deltas (tasks #38-#45):** No gradient orb background, no glass-panel/editorial-card CSS utilities, no section-reveal scroll animations, primary/outline buttons missing hover lift, some cards override built-in shadow
+- **Intentional deviations:** `tracking-widest` over spec's `tracking-wide` for eyebrows, `rounded-2xl` on detail images over spec's `rounded-sm`
