@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/sonner";
 import { trackShareClick } from "@/lib/analytics";
-import { Link2, Mail, Send, Share2 } from "lucide-react";
+import { Link2, Mail, Send, Share2, TrendingUp } from "lucide-react";
 
 const SHARE_OPTIONS = [
   {
@@ -100,6 +100,17 @@ export default function ShareModal({ open, onOpenChange, campaignId, campaignTit
         {/* URL preview */}
         <div className="mt-1 rounded-xl bg-muted/40 px-4 py-3">
           <p className="truncate text-xs text-muted-foreground">{url}</p>
+        </div>
+
+        {/* Share impact metric */}
+        <div
+          className="flex items-center justify-center gap-2 rounded-xl bg-secondary/50 px-4 py-3"
+          data-testid="share-impact"
+        >
+          <TrendingUp className="h-4 w-4 shrink-0 text-primary/60" strokeWidth={1.5} />
+          <p className="text-sm text-center text-muted-foreground">
+            On average, each share inspires <span className="font-medium text-foreground">$50</span> in donations
+          </p>
         </div>
       </DialogContent>
     </Dialog>
