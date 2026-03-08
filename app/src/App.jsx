@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import CampaignPage from "@/pages/CampaignPage";
 import CommunityPage from "@/pages/CommunityPage";
 import ProfilePage from "@/pages/ProfilePage";
@@ -32,6 +33,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
+      <SiteFooter />
       <Toaster position="bottom-right" />
     </TooltipProvider>
   );
