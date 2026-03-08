@@ -1,11 +1,13 @@
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
 import { community, getActiveCampaigns, getProfile } from "@/data";
+import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
+import { AnimatedProgress } from "@/components/ui/progress";
 import {
   Users,
   TrendingUp,
@@ -58,6 +60,264 @@ function CommunityCounterDonors({ donors }) {
         unique donors contributing
       </p>
     </div>
+  );
+}
+
+function CampaignGrid({ campaigns }) {
+  const categories = useMemo(
+    () => ["All", ...new Set(campaigns.map((c) => c.category))],
+    [campaigns]
+  );
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeSort, setActiveSort] = useState("Most funded");
+
+  const filtered = useMemo(() => {
+    let result = activeFilter === "All"
+      ? campaigns
+      : campaigns.filter((c) => c.category === activeFilter);
+
+    if (activeSort === "Ending soon") {
+      result = [...result].sort((a, b) => a.daysLeft - b.daysLeft);
+    } else {
+      result = [...result].sort((a, b) => (b.raised / b.goal) - (a.raised / a.goal));
+    }
+    return result;
+  }, [campaigns, activeFilter, activeSort]);
+
+  return (
+    <div className="mt-16 lg:mt-24">
+      <h2 className="mb-6 text-2xl font-serif font-semibold text-foreground">
+        Active campaigns
+      </h2>
+
+      {/* Filter + sort pills */}
+      <div className="mb-5 flex flex-wrap items-center gap-2" data-testid="campaign-grid-filters">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveFilter(cat)}
+            className={cn(
+              "rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
+              activeFilter === cat
+                ? "bg-secondary text-primary"
+                : "bg-muted/40 text-muted-foreground hover:bg-muted/60"
+            )}
+            data-testid={`filter-${cat.toLowerCase().replace(/\s+/g, "-")}`}
+          >
+            {cat}
+          </button>
+        ))}
+        <span className="mx-1 h-4 w-px bg-border/60" />
+        {["Most funded", "Ending soon"].map((sort) => (
+          <button
+            key={sort}
+            onClick={() => setActiveSort(sort)}
+            className={cn(
+              "rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
+              activeSort === sort
+                ? "bg-secondary text-primary"
+                : "bg-muted/40 text-muted-foreground hover:bg-muted/60"
+            )}
+            data-testid={`sort-${sort.toLowerCase().replace(/\s+/g, "-")}`}
+          >
+            {sort}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {filtered.map((c) => (
+          <Link
+            key={c.id}
+            to={`/campaign/${c.id}`}
+            className="block"
+            data-testid={`active-campaign-${c.id}`}
+          >
+            <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div className="aspect-[16/10] overflow-hidden">
+                <img
+                  src={c.heroImage}
+                  alt={c.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <CardContent className="space-y-3 p-4">
+                <Badge className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary">
+                  {c.category}
+                </Badge>
+                <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
+                  {c.title}
+                </p>
+                <AnimatedProgress
+                  value={Math.min(Math.round((c.raised / c.goal) * 100), 100)}
+                  className="h-2 bg-primary/15"
+                />
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span className="font-medium text-foreground">
+                    {formatCurrency(c.raised)}
+                  </span>
+                  <span>{c.daysLeft} days left</span>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const LEADERBOARD_TABS = ["Top Fundraisers", "Trending"];
+
+function LeaderboardCard() {
+  const [activeTab, setActiveTab] = useState("Top Fundraisers");
+
+  const sortedLeaderboard = useMemo(() => {
+    if (activeTab === "Trending") {
+      return [...leaderboard].sort((a, b) => b.weeklyTrend - a.weeklyTrend);
+    }
+    return leaderboard;
+  }, [activeTab]);
+
+  const showPodium = activeTab === "Top Fundraisers";
+
+  return (
+    <Card
+      className="border-white/70 bg-white/90 lg:col-span-5"
+      data-testid="community-leaderboard-card"
+    >
+      <CardContent className="space-y-5 p-5 sm:p-6 lg:p-8">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Trophy className="h-5 w-5 text-primary" />
+            <h2 className="text-xl font-serif text-foreground">
+              Leaderboard
+            </h2>
+          </div>
+          <Badge className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary">
+            Live rankings
+          </Badge>
+        </div>
+
+        {/* Tab row */}
+        <div className="flex gap-4 border-b border-border/40">
+          {LEADERBOARD_TABS.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={cn(
+                "pb-2 text-sm font-medium transition-colors border-b-2 -mb-px",
+                activeTab === tab
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              )}
+              data-testid={`leaderboard-tab-${tab.toLowerCase().replace(/\s+/g, "-")}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Podium - top 3 (only for Top Fundraisers) */}
+        {showPodium && (
+          <div
+            className="flex items-end justify-center gap-3"
+            data-testid="leaderboard-podium"
+          >
+            {[sortedLeaderboard[1], sortedLeaderboard[0], sortedLeaderboard[2]].map(
+              (entry, i) => {
+                const isFirst = i === 1;
+                const colors = [
+                  "border-slate-300 bg-slate-50",
+                  "border-amber-300 bg-amber-50",
+                  "border-orange-300 bg-orange-50",
+                ];
+                return (
+                  <Link
+                    key={entry.profileId}
+                    to={`/profile/${entry.profileId}`}
+                    className="block flex-1"
+                    data-testid={`podium-${entry.rank}`}
+                  >
+                    <div
+                      className={`flex flex-col items-center rounded-2xl border-2 p-3 transition-all duration-200 hover:shadow-md ${colors[i]} ${isFirst ? "pb-5" : ""}`}
+                    >
+                      {isFirst && (
+                        <Crown className="mb-1 h-5 w-5 text-amber-500" strokeWidth={1.5} />
+                      )}
+                      <Avatar
+                        className={`border-2 border-white shadow-sm ${isFirst ? "h-14 w-14" : "h-11 w-11"}`}
+                      >
+                        <AvatarImage src={entry.avatar} alt={entry.name} />
+                        <AvatarFallback>{initials(entry.name)}</AvatarFallback>
+                      </Avatar>
+                      <p className="mt-2 text-center text-xs font-semibold leading-tight text-foreground">
+                        {entry.name.split(" ")[0]}
+                      </p>
+                      <p className="mt-1 text-sm font-serif font-semibold text-primary">
+                        {formatCurrency(entry.totalRaised)}
+                      </p>
+                      <p className="text-[0.625rem] text-muted-foreground">
+                        #{entry.rank}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              }
+            )}
+          </div>
+        )}
+
+        {/* Flat list - all entries for Trending, remaining for Top Fundraisers */}
+        <div className="space-y-3">
+          {(showPodium ? sortedLeaderboard.slice(3) : sortedLeaderboard).map((entry, i) => (
+            <Link
+              key={entry.profileId}
+              to={`/profile/${entry.profileId}`}
+              className="block"
+              data-testid={`leaderboard-${entry.profileId}`}
+            >
+              <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-muted/30 px-4 py-3 transition-all duration-200 hover:bg-muted/60 hover:shadow-sm">
+                <p className="w-7 text-center text-sm font-bold text-muted-foreground">
+                  {showPodium ? entry.rank : i + 1}
+                </p>
+                <Avatar className="h-10 w-10 border border-white shadow-sm">
+                  <AvatarImage src={entry.avatar} alt={entry.name} />
+                  <AvatarFallback>{initials(entry.name)}</AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-semibold text-foreground">
+                    {entry.name}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="inline-flex items-center gap-0.5">
+                      <Heart className="h-3 w-3" />
+                      {entry.campaignsFunded} funded
+                    </span>
+                    <span className="inline-flex items-center gap-0.5">
+                      <Target className="h-3 w-3" />
+                      {entry.trustScore} trust
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-base font-serif font-semibold text-primary">
+                    {formatCurrency(entry.totalRaised)}
+                  </p>
+                  {entry.weeklyTrend > 0 && (
+                    <p className="flex items-center justify-end gap-0.5 text-xs text-primary/70">
+                      <ArrowUpRight className="h-3 w-3" />
+                      +{entry.weeklyTrend}%
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -234,124 +494,7 @@ export default function CommunityPage() {
           </Card>
 
           {/* ─── Leaderboard Card (5 cols) ─── */}
-          <Card
-            className="border-white/70 bg-white/90 lg:col-span-5"
-            data-testid="community-leaderboard-card"
-          >
-            <CardContent className="space-y-5 p-5 sm:p-6 lg:p-8">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <Trophy className="h-5 w-5 text-primary" />
-                  <h2 className="text-xl font-serif text-foreground">
-                    Top fundraisers
-                  </h2>
-                </div>
-                <Badge
-                  className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary"
-                >
-                  Live rankings
-                </Badge>
-              </div>
-
-              {/* Podium - top 3 */}
-              <div
-                className="flex items-end justify-center gap-3"
-                data-testid="leaderboard-podium"
-              >
-                {[leaderboard[1], leaderboard[0], leaderboard[2]].map(
-                  (entry, i) => {
-                    const isFirst = i === 1;
-                    const colors = [
-                      "border-slate-300 bg-slate-50",
-                      "border-amber-300 bg-amber-50",
-                      "border-orange-300 bg-orange-50",
-                    ];
-                    return (
-                      <Link
-                        key={entry.profileId}
-                        to={`/profile/${entry.profileId}`}
-                        className="block flex-1"
-                        data-testid={`podium-${entry.rank}`}
-                      >
-                        <div
-                          className={`flex flex-col items-center rounded-2xl border-2 p-3 transition-all duration-200 hover:shadow-md ${colors[i]} ${isFirst ? "pb-5" : ""}`}
-                        >
-                          {isFirst && (
-                            <Crown className="mb-1 h-5 w-5 text-amber-500" strokeWidth={1.5} />
-                          )}
-                          <Avatar
-                            className={`border-2 border-white shadow-sm ${isFirst ? "h-14 w-14" : "h-11 w-11"}`}
-                          >
-                            <AvatarImage src={entry.avatar} alt={entry.name} />
-                            <AvatarFallback>{initials(entry.name)}</AvatarFallback>
-                          </Avatar>
-                          <p className="mt-2 text-center text-xs font-semibold leading-tight text-foreground">
-                            {entry.name.split(" ")[0]}
-                          </p>
-                          <p className="mt-1 text-sm font-serif font-semibold text-primary">
-                            {formatCurrency(entry.totalRaised)}
-                          </p>
-                          <p className="text-[0.625rem] text-muted-foreground">
-                            #{entry.rank}
-                          </p>
-                        </div>
-                      </Link>
-                    );
-                  }
-                )}
-              </div>
-
-              {/* Remaining ranks */}
-              {leaderboard.length > 3 && (
-                <div className="space-y-3">
-                  {leaderboard.slice(3).map((entry) => (
-                    <Link
-                      key={entry.profileId}
-                      to={`/profile/${entry.profileId}`}
-                      className="block"
-                      data-testid={`leaderboard-${entry.profileId}`}
-                    >
-                      <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-muted/30 px-4 py-3 transition-all duration-200 hover:bg-muted/60 hover:shadow-sm">
-                        <p className="w-7 text-center text-sm font-bold text-muted-foreground">
-                          {entry.rank}
-                        </p>
-                        <Avatar className="h-10 w-10 border border-white shadow-sm">
-                          <AvatarImage src={entry.avatar} alt={entry.name} />
-                          <AvatarFallback>{initials(entry.name)}</AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate font-semibold text-foreground">
-                            {entry.name}
-                          </p>
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <span className="inline-flex items-center gap-0.5">
-                              <Heart className="h-3 w-3" />
-                              {entry.campaignsFunded} funded
-                            </span>
-                            <span className="inline-flex items-center gap-0.5">
-                              <Target className="h-3 w-3" />
-                              {entry.trustScore} trust
-                            </span>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-base font-serif font-semibold text-primary">
-                            {formatCurrency(entry.totalRaised)}
-                          </p>
-                          {entry.weeklyTrend > 0 && (
-                            <p className="flex items-center justify-end gap-0.5 text-xs text-primary/70">
-                              <ArrowUpRight className="h-3 w-3" />
-                              +{entry.weeklyTrend}%
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <LeaderboardCard />
         </div>
 
         {/* ─── Activity Feed ─── */}
@@ -383,6 +526,14 @@ export default function CommunityPage() {
                   className="block"
                 >
                   <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
+                    {update.image && (
+                      <img
+                        src={update.image}
+                        alt={update.title}
+                        loading="lazy"
+                        className="rounded-lg aspect-[16/10] object-cover w-full"
+                      />
+                    )}
                     <CardContent className="flex gap-3 p-4">
                       <Avatar className="h-8 w-8 shrink-0 border border-white shadow-sm">
                         <AvatarImage
@@ -419,50 +570,7 @@ export default function CommunityPage() {
         </div>
 
         {/* ─── Active Campaigns Grid ─── */}
-        <div className="mt-16 lg:mt-24">
-          <h2 className="mb-6 text-2xl font-serif font-semibold text-foreground">
-            Active campaigns
-          </h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {activeCampaigns.map((c) => (
-              <Link
-                key={c.id}
-                to={`/campaign/${c.id}`}
-                className="block"
-                data-testid={`active-campaign-${c.id}`}
-              >
-                <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <div className="aspect-[16/10] overflow-hidden">
-                    <img
-                      src={c.heroImage}
-                      alt={c.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                  <CardContent className="space-y-3 p-4">
-                    <Badge className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary">
-                      {c.category}
-                    </Badge>
-                    <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
-                      {c.title}
-                    </p>
-                    <Progress
-                      value={Math.min(Math.round((c.raised / c.goal) * 100), 100)}
-                      className="h-2 bg-primary/15"
-                    />
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span className="font-medium text-foreground">
-                        {formatCurrency(c.raised)}
-                      </span>
-                      <span>{c.daysLeft} days left</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <CampaignGrid campaigns={activeCampaigns} />
       </div>
     </div>
   );

@@ -32,7 +32,8 @@
         "id": "update-1-1",
         "date": "2026-03-05",
         "title": "Construction Starts Next Week",
-        "content": "The membrane crew from Greenroof Systems NW is scheduled to begin on March 12. We finalized the waterproofing spec last week and ordered materials. Weather looks clear through the 20th."
+        "content": "The membrane crew from Greenroof Systems NW is scheduled to begin on March 12. We finalized the waterproofing spec last week and ordered materials. Weather looks clear through the 20th.",
+        "image": "/images/campaign-detail.jpg"
       },
       {
         "id": "update-1-2",
@@ -100,7 +101,8 @@
         "id": "update-2-1",
         "date": "2026-03-03",
         "title": "First 50 Homes Have Panels on the Roof",
-        "content": "Installation crews completed the southeast cluster ahead of schedule. All 50 systems passed city inspection on the first try. We are seeing 15-20% higher output than projected thanks to the unusually clear February."
+        "content": "Installation crews completed the southeast cluster ahead of schedule. All 50 systems passed city inspection on the first try. We are seeing 15-20% higher output than projected thanks to the unusually clear February.",
+        "image": "/images/hero-campaign.jpg"
       },
       {
         "id": "update-2-2",
@@ -161,7 +163,8 @@
         "id": "update-3-1",
         "date": "2026-03-01",
         "title": "First 80 Homes Have Filtration Installed",
-        "content": "Both plumbing crews are ahead of schedule. Homeowner satisfaction surveys show 100% approval so far. The under-sink units are nearly invisible and residents report noticeably better water taste."
+        "content": "Both plumbing crews are ahead of schedule. Homeowner satisfaction surveys show 100% approval so far. The under-sink units are nearly invisible and residents report noticeably better water taste.",
+        "image": "/images/campaign-detail.jpg"
       },
       {
         "id": "update-3-2",
