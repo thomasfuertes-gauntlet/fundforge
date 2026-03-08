@@ -18,6 +18,13 @@ import {
   ThumbsUp,
   MessageSquare,
   Flame,
+  Sprout,
+  Zap,
+  TreePine,
+  GraduationCap,
+  Users,
+  Palette,
+  Cpu,
 } from "lucide-react";
 
 function formatCurrency(value) {
@@ -41,6 +48,16 @@ function formatMemberSince(dateStr) {
     year: "numeric",
   });
 }
+
+const CATEGORY_ICONS = {
+  "Urban Agriculture": Sprout,
+  "Renewable Energy": Zap,
+  Environmental: TreePine,
+  Education: GraduationCap,
+  Community: Users,
+  "Arts & Culture": Palette,
+  Technology: Cpu,
+};
 
 const TRUST_METRICS = [
   { key: "fulfillmentRate", label: "Fulfillment history", icon: Award },
@@ -144,6 +161,28 @@ export default function ProfilePage() {
               >
                 {profile.bio}
               </p>
+
+              {/* Top Causes */}
+              {(() => {
+                const categories = [...new Set(campaigns.map((c) => c.category))];
+                if (categories.length === 0) return null;
+                return (
+                  <div className="flex flex-wrap gap-2" data-testid="profile-causes">
+                    {categories.map((cat) => {
+                      const Icon = CATEGORY_ICONS[cat] || Flame;
+                      return (
+                        <span
+                          key={cat}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground"
+                        >
+                          <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+                          {cat}
+                        </span>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
 
               {/* Stats Row */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
