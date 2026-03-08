@@ -14,6 +14,7 @@ import { usePageView, useScrollDepth } from "@/lib/useAnalytics";
 import { trackDonateClick } from "@/lib/analytics";
 import useCountUp from "@/lib/useCountUp";
 import { cn } from "@/lib/utils";
+import { formatCurrency, formatDate, initials } from "@/lib/format";
 import {
   Heart,
   Share2,
@@ -45,21 +46,6 @@ function formatRelativeTime(timestamp) {
   return `${diffDays}d ago`;
 }
 
-function formatCurrency(value) {
-  return value.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0 });
-}
-
-function formatDate(dateStr) {
-  return new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-function initials(name) {
-  return name.split(" ").map((w) => w[0]).join("").toUpperCase();
-}
 
 export default function CampaignPage() {
   const { id } = useParams();

@@ -4,6 +4,7 @@ import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
 import { community, getActiveCampaigns, getProfile } from "@/data";
 import { cn } from "@/lib/utils";
+import { formatCurrency, initials } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -23,15 +24,6 @@ import {
 
 const { aggregates, leaderboard, trending } = community;
 
-function formatCurrency(value) {
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
-  return `$${value.toLocaleString()}`;
-}
-
-function initials(name) {
-  return name.split(" ").map((w) => w[0]).join("").toUpperCase();
-}
 
 function CommunityCounter({ end, prefix = "", suffix = "", label, className, valueClassName, labelClassName, testId }) {
   const [ref, display] = useCountUp(end, { prefix, suffix });
@@ -157,7 +149,7 @@ function CampaignGrid({ campaigns }) {
                 />
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span className="font-medium text-foreground">
-                    {formatCurrency(c.raised)}
+                    {formatCurrency(c.raised, { compact: true })}
                   </span>
                   <span>{c.daysLeft} days left</span>
                 </div>
@@ -260,7 +252,7 @@ function LeaderboardCard() {
                         {entry.name.split(" ")[0]}
                       </p>
                       <p className="mt-1 text-sm font-serif font-semibold text-primary">
-                        {formatCurrency(entry.totalRaised)}
+                        {formatCurrency(entry.totalRaised, { compact: true })}
                       </p>
                       <p className="text-[0.625rem] text-muted-foreground">
                         #{entry.rank}
@@ -307,7 +299,7 @@ function LeaderboardCard() {
                 </div>
                 <div className="text-right">
                   <p className="text-base font-serif font-semibold text-primary">
-                    {formatCurrency(entry.totalRaised)}
+                    {formatCurrency(entry.totalRaised, { compact: true })}
                   </p>
                   {entry.weeklyTrend > 0 && (
                     <p className="flex items-center justify-end gap-0.5 text-xs text-primary/70">
@@ -477,7 +469,7 @@ export default function CommunityPage() {
                           +{item.weeklyMomentum}%
                         </span>
                         <span>
-                          {formatCurrency(item.weeklyRaised)} this week
+                          {formatCurrency(item.weeklyRaised, { compact: true })} this week
                         </span>
                       </div>
                     </div>

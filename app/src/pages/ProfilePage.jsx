@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedProgress } from "@/components/ui/progress";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
+import { formatCurrency, formatNumber, formatMemberSince, initials } from "@/lib/format";
 import {
   ShieldCheck,
   Mail,
@@ -28,27 +29,7 @@ import {
   Cpu,
 } from "lucide-react";
 
-function formatCurrency(value) {
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
-  return `$${value.toLocaleString()}`;
-}
 
-function formatNumber(value) {
-  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
-  return value.toLocaleString();
-}
-
-function initials(name) {
-  return name.split(" ").map((w) => w[0]).join("").toUpperCase();
-}
-
-function formatMemberSince(dateStr) {
-  return new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-}
 
 const CATEGORY_ICONS = {
   "Urban Agriculture": Sprout,
@@ -354,8 +335,8 @@ export default function ProfilePage() {
                         />
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
                           <span className="font-medium text-foreground">
-                            {formatCurrency(c.raised)} of{" "}
-                            {formatCurrency(c.goal)}
+                            {formatCurrency(c.raised, { compact: true })} of{" "}
+                            {formatCurrency(c.goal, { compact: true })}
                           </span>
                           <span>{c.daysLeft} days left</span>
                         </div>
@@ -407,7 +388,7 @@ export default function ProfilePage() {
                       </p>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="font-medium text-foreground">
-                          {formatCurrency(c.raised)}
+                          {formatCurrency(c.raised, { compact: true })}
                         </span>
                         <span>
                           {c.backerCount.toLocaleString()} backers
@@ -436,7 +417,8 @@ export default function ProfilePage() {
             </p>
             <p className="mt-2 text-4xl font-serif sm:text-5xl">
               {formatCurrency(
-                profile.stats.totalRaised + profile.stats.totalDonated
+                profile.stats.totalRaised + profile.stats.totalDonated,
+                { compact: true }
               )}
             </p>
             <p className="mt-2 text-sm text-primary-foreground/75">
@@ -446,7 +428,7 @@ export default function ProfilePage() {
             <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
               <div className="rounded-2xl bg-white/10 p-4 text-center">
                 <p className="text-xl font-serif">
-                  {formatCurrency(profile.stats.totalRaised)}
+                  {formatCurrency(profile.stats.totalRaised, { compact: true })}
                 </p>
                 <p className="mt-1 text-xs text-primary-foreground/60">
                   raised
@@ -454,7 +436,7 @@ export default function ProfilePage() {
               </div>
               <div className="rounded-2xl bg-white/10 p-4 text-center">
                 <p className="text-xl font-serif">
-                  {formatCurrency(profile.stats.totalDonated)}
+                  {formatCurrency(profile.stats.totalDonated, { compact: true })}
                 </p>
                 <p className="mt-1 text-xs text-primary-foreground/60">
                   donated
@@ -492,7 +474,7 @@ export default function ProfilePage() {
                   type: "launch",
                   date: c.createdAt,
                   title: `Started "${c.title}"`,
-                  subtitle: `Goal: ${formatCurrency(c.goal)}`,
+                  subtitle: `Goal: ${formatCurrency(c.goal, { compact: true })}`,
                   campaignId: c.id,
                 },
               ])
