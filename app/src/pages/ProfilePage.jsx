@@ -138,7 +138,7 @@ export default function ProfilePage() {
 
               {/* Bio */}
               <p
-                className="text-[0.9375rem] leading-relaxed text-muted-foreground"
+                className="text-sm leading-relaxed text-muted-foreground"
                 data-testid="profile-bio"
               >
                 {profile.bio}
@@ -234,7 +234,7 @@ export default function ProfilePage() {
             {/* Right: Trust Composition Panel */}
             <RevealOnScroll>
             <div
-              className="rounded-3xl bg-gradient-to-br from-primary via-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground"
+              className="rounded-3xl bg-gradient-to-br from-primary via-primary to-gradient-end p-6 text-primary-foreground"
               data-testid="profile-trust-panel"
             >
               <div className="flex items-start justify-between gap-4">
@@ -409,7 +409,7 @@ export default function ProfilePage() {
           {/* Network Impact */}
           <RevealOnScroll delay={150}>
           <div
-            className="mt-10 rounded-3xl bg-gradient-to-r from-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground sm:p-8"
+            className="mt-10 rounded-3xl bg-gradient-to-r from-primary to-gradient-end p-6 text-primary-foreground sm:p-8"
             data-testid="profile-network-impact"
           >
             <p className="text-xs font-medium uppercase tracking-widest text-primary-foreground/60">
@@ -568,7 +568,7 @@ export default function ProfilePage() {
                           <p className="text-lg font-serif text-primary">
                             {p.trust.score}
                           </p>
-                          <p className="text-[0.625rem] text-muted-foreground">
+                          <p className="text-xs text-muted-foreground">
                             trust
                           </p>
                         </div>

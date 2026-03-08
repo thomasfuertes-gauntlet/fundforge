@@ -147,7 +147,7 @@ export default function HomePage() {
             <p className="mb-4 text-2xl font-serif leading-snug text-foreground">
               Reputation is visible, measurable, and human.
             </p>
-            <p className="text-[0.9375rem] leading-relaxed text-muted-foreground">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Every organizer carries a composite trust score derived from three
               weighted inputs. The score flows across all pages: it ranks
               leaderboard position on Community, anchors credibility on Campaign,
@@ -170,7 +170,7 @@ export default function HomePage() {
 
           {/* Live preview card */}
           <Card
-            className="overflow-hidden border-white/70 bg-gradient-to-br from-primary via-primary to-sky-900 text-primary-foreground"
+            className="overflow-hidden border-white/70 bg-gradient-to-br from-primary via-primary to-gradient-end text-primary-foreground"
           >
             <CardContent className="flex flex-col justify-between gap-6 p-6 lg:p-8">
               <div>

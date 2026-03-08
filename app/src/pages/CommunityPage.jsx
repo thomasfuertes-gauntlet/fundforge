@@ -254,7 +254,7 @@ function LeaderboardCard() {
                       <p className="mt-1 text-sm font-serif font-semibold text-primary">
                         {formatCurrency(entry.totalRaised, { compact: true })}
                       </p>
-                      <p className="text-[0.625rem] text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         #{entry.rank}
                       </p>
                     </div>
@@ -326,7 +326,7 @@ export default function CommunityPage() {
       <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
         {/* Hero Banner */}
         <div
-          className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground sm:p-8 lg:mb-16"
+          className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-gradient-end p-6 text-primary-foreground sm:p-8 lg:mb-16"
           data-testid="community-hero-banner"
         >
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -551,7 +551,7 @@ export default function CommunityPage() {
                         <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground line-clamp-2">
                           {update.content}
                         </p>
-                        <p className="mt-1.5 flex items-center gap-1 text-[0.6875rem] text-muted-foreground/60">
+                        <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground/60">
                           <CalendarDays className="h-3 w-3" />
                           {new Date(update.date + "T00:00:00").toLocaleDateString(
                             "en-US",
