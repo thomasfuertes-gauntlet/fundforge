@@ -25,6 +25,7 @@ function App() {
       <ScrollToTop />
       <SiteHeader />
       <ErrorBoundary>
+        <main id="main-content">
         <Routes>
           <Route path="/campaign/:id" element={<CampaignPage />} />
           <Route path="/community" element={<CommunityPage />} />
@@ -32,6 +33,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </main>
       </ErrorBoundary>
       <SiteFooter />
       <Toaster position="bottom-right" />

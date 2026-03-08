@@ -15,6 +15,12 @@ export default function SiteHeader() {
       className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-lg"
       data-testid="site-header"
     >
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
+      >
+        Skip to content
+      </a>
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-16">
         {/* Logo */}
         <Link
