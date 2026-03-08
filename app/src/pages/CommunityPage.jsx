@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
+import useCountUp from "@/lib/useCountUp";
 import { community, getActiveCampaigns, getProfile } from "@/data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,13 +26,38 @@ function formatCurrency(value) {
   return `$${value.toLocaleString()}`;
 }
 
-function formatNumber(value) {
-  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
-  return value.toLocaleString();
-}
-
 function initials(name) {
   return name.split(" ").map((w) => w[0]).join("").toUpperCase();
+}
+
+function CommunityCounter({ end, prefix = "", suffix = "", label, className, valueClassName, labelClassName, testId }) {
+  const [ref, display] = useCountUp(end, { prefix, suffix });
+  return (
+    <div ref={ref} className={className} data-testid={testId}>
+      <p className={valueClassName}>{display}</p>
+      <p className={labelClassName}>{label}</p>
+    </div>
+  );
+}
+
+function CommunityCounterDonors({ donors }) {
+  // Animate the decimal value (e.g. 109 for 10.9K)
+  const tenths = Math.round(donors / 100);
+  const [ref, display] = useCountUp(tenths);
+  const raw = parseInt(display.replace(/,/g, ""), 10) || 0;
+  const formatted = `${(raw / 10).toFixed(1)}K`;
+  return (
+    <div
+      ref={ref}
+      className="rounded-2xl border border-sky-100 bg-sky-50/80 p-5"
+      data-testid="community-total-donors"
+    >
+      <p className="text-3xl font-serif text-foreground">{formatted}</p>
+      <p className="mt-1.5 text-sm text-muted-foreground">
+        unique donors contributing
+      </p>
+    </div>
+  );
 }
 
 export default function CommunityPage() {
@@ -75,51 +101,42 @@ export default function CommunityPage() {
               </div>
 
               {/* Total Raised - hero stat */}
-              <div
+              <CommunityCounter
+                end={Math.round(aggregates.totalRaised / 1_000)}
+                prefix="$"
+                suffix="K"
+                label="total raised across the community"
                 className="rounded-2xl bg-primary p-5 text-primary-foreground"
-                data-testid="community-total-raised"
-              >
-                <p className="text-3xl font-serif">
-                  {formatCurrency(aggregates.totalRaised)}
-                </p>
-                <p className="mt-1.5 text-sm text-primary-foreground/75">
-                  total raised across the community
-                </p>
-              </div>
+                valueClassName="text-3xl font-serif"
+                labelClassName="mt-1.5 text-sm text-primary-foreground/75"
+                testId="community-total-raised"
+              />
 
               {/* Total Donors */}
-              <div
-                className="rounded-2xl border border-sky-100 bg-sky-50/80 p-5"
-                data-testid="community-total-donors"
-              >
-                <p className="text-3xl font-serif text-foreground">
-                  {formatNumber(aggregates.totalDonors)}
-                </p>
-                <p className="mt-1.5 text-sm text-muted-foreground">
-                  unique donors contributing
-                </p>
-              </div>
+              <CommunityCounterDonors
+                donors={aggregates.totalDonors}
+              />
 
               {/* Secondary stats row */}
               <div className="grid grid-cols-2 gap-3">
-                <div
+                <CommunityCounter
+                  end={aggregates.averageGift}
+                  prefix="$"
+                  label="avg gift"
                   className="rounded-2xl border border-border/60 bg-muted/40 p-4"
-                  data-testid="community-avg-gift"
-                >
-                  <p className="text-2xl font-serif text-foreground">
-                    ${aggregates.averageGift}
-                  </p>
-                  <p className="text-xs text-muted-foreground">avg gift</p>
-                </div>
-                <div
+                  valueClassName="text-2xl font-serif text-foreground"
+                  labelClassName="text-xs text-muted-foreground"
+                  testId="community-avg-gift"
+                />
+                <CommunityCounter
+                  end={aggregates.averageFundingRate}
+                  suffix="%"
+                  label="funded"
                   className="rounded-2xl border border-border/60 bg-muted/40 p-4"
-                  data-testid="community-funding-rate"
-                >
-                  <p className="text-2xl font-serif text-foreground">
-                    {aggregates.averageFundingRate}%
-                  </p>
-                  <p className="text-xs text-muted-foreground">funded</p>
-                </div>
+                  valueClassName="text-2xl font-serif text-foreground"
+                  labelClassName="text-xs text-muted-foreground"
+                  testId="community-funding-rate"
+                />
               </div>
             </CardContent>
           </Card>

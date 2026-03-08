@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
+import useCountUp from "@/lib/useCountUp";
 import { community, profiles } from "@/data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,12 +18,6 @@ import {
 } from "lucide-react";
 
 const { aggregates } = community;
-
-function formatCurrency(value) {
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${Math.round(value / 1_000)}K`;
-  return `$${value.toLocaleString()}`;
-}
 
 const PAGES = [
   {
@@ -50,6 +45,28 @@ const TRUST_INPUTS = [
   { label: "Update consistency", weight: "30%", icon: BarChart3 },
   { label: "Repeat donor confidence", weight: "30%", icon: Heart },
 ];
+
+function CountStat({ end, prefix = "", suffix = "", label }) {
+  const [ref, display] = useCountUp(end, { prefix, suffix });
+  return (
+    <div ref={ref}>
+      <p className="text-3xl font-serif text-primary">{display}</p>
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
+function HeroStats({ totalRaised, activeCampaigns, avgTrust, organizers }) {
+  const raisedInK = Math.round(totalRaised / 1_000);
+  return (
+    <div className="mt-10 flex flex-wrap gap-6">
+      <CountStat end={raisedInK} prefix="$" suffix="K" label="total raised" />
+      <CountStat end={activeCampaigns} label="active campaigns" />
+      <CountStat end={avgTrust} label="avg trust score" />
+      <CountStat end={organizers} label="verified organizers" />
+    </div>
+  );
+}
 
 export default function HomePage() {
   usePageView("home");
@@ -79,30 +96,12 @@ export default function HomePage() {
         </p>
 
         {/* Quick stats */}
-        <div className="mt-10 flex flex-wrap gap-6">
-          <div>
-            <p className="text-3xl font-serif text-primary">
-              {formatCurrency(aggregates.totalRaised)}
-            </p>
-            <p className="text-sm text-muted-foreground">total raised</p>
-          </div>
-          <div>
-            <p className="text-3xl font-serif text-primary">
-              {aggregates.activeCampaigns}
-            </p>
-            <p className="text-sm text-muted-foreground">active campaigns</p>
-          </div>
-          <div>
-            <p className="text-3xl font-serif text-primary">{avgTrust}</p>
-            <p className="text-sm text-muted-foreground">avg trust score</p>
-          </div>
-          <div>
-            <p className="text-3xl font-serif text-primary">
-              {profiles.length}
-            </p>
-            <p className="text-sm text-muted-foreground">verified organizers</p>
-          </div>
-        </div>
+        <HeroStats
+          totalRaised={aggregates.totalRaised}
+          activeCampaigns={aggregates.activeCampaigns}
+          avgTrust={avgTrust}
+          organizers={profiles.length}
+        />
       </div>
 
       {/* Three Pages */}
