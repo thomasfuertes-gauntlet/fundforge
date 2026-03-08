@@ -77,7 +77,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24 lg:px-16">
+      <div className="mx-auto max-w-5xl px-6 py-20 md:px-12 md:py-28 lg:px-16">
         <Badge variant="secondary" className="mb-4">
           Interview project
         </Badge>
@@ -105,7 +105,7 @@ export default function HomePage() {
       </div>
 
       {/* Three Pages */}
-      <div className="mx-auto max-w-5xl px-4 pb-16 sm:px-6 lg:px-16">
+      <div className="mx-auto max-w-5xl px-6 pb-24 md:px-12 lg:px-16">
         <h2 className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
           The ecosystem
         </h2>
@@ -137,7 +137,7 @@ export default function HomePage() {
       </div>
 
       {/* Trust Model */}
-      <div className="mx-auto max-w-5xl px-4 pb-16 sm:px-6 lg:px-16">
+      <div className="mx-auto max-w-5xl px-6 pb-24 md:px-12 lg:px-16">
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Explanation */}
           <div>
@@ -215,7 +215,7 @@ export default function HomePage() {
       </div>
 
       {/* Stack */}
-      <div className="mx-auto max-w-5xl px-4 pb-20 sm:px-6 lg:px-16">
+      <div className="mx-auto max-w-5xl px-6 pb-24 md:px-12 lg:px-16">
         <h2 className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
           Built with
         </h2>

@@ -67,7 +67,7 @@ export default function CommunityPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-16">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
         {/* Hero Banner */}
         <div
           className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-[hsl(195,69%,27%)] p-6 text-primary-foreground sm:p-8 lg:mb-16"
@@ -355,7 +355,7 @@ export default function CommunityPage() {
         </div>
 
         {/* ─── Activity Feed ─── */}
-        <div className="mt-12 lg:mt-16" data-testid="community-activity-feed">
+        <div className="mt-16 lg:mt-24" data-testid="community-activity-feed">
           <div className="mb-5 flex items-center gap-3">
             <MessageSquare className="h-5 w-5 text-primary" />
             <h2 className="text-2xl font-serif font-semibold text-foreground">
@@ -419,7 +419,7 @@ export default function CommunityPage() {
         </div>
 
         {/* ─── Active Campaigns Grid ─── */}
-        <div className="mt-12 lg:mt-16">
+        <div className="mt-16 lg:mt-24">
           <h2 className="mb-6 text-2xl font-serif font-semibold text-foreground">
             Active campaigns
           </h2>

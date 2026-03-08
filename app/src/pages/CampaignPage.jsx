@@ -81,7 +81,7 @@ export default function CampaignPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-16">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
           {/* ─── Left Column: Story ─── */}
           <div className="space-y-8 lg:col-span-7">

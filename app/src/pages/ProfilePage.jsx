@@ -85,7 +85,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-16">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
         {/* ─── Identity Header + Trust Panel ─── */}
         <Card
           className="overflow-hidden border-white/70 bg-white/90"
@@ -301,7 +301,7 @@ export default function ProfilePage() {
         </Card>
 
         {/* ─── Campaign History ─── */}
-        <div className="mt-12 lg:mt-16">
+        <div className="mt-16 lg:mt-24">
           {/* Active Campaigns */}
           {activeCampaigns.length > 0 && (
             <div className="mb-10">
