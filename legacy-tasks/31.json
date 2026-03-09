@@ -1,0 +1,21 @@
+{
+  "id": "31",
+  "subject": "Mobile responsive audit with screenshots at 375px",
+  "description": "All our comparison screenshots are desktop (1440px). We need to verify all 4 pages at mobile width (375px iPhone). Take screenshots of each page at 375x812, identify any overflow, touch target, or layout issues. GoFundMe is mobile-first - our responsive story needs to be tight for the demo. Fix any issues found.",
+  "activeForm": "Running mobile responsive audit",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Fixed horizontal scroll on Community (activity cards overflow-hidden)",
+      "Fixed horizontal scroll on Profile (discover cards overflow-hidden + avatar shrink-0)",
+      "Nav touch targets increased to 44px+ (py-1.5 -> py-2.5)",
+      "Footer link touch targets increased (added py-2)",
+      "useCountUp threshold lowered 0.3 -> 0.1 for below-fold stats on mobile"
+    ],
+    "learnings": [
+      "IntersectionObserver threshold 0.3 is too aggressive for mobile viewports where stats cards are often below the fold at 375px"
+    ]
+  }
+}

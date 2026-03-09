@@ -1,0 +1,19 @@
+{
+  "id": "13",
+  "subject": "Add competitive leaderboard prompt to Campaign page",
+  "description": "From stretch.md: The page dynamically injects \"Help [organizer] climb the leaderboard, donate today!\" and shows campaign rank.\n\nImplementation:\n- Pull organizer's leaderboard rank from community.json\n- Render a small card below the donate button or in the story column: \"Help Maya reach #1 - currently #2 on the leaderboard\"\n- Link to /community for full leaderboard\n- Creates cross-page connectivity and competitive altruism\n\nSmall scope - a conditional card in CampaignPage.jsx using existing community data.",
+  "status": "completed",
+  "blocks": [
+    "3"
+  ],
+  "blockedBy": [
+    "7"
+  ],
+  "metadata": {
+    "changes": [
+      "Added leaderboard prompt card in donate panel - shows organizer rank and links to /community",
+      "Only renders when rank > 1 (no prompt for #1 organizer)"
+    ],
+    "clean": true
+  }
+}

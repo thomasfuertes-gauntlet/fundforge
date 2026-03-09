@@ -1,0 +1,8 @@
+{
+  "id": "41",
+  "subject": "Increase campaign grid gap from lg:gap-12 to lg:gap-16 per design spec",
+  "description": "Design guidelines `campaign_split`: `grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16`. Our CampaignPage uses `gap-8 lg:gap-12`. The extra 1rem gap between story column and donate panel gives the layout more breathing room matching the editorial feel. Single line change in CampaignPage.jsx line 85.",
+  "status": "pending",
+  "blocks": [],
+  "blockedBy": []
+}

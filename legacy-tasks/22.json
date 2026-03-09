@@ -1,0 +1,10 @@
+{
+  "id": "22",
+  "subject": "Run Lighthouse on production and verify >= 85",
+  "description": "Spec target: Lighthouse Performance >= 85 on all three pages. Run against fundforge.tomfuertes.workers.dev for /campaign/campaign-1, /community, /profile/profile-1. Fix any issues that drop below 85. Record scores in CLAUDE.md.",
+  "status": "pending",
+  "blocks": [
+    "10"
+  ],
+  "blockedBy": []
+}

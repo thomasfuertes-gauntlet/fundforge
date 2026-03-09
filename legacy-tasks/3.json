@@ -1,0 +1,31 @@
+{
+  "id": "3",
+  "subject": "Polish, performance, and responsive fine-tuning",
+  "description": "Final quality pass. Ship-ready.\n\nWalk the repo first: read CLAUDE.md for full current state.\n\nWork:\n- Run Lighthouse on all three pages, target >= 85 performance score\n- Image optimization: lazy loading, appropriate sizing, alt text\n- Loading states: skeleton screens or graceful placeholders during route transitions\n- Hover micro-interactions on all cards (lift + shadow per design system)\n- Verify no horizontal overflow at 375px on any page\n- Verify all CTAs are tappable on mobile (min 44x44px touch targets)\n- Check font rendering (font-display: swap to avoid FOIT)\n- Error boundaries around major page sections\n- Console clean: no warnings, no errors\n- Cross-browser spot check if time permits\n\nThis task is intentionally broad. Focus on what feels rough, not a checklist.\n\nWrite back to CLAUDE.md:\n- Lighthouse scores achieved\n- Performance optimizations applied\n- Known rough edges or trade-offs accepted",
+  "activeForm": "Polishing and fine-tuning",
+  "status": "completed",
+  "blocks": [
+    "4"
+  ],
+  "blockedBy": [
+    "6",
+    "5",
+    "15"
+  ],
+  "metadata": {
+    "changes": [
+      "Added loading=lazy on non-hero images, fetchPriority=high on hero",
+      "ScrollToTop component for route-change scroll reset",
+      "ErrorBoundary around routes",
+      "Responsive fixes: verification steps wrap, stats grids 2-col on mobile",
+      "Touch target increase on update toggle",
+      "overflow-x:hidden on body",
+      "Meta description + theme-color",
+      "Removed Vite favicon, added Cloudflare _redirects"
+    ],
+    "learnings": [
+      "git rm handles staged deletes - don't re-add in git add",
+      "rm alias (trash) fails silently on some paths in sandbox"
+    ]
+  }
+}

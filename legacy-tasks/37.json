@@ -1,0 +1,17 @@
+{
+  "id": "37",
+  "subject": "Add cause category icons to Profile page",
+  "description": "GoFundMe shows illustrated \"Top causes\" icons (Animals, Arts & Culture, Environment) on profiles. We have campaign categories in our data but don't surface them on profiles. Derive unique categories from the organizer's campaigns and display them as styled badges or icon chips in the identity header section. Uses existing data - no new fixtures needed.",
+  "activeForm": "Adding cause categories to profiles",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Added CATEGORY_ICONS map with 7 lucide icons for all campaign categories",
+      "Derived unique categories from organizer campaigns, rendered as icon chips",
+      "Positioned between bio and stats row in identity header"
+    ],
+    "clean": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "27",
+  "subject": "Add community hero image/banner to Community page",
+  "description": "Biggest visual gap vs GoFundMe. Their community page has a branded hero image (Watch Duty wildfire photo) that gives the community identity. Our page is text-only above the bento grid. Add a hero banner image or gradient with community branding between the header and the bento grid. Could use one of the campaign hero images or a new community-specific image.",
+  "activeForm": "Adding community hero banner",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Replaced plain text header with gradient banner (primary to sky)",
+      "Added overlapping avatar stack of top 4 leaderboard members",
+      "Active campaign count stat beside avatars",
+      "Badge restyled for dark background"
+    ],
+    "clean": true
+  }
+}

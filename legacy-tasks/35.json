@@ -1,0 +1,18 @@
+{
+  "id": "35",
+  "subject": "Add donor testimonial cards to Campaign page below story",
+  "description": "We have testimonials[] in campaign data but may not be displaying them prominently enough. GoFundMe doesn't have this - it's a trust differentiator. Add a dedicated \"What donors say\" section between the story and update timeline with styled quote cards. Each card: donor name, quote text, amount donated. Frosted card style with quotation marks.",
+  "activeForm": "Adding donor testimonial cards",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Already implemented in CampaignPage.jsx lines 216-243 with styled quote cards, MessageCircle icon, donor name, date"
+    ],
+    "learnings": [
+      "Testimonial data has no amount field - only donorName, text, date"
+    ],
+    "clean": true
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "18",
+  "subject": "Write architecture document (1-2 pages)",
+  "description": "Spec requires 5 sections:\n1. System Architecture - frontend, data layer, AI content pipeline, how 3 pages share data\n2. Trust Model Design - formula, inputs, display across pages\n3. Instrumentation Strategy - 7 event types, why each matters, how to use them\n4. AI Usage Log - how AI was used during dev, what worked/failed\n5. Design Decisions - key tradeoffs (Vite vs CRA, JSON fixtures vs API, SPA vs SSR)\n\nWrite to `docs/architecture.md`. 1-2 pages.",
+  "status": "pending",
+  "blocks": [
+    "10"
+  ],
+  "blockedBy": []
+}

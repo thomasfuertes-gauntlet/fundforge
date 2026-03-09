@@ -1,0 +1,23 @@
+{
+  "id": "4",
+  "subject": "Deploy and verify production",
+  "description": "Get the app publicly accessible.\n\nWalk the repo first: read CLAUDE.md for stack and build setup.\n\nWork:\n- Choose deployment target (Vercel, Netlify, Cloudflare Pages - whatever matches the stack)\n- Configure build command and output directory\n- Deploy and verify all three pages load at the public URL\n- Test cross-page navigation on the deployed version\n- Verify instrumentation events fire in production\n- Check performance targets on deployed version (LCP < 2.5s on 4G)\n\nWrite back to CLAUDE.md:\n- Deployment URL\n- Deployment platform and config\n- Any production-specific issues found and fixed",
+  "activeForm": "Deploying to Cloudflare Pages",
+  "status": "completed",
+  "blocks": [
+    "10"
+  ],
+  "blockedBy": [
+    "3"
+  ],
+  "metadata": {
+    "changes": [
+      "Deployed to fundforge.tomfuertes.workers.dev via Cloudflare Workers static assets",
+      "wrangler.jsonc with SPA not_found_handling replaces _redirects"
+    ],
+    "learnings": [
+      "Workers static assets _redirects causes infinite loop validation error - use not_found_handling instead",
+      "wrangler.jsonc must live in app/ alongside node_modules since there is no root package.json"
+    ]
+  }
+}

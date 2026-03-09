@@ -1,0 +1,14 @@
+{
+  "id": "20",
+  "subject": "Flesh out home page before final submission",
+  "description": "Current home page is a minimal placeholder. Before demo video, flesh out with approach highlights and stack note. User said \"we'll come back as we finish since features not locked.\" Revisit after docs are done.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Complete rewrite of HomePage.jsx: hero with editorial subtitle + 4 live stats from fixtures, 3-card ecosystem section with behavioral economics descriptions, trust model explainer with live score panel showing all 4 profiles, tech stack badges",
+      "Fixed trust field path: p.trust.score not p.trustScore"
+    ]
+  }
+}

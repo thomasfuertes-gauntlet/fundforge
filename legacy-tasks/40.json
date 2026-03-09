@@ -1,0 +1,8 @@
+{
+  "id": "40",
+  "subject": "Align outline button variant with design spec (border-2 + color flip on hover)",
+  "description": "Design spec Button outline: `border-2 border-[#0F3C32] text-[#0F3C32] hover:bg-[#0F3C32] hover:text-white`. Our outline variant already has `border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground` which matches. BUT the design ShowcasePage overrides it further with `border-emerald-900/30 bg-white/80` and hover lift. Check if our share button and other outline usages have the hover lift (`hover:-translate-y-0.5`) that the design reference applies to CTAs. Currently only the accent button has lift.",
+  "status": "pending",
+  "blocks": [],
+  "blockedBy": []
+}

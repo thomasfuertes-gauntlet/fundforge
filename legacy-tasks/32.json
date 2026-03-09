@@ -1,0 +1,18 @@
+{
+  "id": "32",
+  "subject": "Add animated number counters on home page and community stats",
+  "description": "The hero stats on Home ($971K, 4, 86, 4) and Community ($971K, 10.9K) are static text. Add a count-up animation that triggers when the stats scroll into view using IntersectionObserver. Animate from 0 to target over ~1.5s with easing. Small touch but makes the data feel alive and dynamic. No dependencies needed - pure CSS counter or requestAnimationFrame.",
+  "activeForm": "Adding animated counters",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Created useCountUp hook (IntersectionObserver + rAF + ease-out cubic)",
+      "Applied to 4 HomePage hero stats via CountStat/HeroStats components",
+      "Applied to 4 CommunityPage aggregate stats via CommunityCounter components",
+      "Special CommunityCounterDonors for decimal K formatting (10.9K)"
+    ],
+    "clean": true
+  }
+}

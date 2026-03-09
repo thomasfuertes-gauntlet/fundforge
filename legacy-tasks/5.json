@@ -1,0 +1,28 @@
+{
+  "id": "5",
+  "subject": "Add instrumentation layer",
+  "description": "Metrics capture - what to track and why.\n\nWalk the repo first: read CLAUDE.md and fundforge.md instrumentation section.\n\nWork:\n- Page view tracking: page name, timestamp, referrer, viewport size (fires on every route change)\n- Conversion events: donate button click (with campaign ID, amount), share click, follow click\n- Web Vitals: LCP, FID/INP, CLS per page (use web-vitals library or Performance API)\n- Error tracking: window.onerror / unhandledrejection with page context and session UUID\n- Engagement: scroll depth on campaign page (25/50/75/100%), time on donation panel\n- Analytics output: structured console logging with event type, timestamp, payload (or a simple /analytics route that displays captured events)\n- Generate a session UUID on first visit, persist in sessionStorage\n\nThe \"explain what metrics you'll capture and why\" requirement means the architecture doc needs a rationale for each metric. Capture notes as you build.\n\nWrite back to CLAUDE.md:\n- Event taxonomy (list of all event types with their payloads)\n- Why each metric matters (brief rationale)\n- How to view captured metrics (console, route, etc.)",
+  "activeForm": "Adding instrumentation layer",
+  "status": "completed",
+  "blocks": [
+    "3"
+  ],
+  "blockedBy": [
+    "7"
+  ],
+  "metadata": {
+    "changes": [
+      "Created app/src/lib/analytics.js - event bus with session UUID, structured console logging, Web Vitals, error tracking",
+      "Created app/src/lib/useAnalytics.js - React hooks for page views and scroll depth",
+      "Updated main.jsx to init error tracking + Web Vitals on startup",
+      "Instrumented CampaignPage (page_view, scroll_depth, donate_click, share_click)",
+      "Instrumented DonateModal (donate_complete with campaignId + amount)",
+      "Instrumented CommunityPage and ProfilePage (page_view)",
+      "Updated CLAUDE.md with full event taxonomy table"
+    ],
+    "learnings": [
+      "web-vitals auto-code-splits to 5.8KB chunk via dynamic import",
+      "Scroll depth uses a Set for dedup so milestones only fire once per campaign per session"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "26",
+  "subject": "Add \"Discover more organizers\" section to Profile page",
+  "description": "GoFundMe shows a \"Discover more people\" expandable section with suggested profiles. With 4 profiles in our data, show the other 3 organizers as clickable avatar chips at the bottom of the profile page. Simple horizontal row with avatar + name + trust score, linking to their profiles. Strengthens cross-page navigation.",
+  "activeForm": "Adding discover organizers section",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Added discover-organizers section at bottom of ProfilePage",
+      "Shows other 3 profiles as cards with avatar, name, title, trust score",
+      "Links to /profile/:id for cross-page navigation"
+    ],
+    "clean": true
+  }
+}

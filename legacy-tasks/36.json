@@ -1,0 +1,18 @@
+{
+  "id": "36",
+  "subject": "Add 404/not-found page for invalid campaign and profile IDs",
+  "description": "Currently visiting /campaign/invalid-id or /profile/invalid-id likely shows a broken page or empty state. Add a styled not-found component that shows when getCampaign/getProfile returns null: \"Campaign not found\" with illustration, link back to community page, and suggestion to browse active campaigns. Production polish that prevents embarrassment during demo.",
+  "activeForm": "Adding 404 page",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [],
+  "metadata": {
+    "changes": [
+      "Created shared NotFound component at components/NotFound.jsx with contextual messages for campaign/profile/page types",
+      "Replaced bare text fallbacks in CampaignPage and ProfilePage with NotFound component",
+      "Replaced catch-all Navigate redirect in App.jsx with NotFound page for unknown routes",
+      "Removed unused Navigate import"
+    ],
+    "clean": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "1",
+  "subject": "Build Community Hub Page",
+  "description": "Social proof as a calm data story. Bento grid layout.\n\nWalk the repo first: read CLAUDE.md, then design/frontend/src/components/showcase/ShowcasePage.jsx (community-preview section, lines ~432-528) for layout patterns.\n\nWork:\n- Bento grid layout (reference: 4-col metrics + 3-col trending + 5-col leaderboard on lg, stacked on mobile)\n- Aggregate metrics card: total raised, total donors (must match sum of campaign data in fixtures)\n- Trending campaigns card: campaign name, growth badge (shown when momentum > 20%), weekly stats\n- Leaderboard card: ranked list with avatar, name, amount raised, trend percentage (\"weekly momentum = % change in raised over 7 days\"), rank number\n- Click leaderboard entries to navigate to /profile/:id\n- Click trending campaigns to navigate to /campaign/:id\n- Responsive: works at 375px and 1440px\n- data-testid on all interactive elements\n\nExplore: the bento grid proportions are suggestions. Find what feels balanced with your actual data.\n\nWrite back to CLAUDE.md:\n- Community page component structure\n- How aggregate metrics are computed from fixtures (sum/average/etc.)\n- Any layout decisions that diverged from reference",
+  "activeForm": "Building Community Hub Page",
+  "status": "completed",
+  "blocks": [
+    "6",
+    "15"
+  ],
+  "blockedBy": [
+    "2",
+    "9"
+  ],
+  "metadata": {
+    "changes": [
+      "Rewrote app/src/pages/CommunityPage.jsx - bento grid with metrics (4-col), trending campaigns (3-col), leaderboard (5-col), plus active campaigns grid below",
+      "Updated CLAUDE.md with Community Page structure docs"
+    ],
+    "learnings": [
+      "community.json aggregates are precomputed - no runtime math needed, just render",
+      "Currency abbreviation ($K/$M) works better for community-level stats vs exact amounts on individual campaign pages"
+    ],
+    "loose_ends": [
+      "Active campaigns grid shows same hero image for all 4 campaigns (shared fixture image) - needs unique images in polish pass"
+    ]
+  }
+}

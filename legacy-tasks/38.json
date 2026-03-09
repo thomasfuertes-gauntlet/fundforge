@@ -1,0 +1,8 @@
+{
+  "id": "38",
+  "subject": "Add hover lift to primary and outline CTA buttons per design spec",
+  "description": "Design guidelines Button primary: `hover:-translate-y-0.5 shadow-lg hover:shadow-xl transition-all duration-300`. Our accent variant has this lift but primary and outline variants don't. Add `hover:-translate-y-0.5` to the primary variant in button.jsx (line 13). The outline variant should also get lift when used as a CTA (share button on campaign page). This makes buttons feel more interactive and matches the design reference showcase.",
+  "status": "pending",
+  "blocks": [],
+  "blockedBy": []
+}
