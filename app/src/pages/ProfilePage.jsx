@@ -232,7 +232,6 @@ export default function ProfilePage() {
             </div>
 
             {/* Right: Trust Composition Panel */}
-            <RevealOnScroll>
             <div
               className="rounded-3xl bg-gradient-to-br from-primary via-primary to-gradient-end p-6 text-primary-foreground"
               data-testid="profile-trust-panel"
@@ -281,12 +280,10 @@ export default function ProfilePage() {
                 </p>
               </div>
             </div>
-            </RevealOnScroll>
           </CardContent>
         </Card>
 
         {/* ─── Campaign History ─── */}
-        <RevealOnScroll>
         <div className="mt-16 lg:mt-24">
           {/* Active Campaigns */}
           {activeCampaigns.length > 0 && (
@@ -363,7 +360,7 @@ export default function ProfilePage() {
                 {pastCampaigns.map((c) => (
                   <Card
                     key={c.id}
-                    className="border-white/70 bg-white/90 transition-shadow duration-300 hover:shadow-md"
+                    className="border-white/70 bg-white/90"
                     data-testid={`profile-past-${c.id}`}
                   >
                     <CardContent className="space-y-3 p-5">
@@ -498,7 +495,7 @@ export default function ProfilePage() {
                       to={`/campaign/${item.campaignId}`}
                       className="block"
                     >
-                      <Card className="border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
+                      <Card className="border-white/70 bg-white/90">
                         <CardContent className="flex items-start gap-3 p-4">
                           <div
                             className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
@@ -580,7 +577,6 @@ export default function ProfilePage() {
             </div>
           )}
         </div>
-        </RevealOnScroll>
       </div>
     </div>
   );
