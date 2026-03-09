@@ -522,7 +522,7 @@ export default function CommunityPage() {
                   to={`/campaign/${update.campaignId}`}
                   className="block"
                 >
-                  <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-200 hover:shadow-md">
+                  <Card className="h-full overflow-hidden border-white/70 bg-white/90">
                     {update.image && (
                       <img
                         src={update.image}
