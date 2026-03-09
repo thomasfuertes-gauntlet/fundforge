@@ -93,12 +93,12 @@ export default function CampaignPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-16">
           {/* ─── Left Column: Story ─── */}
           <div className="space-y-8 lg:col-span-7">
             {/* Hero Image */}
             <Card
-              className="overflow-hidden border-white/70 bg-white/90 shadow-sm transition-shadow duration-300 hover:shadow-md"
+              className="overflow-hidden border-white/70 bg-white/90"
               data-testid="campaign-hero-card"
             >
               <div className="aspect-[4/3] overflow-hidden">
@@ -269,7 +269,7 @@ export default function CampaignPage() {
                   {campaign.testimonials.map((t, i) => (
                     <Card
                       key={i}
-                      className="border-white/70 bg-white/90 transition-shadow duration-300 hover:shadow-md"
+                      className="border-white/70 bg-white/90"
                     >
                       <CardContent className="flex gap-4 p-5">
                         <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary/40" />
@@ -299,7 +299,7 @@ export default function CampaignPage() {
                   {visibleUpdates.map((update) => (
                     <Card
                       key={update.id}
-                      className="border-white/70 bg-white/90 transition-shadow duration-300 hover:shadow-md"
+                      className="border-white/70 bg-white/90"
                       data-testid={`update-${update.id}`}
                     >
                       <CardContent className="p-5">
@@ -343,7 +343,7 @@ export default function CampaignPage() {
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-20">
               <Card
-                className="border-white/70 bg-white/95 shadow-sm"
+                className="border-white/70 bg-white/95"
                 data-testid="donate-panel"
               >
                 <CardContent className="space-y-6 p-5 sm:p-6 lg:p-8">
