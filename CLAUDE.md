@@ -79,11 +79,12 @@ app/                          # Our codebase (Vite React project)
       ErrorBoundary.jsx       # Wraps routes, renders fallback on crash
     data/                     # JSON fixtures + index.js with lookup helpers
       profiles.json           # 4 organizer profiles with trust data
-      campaigns.json          # 23 campaigns (4 active + 17 funded + 2 unfunded)
+      campaigns.json          # 26 campaigns (7 active + 17 funded + 2 unfunded)
       donations.json          # 15 recent donations across active campaigns
       community.json          # Precomputed aggregates, leaderboard, trending
       index.js                # Re-exports + getProfile(), getCampaign(), etc.
     lib/
+      format.js               # Shared formatCurrency({compact}), initials(), formatNumber(), formatDate()
       utils.js                # cn() utility (clsx + tailwind-merge)
       analytics.js            # Event bus, session UUID, Web Vitals, error tracking
       useAnalytics.js         # React hooks: usePageView, useScrollDepth
@@ -92,7 +93,7 @@ app/                          # Our codebase (Vite React project)
       CampaignPage.jsx        # /campaign/:id
       CommunityPage.jsx       # /community
       ProfilePage.jsx         # /profile/:id
-    App.jsx                   # Router + providers
+    App.jsx                   # Router + providers + React.lazy code splitting
     main.jsx                  # Entry point + BrowserRouter
     index.css                 # Tailwind + HSL CSS variables
   tailwind.config.js          # Design tokens (fonts, colors, radius, shadows)
@@ -164,7 +165,7 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 2. Donor testimonials: embedded in campaign objects as `testimonials[]`
 3. Campaign update timeline: embedded as `updates[]` (2-4 per active campaign)
 
-**Images:** 8 images in `app/public/images/`. 4 unique per-profile avatars (avatar-maya.jpg, avatar-jonas.jpg, avatar-elena.jpg, avatar-samir.jpg) from Unsplash + 2 campaign images from design reference. Old shared avatars (avatar-female.jpg, avatar-male.jpg) are unused.
+**Images:** 15 images in `app/public/images/`. 4 per-profile avatars (avatar-maya/jonas/elena/samir.jpg) + 7 unique per-campaign heroes (hero-garden/solar/water/education/community/makerlab/mural.jpg) sourced from Unsplash at 800x600. Old shared images (hero-campaign.jpg, campaign-detail.jpg) used only by past campaigns. Old shared avatars (avatar-female.jpg, avatar-male.jpg) are unused.
 
 ### SWOT Analysis (swot.md)
 - External UX analysis, three reliability tiers: GoFundMe analysis lines 1-85 (medium), blind speculation lines 206-251 (low - analyst couldn't render SPA), screenshot analysis lines 256-321 (mixed - strengths accurate, recs mostly wrong)
