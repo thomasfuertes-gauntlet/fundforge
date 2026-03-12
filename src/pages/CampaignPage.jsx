@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useCampaign, useProfile, useDonations, useCommunity } from "@/lib/useData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Progress, AnimatedProgress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -372,7 +372,7 @@ export default function CampaignPage() {
                     </div>
                   </div>
 
-                  <Progress
+                  <AnimatedProgress
                     value={progressPercent}
                     className={cn(
                       "h-3 bg-primary/15",
@@ -413,7 +413,7 @@ export default function CampaignPage() {
                       </p>
                       {campaign.raised >= campaign.goal && (
                         <div className="mt-2">
-                          <Progress
+                          <AnimatedProgress
                             value={Math.min(
                               Math.round(
                                 ((campaign.raised - campaign.goal) /
@@ -422,6 +422,7 @@ export default function CampaignPage() {
                               ),
                               100
                             )}
+                            delay={300}
                             className="h-2 bg-amber-200/50 [&>div]:bg-amber-500"
                           />
                         </div>
