@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import { trackDonateComplete } from "@/lib/analytics";
+import { postDonation } from "@/lib/useData";
 import { Heart, Users, CheckCircle2, Share2 } from "lucide-react";
 
 const PRESET_AMOUNTS = [25, 50, 100, 250];
@@ -51,16 +52,21 @@ export default function DonateModal({
     setIsCustom(true);
   }
 
-  function handleDonate() {
+  async function handleDonate() {
     if (amount <= 0) return;
     setSubmitting(true);
-    // Simulate network delay
-    setTimeout(() => {
-      trackDonateComplete(campaignId, amount);
-      setSubmitting(false);
-      setCompletedAmount(amount);
-      setDonationComplete(true);
-    }, 800);
+    // Optimistic: show success immediately, POST in background
+    trackDonateComplete(campaignId, amount);
+    setCompletedAmount(amount);
+    setDonationComplete(true);
+    setSubmitting(false);
+    // Fire-and-forget POST to persist the donation
+    postDonation({
+      campaignId,
+      donorName: "Anonymous Donor",
+      amount,
+      message: null,
+    }).catch((err) => console.warn("[DonateModal] POST failed:", err));
   }
 
   function handleClose(value) {

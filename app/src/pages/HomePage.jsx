@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
-import { community, profiles } from "@/data";
+import { useCommunity, useProfiles } from "@/lib/useData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -16,8 +16,6 @@ import {
   Heart,
   BarChart3,
 } from "lucide-react";
-
-const { aggregates } = community;
 
 const PAGES = [
   {
@@ -70,6 +68,9 @@ function HeroStats({ totalRaised, activeCampaigns, avgTrust, organizers }) {
 
 export default function HomePage() {
   usePageView("home");
+  const { data: community } = useCommunity();
+  const { data: profiles } = useProfiles();
+  const { aggregates } = community;
   const avgTrust = Math.round(
     profiles.reduce((sum, p) => sum + p.trust.score, 0) / profiles.length
   );
@@ -227,7 +228,8 @@ export default function HomePage() {
             "shadcn/ui",
             "React Router",
             "Cloudflare Workers",
-            "JSON fixtures",
+            "Hono",
+            "D1 (SQLite)",
           ].map((tech) => (
             <Badge
               key={tech}

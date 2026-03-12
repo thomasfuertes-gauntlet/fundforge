@@ -2,7 +2,8 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
-import { community, getActiveCampaigns, getProfile } from "@/data";
+import { useCommunity, useActiveCampaigns } from "@/lib/useData";
+import { getProfile } from "@/data";
 import { cn } from "@/lib/utils";
 import { formatCurrency, initials } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,8 +22,6 @@ import {
   CalendarDays,
   Crown,
 } from "lucide-react";
-
-const { aggregates, leaderboard, trending } = community;
 
 
 function CommunityCounter({ end, prefix = "", suffix = "", label, className, valueClassName, labelClassName, testId }) {
@@ -164,7 +163,7 @@ function CampaignGrid({ campaigns }) {
 
 const LEADERBOARD_TABS = ["Top Fundraisers", "Trending"];
 
-function LeaderboardCard() {
+function LeaderboardCard({ leaderboard }) {
   const [activeTab, setActiveTab] = useState("Top Fundraisers");
 
   const sortedLeaderboard = useMemo(() => {
@@ -172,7 +171,7 @@ function LeaderboardCard() {
       return [...leaderboard].sort((a, b) => b.weeklyTrend - a.weeklyTrend);
     }
     return leaderboard;
-  }, [activeTab]);
+  }, [activeTab, leaderboard]);
 
   const showPodium = activeTab === "Top Fundraisers";
 
@@ -319,7 +318,9 @@ function LeaderboardCard() {
 
 export default function CommunityPage() {
   usePageView("community");
-  const activeCampaigns = getActiveCampaigns();
+  const { data: community } = useCommunity();
+  const { data: activeCampaigns } = useActiveCampaigns();
+  const { aggregates, leaderboard, trending } = community;
 
   return (
     <div className="min-h-screen bg-background">
@@ -490,7 +491,7 @@ export default function CommunityPage() {
           </Card>
 
           {/* ─── Leaderboard Card (5 cols) ─── */}
-          <LeaderboardCard />
+          <LeaderboardCard leaderboard={leaderboard} />
         </div>
 
         {/* ─── Activity Feed ─── */}

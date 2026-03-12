@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
-import { getProfile, getCampaignsByOrganizer, profiles } from "@/data";
+import { useProfile, useCampaignsByOrganizer, useProfiles } from "@/lib/useData";
 import NotFound from "@/components/NotFound";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,12 +56,13 @@ const VERIFICATION_STEPS = [
 export default function ProfilePage() {
   const { id } = useParams();
   usePageView("profile", { id });
-  const profile = getProfile(id);
+  const { data: profile } = useProfile(id);
+  const { data: campaigns } = useCampaignsByOrganizer(id);
+  const { data: allProfiles } = useProfiles();
 
   if (!profile) return <NotFound type="profile" />;
 
-  const campaigns = getCampaignsByOrganizer(profile.id);
-  const otherProfiles = profiles.filter((p) => p.id !== profile.id);
+  const otherProfiles = allProfiles.filter((p) => p.id !== profile.id);
   const activeCampaigns = campaigns.filter((c) => c.status === "active");
   const pastCampaigns = campaigns.filter((c) => c.status !== "active");
 

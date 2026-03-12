@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getCampaign, getProfile, getDonationsByCampaign, community } from "@/data";
+import { useCampaign, useProfile, useDonations, useCommunity } from "@/lib/useData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -71,11 +71,13 @@ export default function CampaignPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  const campaign = getCampaign(id);
+  const { data: campaign } = useCampaign(id);
+  const { data: organizer } = useProfile(campaign?.organizerId);
+  const { data: donations } = useDonations(campaign?.id);
+  const { data: community } = useCommunity();
+
   if (!campaign) return <NotFound type="campaign" />;
 
-  const organizer = getProfile(campaign.organizerId);
-  const donations = getDonationsByCampaign(campaign.id);
   const progressPercent = Math.min(Math.round((campaign.raised / campaign.goal) * 100), 100);
   const leaderboardEntry = community.leaderboard.find(
     (e) => e.activeCampaignId === campaign.id
