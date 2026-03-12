@@ -83,6 +83,50 @@ Cross-references: `campaign.organizerId` -> `profile.id`, `donation.campaignId` 
 | `web_vital` | LCP/FID/CLS/INP/TTFB performance budget |
 | `error` | Unhandled errors + promise rejections |
 
+## Architecture
+
+### System Overview
+
+```
+Browser ──► Cloudflare Workers
+              ├── Static assets (Vite build output)
+              └── Hono API ──► D1 (SQLite at edge)
+```
+
+A single Cloudflare Worker serves both the SPA and the API. No separate backend deployment, no origin server. The Worker's `assets` binding serves static files; unmatched routes fall back to `index.html` for client-side routing. API routes (`/api/*`) are handled by Hono before asset resolution.
+
+### Frontend
+
+React 19 with Vite 7 and React Router 7. Code-split via `React.lazy` at the route level - each page is a separate chunk. The `@/` path alias maps to `src/`.
+
+**Data loading pattern:** `useData` hooks initialize with JSON fixture data for instant render, then fetch from `/api/*` in the background. If the API fails, fixtures remain visible. This gives zero-loading-state UX while keeping the door open for live data.
+
+**Optimistic UI:** The donate modal shows success immediately and POSTs to `/api/donations` fire-and-forget. The donation appears in the feed before the server confirms.
+
+### Backend
+
+Hono on Cloudflare Workers with D1 (SQLite at the edge). Four route modules:
+
+| Route | Endpoints | Notes |
+|-------|-----------|-------|
+| `/api/profiles` | `GET /`, `GET /:id`, `POST /:id/follow` | Follow is optimistic increment |
+| `/api/campaigns` | `GET /`, `GET /:id` | Filterable by `?status=` and `?organizerId=` |
+| `/api/donations` | `GET /`, `POST /` | POST atomically updates campaign raised amount via `db.batch` |
+| `/api/community` | `GET /` | No table - aggregates computed on read via SQL joins |
+
+D1 schema: 3 tables (`profiles`, `campaigns`, `donations`). Seeded from JSON fixtures via `npm run seed:generate`. `transforms.ts` converts snake_case DB rows to camelCase API shapes.
+
+### Cross-Page Data Consistency
+
+The core challenge: an organizer on the campaign page must show the same data on their profile page. Solved through referential integrity - `campaign.organizerId` foreign-keys to `profile.id`, `donation.campaignId` to `campaign.id`. Community leaderboard and trending data are computed from the same underlying tables, not duplicated.
+
+### Key Trade-offs
+
+- **Edge SQLite over Postgres/Supabase:** D1 is colocated with the Worker - zero network hop for queries. Good enough for a demo dataset; wouldn't scale to millions of rows without read replicas.
+- **Fixture fallbacks over loading spinners:** Users see content immediately. Trade-off is stale data on first paint if the DB has diverged from fixtures.
+- **Single Worker over separate API:** Simpler deployment (one `wrangler deploy`), but means API and assets share the same Worker limits.
+- **Optimistic donations over confirmed:** Better UX for a demo. In production you'd want server confirmation before showing success.
+
 ## Project Structure
 
 ```
