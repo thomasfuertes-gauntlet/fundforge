@@ -1,8 +1,16 @@
 {
   "name": "fundforge",
   "compatibility_date": "2026-03-07",
+  "main": "worker/index.ts",
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "fundforge_db",
+      "database_id": "e4a318eb-1dd7-4d2e-bbb1-4e498ba7685c"
+    }
+  ]
 }
