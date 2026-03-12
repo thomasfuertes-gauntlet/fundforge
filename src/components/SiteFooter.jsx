@@ -46,7 +46,7 @@ export default function SiteFooter() {
 
         {/* Tech line */}
         <div className="mt-6 border-t border-border/30 pt-5">
-          <p className="text-center text-xs text-muted-foreground/70">
+          <p className="text-center text-xs text-muted-foreground">
             React + Vite + Tailwind + Cloudflare Workers
           </p>
         </div>

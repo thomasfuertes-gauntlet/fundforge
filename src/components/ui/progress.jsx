@@ -4,9 +4,10 @@ import * as ProgressPrimitive from "@radix-ui/react-progress";
 
 import { cn } from "@/lib/utils";
 
-const Progress = React.forwardRef(({ className, value, ...props }, ref) => (
+const Progress = React.forwardRef(({ className, value, "aria-label": ariaLabel, ...props }, ref) => (
   <ProgressPrimitive.Root
     ref={ref}
+    aria-label={ariaLabel || "Progress"}
     className={cn(
       "relative h-3 w-full overflow-hidden rounded-full bg-primary/20",
       className

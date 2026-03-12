@@ -40,6 +40,7 @@ export default function SiteHeader() {
               <Link
                 key={to}
                 to={to}
+                aria-label={label}
                 data-testid={`nav-${label.toLowerCase()}`}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-medium transition-all ${
                   active
@@ -47,7 +48,7 @@ export default function SiteHeader() {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4" aria-hidden="true" />
                 <span className="hidden sm:inline">{label}</span>
               </Link>
             );
