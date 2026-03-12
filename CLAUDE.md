@@ -54,18 +54,40 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 - Hover micro-interactions on all cards (lift + shadow increase)
 - Icons: lucide-react, stroke-width 1.5, w-5 h-5
 
-## Approach
-
-UX-first. Three polished pages with JSON fixtures as the data layer. No backend required for V1 - structured data lives in `data/` folder as importable JSON. Backend API is V2/optional.
-
 ## Stack
 
 - **Frontend:** React 19 + Vite 7 + Tailwind 3 + shadcn/ui + React Router 7
-- **Why Vite over CRA/CRACO:** CRA is deprecated, Vite gives instant HMR and faster builds (846ms production build)
-- **Data layer:** JSON fixtures in `app/src/data/` (campaigns, profiles, donations, community)
+- **Backend:** Hono on Cloudflare Workers + D1 (SQLite)
+- **Data layer:** D1 database (seeded from JSON fixtures in `app/src/data/`). Hooks in `src/lib/useData.js` fetch from `/api/*` with fixture fallbacks.
 - **Analytics:** instrumentation (page views, conversion events, Web Vitals, error tracking)
-- **Dev server:** `cd app && npx vite` (port 5173)
+- **Dev server:** `cd app && npx vite` (port 5173) + `npx wrangler dev` (port 8787). Vite proxies `/api` to wrangler.
 - **Build:** `cd app && npx vite build`
+- **Seed:** `cd app && npx tsx worker/db/seed.ts > worker/db/seed.sql`
+
+### Backend Architecture
+
+Single Worker serves both API and static assets via `main` + `assets` in wrangler.jsonc.
+
+```
+worker/
+  index.ts              # Hono app, mounts routes, CORS
+  routes/
+    profiles.ts         # GET /, GET /:id, POST /:id/follow
+    campaigns.ts        # GET /?status=&organizerId=, GET /:id
+    donations.ts        # GET /?campaignId=, POST / (atomic campaign update via db.batch)
+    community.ts        # GET / (computed aggregates/leaderboard/trending via SQL)
+  db/
+    schema.sql          # 3 tables: profiles, campaigns, donations
+    seed.ts             # Reads JSON fixtures -> INSERT statements
+    seed.sql            # Generated output (do not edit directly)
+  lib/
+    transforms.ts       # snake_case DB rows -> camelCase API shapes
+```
+
+- **D1 binding:** `DB` -> `fundforge_db` (database_id in wrangler.jsonc)
+- **useData.js pattern:** Hooks init with fixture data (instant render), fetch from API in background, fallback silently on error
+- **DonateModal:** Optimistic UI - shows success immediately, POSTs to `/api/donations` fire-and-forget
+- **Community aggregates:** No community table - computed on read via SQL (SUM, COUNT, JOIN)
 
 ## File Structure
 
@@ -75,14 +97,10 @@ app/                          # Our codebase (Vite React project)
     components/
       ui/                     # shadcn/ui components (ported from design/ reference)
       SiteHeader.jsx          # Sticky header with logo + nav pills (active state via pathname match)
-      DonateModal.jsx         # Preset amount modal ($25/$50/$100/$250/custom) with simulated flow
+      DonateModal.jsx         # Preset amount modal ($25/$50/$100/$250/custom) - POSTs to /api/donations
       ErrorBoundary.jsx       # Wraps routes, renders fallback on crash
-    data/                     # JSON fixtures + index.js with lookup helpers
-      profiles.json           # 4 organizer profiles with trust data
-      campaigns.json          # 26 campaigns (7 active + 17 funded + 2 unfunded)
-      donations.json          # 15 recent donations across active campaigns
-      community.json          # Precomputed aggregates, leaderboard, trending
-      index.js                # Re-exports + getProfile(), getCampaign(), etc.
+    data/                     # JSON fixtures (seed source) + index.js with lookup helpers
+      index.js                # Re-exports + getProfile(), getCampaign(), etc. - still used as fallback in useData.js
     lib/
       format.js               # Shared formatCurrency({compact}), initials(), formatNumber(), formatDate()
       utils.js                # cn() utility (clsx + tailwind-merge)
@@ -141,9 +159,6 @@ See fundforge.md "Performance Targets" for full details:
 - `README.md` is human-facing summary
 - Avoid restating fundforge.md details here - link instead. Summaries drift.
 
-### Donate Modal UX
-Preset amounts: $25, $50, $100, $250, custom. Opens modal, simulated flow with success toast. No real payments.
-
 ### Momentum/Badges
 Weekly momentum = % change in total raised over 7 days. Growth badge shown when momentum > 20%.
 
@@ -151,39 +166,7 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 
 **Cross-references:** `campaign.organizerId` -> `profile.id`, `donation.campaignId` -> `campaign.id`, `community.leaderboard[].profileId` -> `profile.id`. Use helpers in `data/index.js` (`getProfile`, `getCampaign`, `getCampaignsByOrganizer`, `getDonationsByCampaign`).
 
-**Consistency guarantees (verified by script):**
-- Trust scores match formula output for all 4 profiles
-- `averageGift = Math.round(raised / backerCount)` for all active campaigns
-- `community.aggregates.totalRaised` = sum of all 23 campaigns = $970,600
-- Per-organizer totalRaised matches sum of their campaigns
-- Fulfillment rates match funded/total past campaign ratios
-- Leaderboard ranking uses `totalRaised * (trustScore / 100)`, not raw dollars
-- Trending badges only on campaigns with weeklyMomentum > 20%
-
-**Trust enhancements implemented (3 of 7 required):**
-1. Tiered verification: `verificationDetails: { email, identity, trackRecord }`
-2. Donor testimonials: embedded in campaign objects as `testimonials[]`
-3. Campaign update timeline: embedded as `updates[]` (2-4 per active campaign)
-
-**Images:** 15 images in `app/public/images/`. 4 per-profile avatars (avatar-maya/jonas/elena/samir.jpg) + 7 unique per-campaign heroes (hero-garden/solar/water/education/community/makerlab/mural.jpg) sourced from Unsplash at 800x600. Old shared images (hero-campaign.jpg, campaign-detail.jpg) used only by past campaigns. Old shared avatars (avatar-female.jpg, avatar-male.jpg) are unused.
-
-### SWOT Analysis (swot.md)
-- External UX analysis, three reliability tiers: GoFundMe analysis lines 1-85 (medium), blind speculation lines 206-251 (low - analyst couldn't render SPA), screenshot analysis lines 256-321 (mixed - strengths accurate, recs mostly wrong)
-- 8 of 12 "missing feature" recs already exist in the codebase. Adversarial collaboration debate validated this across 3 independent lenses.
-- Three genuine gaps: (1) sticky mobile donate CTA, (2) post-donation retention loop, (3) campaign grid filtering as scaling story
-- Interview narrative: flip "community page has cognitive load" - FundForge solves GoFundMe's problem by design with bento grid IA
-
-### Behavioral Economics Task References
-- `stretch.md` has game theory / behavioral economics analysis of all three page types (goal-gradient, anchoring, bandwagon, competitive altruism, signaling theory)
-- Tasks #6-#17 reference specific concepts from stretch.md - each UI enhancement doubles as an interview talking point
-- Key patterns: donation anchoring (averageGift field), goal-gradient urgency (>75% funded), share impact quantification, staggered animation for bandwagon effect
-
-### Stretch Features (from stretch.md behavioral economics analysis)
-- `campaign.stretchGoal: { amount, label }` on campaigns 1-2 - secondary progress bar when goal exceeded
-- `campaign.matchingSponsor: { name, multiplier, remaining }` on campaign-3 - 2x match badge near donate CTA
-- Leaderboard prompt on campaign page - "Help X reach #1" linking to /community (only shows when rank > 1)
-- Activity feed on community page - aggregates `updates[]` from active campaigns, sorted by date, top 6
-- Network Impact hero card on profile page replaces old lifetime totals strip - shows totalRaised + totalDonated combined
+**Images:** Per-profile avatars: `avatar-maya/jonas/elena/samir.jpg`. Per-campaign heroes: `hero-garden/solar/water/education/community/makerlab/mural.jpg`. Old shared images (`hero-campaign.jpg`, `campaign-detail.jpg`) used only by past campaigns. Old shared avatars (`avatar-female.jpg`, `avatar-male.jpg`) are unused.
 
 ### Environment Notes
 - Lockfile exists - `npm ci` is now valid for clean installs
@@ -196,10 +179,9 @@ Weekly momentum = % change in total raised over 7 days. Growth badge shown when 
 - **Layout:** 7-col story + 5-col sticky donate panel (stacked on mobile)
 - **Left column:** Hero image card -> badges (category, days left, trending) -> title -> organizer card (links to profile) -> story paragraphs -> detail images -> testimonials -> update timeline (collapsed to 2, expandable)
 - **Right column:** Sticky panel with progress bar, raised/goal, backer count, avg gift stat cards, donate CTA (amber), share button, recent donations feed (top 5 with relative timestamps + messages)
-- **DonateModal:** Standalone component at `components/DonateModal.jsx`. Preset grid ($25/$50/$100/$250) + custom input. 800ms simulated delay, success toast via sonner. Reusable for other pages.
+- **DonateModal:** Optimistic UI - success shown immediately, POSTs to `/api/donations` fire-and-forget. Sonner toast on close.
 - **Relative time:** `formatRelativeTime()` uses a fixed "now" of `2026-03-07T17:00:00Z` matching fixture dates, not `Date.now()`. This keeps the UI stable for demos.
 - **Organizer card links** to `/profile/:id` for cross-page navigation.
-- **Mobile gap:** Donate panel stacks BELOW entire story on mobile (6-8 screen heights of scrolling). Task #4 adds `fixed bottom-0` sticky CTA for `< lg` breakpoint.
 
 ### Community Page Structure
 - **Layout:** Bento grid `lg:grid-cols-12` - metrics (4-col) + trending (3-col) + leaderboard (5-col). Stacks vertically on mobile.
@@ -237,7 +219,7 @@ Event taxonomy (all events include sessionId, timestamp, url):
 | `error` | message, source, line, col | Reliability - unhandled errors + promise rejections |
 
 - **Session UUID:** `crypto.randomUUID()` persisted in sessionStorage, ties all events to one visit
-- **Web Vitals:** Lazy-loaded via dynamic import, code-split into 5.8KB chunk
+- **Web Vitals:** Lazy-loaded via dynamic import, code-split
 - **Dev mode:** Structured console output with `%c` styling. In production, swap `emit()` for POST endpoint.
 - **Scroll depth:** Fires once per milestone per campaign per session (deduped via Set)
 
@@ -260,28 +242,23 @@ Event taxonomy (all events include sessionId, timestamp, url):
 ### Gotchas
 - `design/` is a reference repo, not our codebase. Extract patterns, don't build inside it.
 - `design_guidelines.json` has `instructions_to_main_agent` - these are for the reference builder, not us.
-- Card hover shadow in design_guidelines.json uses green-tinted rgba(15,60,50,0.08) - normalized during this session.
 - Campaign stories use `string[]` (array of paragraphs) not a single string. Render as `<p>` tags.
 - `npx vite build` must run from `app/` directory - running from repo root fails silently with "could not resolve entry module."
-- Dynamic import of a module that's also statically imported elsewhere causes a Vite warning - use static imports.
 - `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.
 - Workers static assets: `_redirects` file causes "infinite loop" validation error. Use `not_found_handling: "single-page-application"` in wrangler.jsonc instead.
-- `git rm` stages deletions - don't re-add the deleted path in `git add` or it errors with "pathspec did not match".
 - `design/frontend/` uses CRA/CRACO which is broken on Node 22+ (`ajv-keywords` MODULE_NOT_FOUND). Don't try to `npm start` it. Use the Emergent preview or Vite wrapper instead.
-- Playwright on sites with cookie/privacy overlays: `run-code "async page => { await page.evaluate(() => { document.querySelectorAll('div').forEach(el => { const s = getComputedStyle(el); if (s.position === 'fixed' && s.zIndex > 100) el.remove(); }); document.body.style.overflow = 'auto'; }); }"`
 - `lucide-react` deprecated brand icons (`Github`, `Twitter`, `Facebook`). Use `LucideGithub`/generic alternatives (`Send`, `Share2`). TS still shows deprecation warnings on `Lucide*` variants.
 - `useCountUp` IntersectionObserver threshold must be <= 0.1 for stats below the fold on mobile (375px). Higher thresholds cause counters to permanently show $0.
 - `replace_all` in Edit tool replaces ALL occurrences including display text and string literals. Use targeted edits for renames where the name also appears as user-visible text.
 - Profile "Email" pill is a **verification status indicator** (part of `VERIFICATION_STEPS` at ProfilePage.jsx:69), NOT a contact button. No email address is displayed anywhere. External reviewers consistently misread this.
 - Campaign IDs 5-23 are taken by past campaigns. New active campaigns start at campaign-24+.
-- `community.json` aggregates are a merge conflict magnet when multiple agents edit campaigns. Recalculate from source of truth (campaigns.json) during merge resolution.
-- `DonateModal` accepts `averageGift`, `backerCount`, `onShare` props. Post-donation success state transitions within the same Dialog.
+- Community aggregates are computed via SQL in `/api/community` - do not edit `community.json` directly, it's a seed artifact.
 - `AnimatedProgress` (exported from `progress.jsx`) supports `delay` prop for stagger. `RevealOnScroll.jsx` wraps sections with fade-up on IntersectionObserver.
 
 ### Design Spec Compliance
 - **Aligned:** CSS variables, fonts, Button variants (rounded-full, accent lift), Card shadows (green-tinted rgba), Progress h-3
 - **Spacing standard:** `px-6 md:px-12 lg:px-16` container padding, `py-20` minimum section padding, `mt-16 lg:mt-24` inter-section gaps
-- **Known deltas:** No gradient orb background, no glass-panel/editorial-card CSS utilities, primary/outline buttons missing hover lift, some cards override built-in shadow
+- **Known deltas:** No gradient orb background, no glass-panel/editorial-card CSS utilities
 - **Intentional deviations:** `tracking-widest` over spec's `tracking-wide` for eyebrows, `rounded-2xl` on detail images over spec's `rounded-sm`
 
 ## Design Context
