@@ -1,8 +1,0 @@
-{
-  "id": "42",
-  "subject": "Add gradient orb background effect to app shell",
-  "description": "The design reference has `app-shell__orb--left` and `app-shell__orb--right` - two large radial gradient blobs (emerald/teal tinted) positioned fixed behind content. Creates a subtle organic feel vs our flat #F9FAFB background. Add via CSS pseudo-elements or fixed-position divs in App.jsx. Should be subtle (opacity ~0.15) and not affect performance.",
-  "status": "pending",
-  "blocks": [],
-  "blockedBy": []
-}

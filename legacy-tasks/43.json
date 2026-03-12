@@ -1,8 +1,0 @@
-{
-  "id": "43",
-  "subject": "Add glass-panel and editorial-card CSS utility classes from design reference",
-  "description": "The design ShowcasePage uses custom CSS classes `glass-panel`, `editorial-card`, `section-reveal`, `section-eyebrow`, `code-panel`, and `app-shell` with gradient orb backgrounds. Our app has none of these - we inline everything. At minimum, add `glass-panel` (backdrop-blur-md + border-white/20 + shadow) and `section-eyebrow` (text-sm font-medium tracking-wide uppercase text-muted-foreground) as reusable classes in index.css @layer components. The `section-reveal` animation classes are nice-to-have.",
-  "status": "pending",
-  "blocks": [],
-  "blockedBy": []
-}

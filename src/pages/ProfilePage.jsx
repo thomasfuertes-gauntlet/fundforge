@@ -47,6 +47,8 @@ const TRUST_METRICS = [
   { key: "repeatDonorConfidence", label: "Repeat donor confidence", icon: Heart },
 ];
 
+// KEY-DECISION 2026-03: "Email" pill is a verification tier indicator, NOT a contact button.
+// No email address is shown. Reviewers consistently misread this as a mailto link.
 const VERIFICATION_STEPS = [
   { key: "email", label: "Email", icon: Mail },
   { key: "identity", label: "Identity", icon: UserCheck },

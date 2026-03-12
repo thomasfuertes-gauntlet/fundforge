@@ -1,8 +1,0 @@
-{
-  "id": "45",
-  "subject": "Add section-reveal scroll animations from design reference",
-  "description": "The design ShowcasePage uses `section-reveal` class with IntersectionObserver-triggered CSS animations (fade-in + slide-up) on major sections. Our pages have no entrance animations - content is static on load. Add a lightweight `useReveal` hook (similar to useCountUp pattern) that adds an `is-visible` class when sections enter viewport, paired with CSS transitions in index.css: `opacity: 0; transform: translateY(20px)` -> `opacity: 1; transform: none`. Apply to major section containers on all pages. Optional stagger with `stagger-2`, `stagger-3` classes.",
-  "status": "pending",
-  "blocks": [],
-  "blockedBy": []
-}

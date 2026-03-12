@@ -15,14 +15,14 @@ Premium crowdfunding experience built with AI-accelerated development. Three int
 ```bash
 # Clone and install
 git clone https://github.com/tomfuertes/gofundme-interview.git
-cd gofundme-interview/app
+cd gofundme-interview
 npm ci
 
 # Development
 npx vite          # http://localhost:5173
 
 # Production build
-npx vite build    # outputs to app/dist/
+npx vite build    # outputs to dist/
 
 # Deploy (requires wrangler auth)
 npm run deploy    # builds + deploys to Cloudflare Workers
@@ -36,7 +36,7 @@ npm run deploy    # builds + deploys to Cloudflare Workers
 |---|---|
 | Frontend | React 19 + Vite 7 + React Router 7 |
 | Styling | Tailwind 3 + shadcn/ui + Radix primitives |
-| Data | JSON fixtures in `app/src/data/` (no backend) |
+| Data | D1 database (SQLite) + JSON fixture fallbacks in `src/data/` |
 | Analytics | Custom event bus + Web Vitals (dev: console, prod: POST endpoint) |
 | Deploy | Cloudflare Workers (static assets with SPA fallback) |
 
@@ -63,7 +63,7 @@ Community leaderboard ranks by `totalRaised * (trustScore / 100)`, not raw dolla
 
 ## Data Architecture
 
-JSON fixtures in `app/src/data/` serve as the single source of truth:
+JSON fixtures in `src/data/` seed the D1 database:
 
 - **4 organizer profiles** with trust data, verification tiers, bios
 - **26 campaigns** (7 active + 17 funded + 2 unfunded) with stories, testimonials, updates
@@ -86,23 +86,20 @@ Cross-references: `campaign.organizerId` -> `profile.id`, `donation.campaignId` 
 ## Project Structure
 
 ```
-app/                          # Vite React project
-  src/
-    components/ui/            # shadcn/ui components (Button, Card, Dialog, etc.)
-    components/               # SiteHeader, DonateModal, ErrorBoundary, RevealOnScroll
-    data/                     # JSON fixtures + lookup helpers
-    lib/                      # format.js, utils.js, analytics.js, useAnalytics.js
-    pages/                    # HomePage, CampaignPage, CommunityPage, ProfilePage
-    App.jsx                   # Router + lazy code splitting
-design/                       # Reference design repo (read-only)
-fundforge.md                  # Full project spec and requirements
+src/
+  components/ui/              # shadcn/ui components (Button, Card, Dialog, etc.)
+  components/                 # SiteHeader, DonateModal, ErrorBoundary, RevealOnScroll
+  data/                       # JSON fixtures + lookup helpers
+  lib/                        # format.js, utils.js, analytics.js, useAnalytics.js
+  pages/                      # HomePage, CampaignPage, CommunityPage, ProfilePage
+  App.jsx                     # Router + lazy code splitting
+worker/                       # Hono API + D1 database
 spec.md                       # Original problem statement
-stretch.md                    # Behavioral economics analysis
 ```
 
 ## Behavioral Economics
 
-Each UI pattern maps to a named persuasion mechanic (see [stretch.md](./stretch.md)):
+Each UI pattern maps to a named persuasion mechanic:
 
 - **Goal-gradient**: Progress bars accelerate giving as campaigns near completion
 - **Anchoring**: "Most donors give $74" text near donate CTA
@@ -113,6 +110,4 @@ Each UI pattern maps to a named persuasion mechanic (see [stretch.md](./stretch.
 
 ## Links
 
-- [Full Spec](./fundforge.md) - Requirements, build strategy, pre-search checklist
-- [Design Tokens](./design/design_guidelines.json) - Complete token system
-- [Reference Showcase](./design/frontend/src/components/showcase/ShowcasePage.jsx) - Design reference
+- [Live Demo](https://fundforge.tomfuertes.workers.dev)

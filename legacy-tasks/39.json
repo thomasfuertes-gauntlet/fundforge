@@ -1,8 +1,0 @@
-{
-  "id": "39",
-  "subject": "Normalize card shadow to design spec values across all pages",
-  "description": "Design spec card base shadow: `shadow-[0_2px_8px_rgba(0,0,0,0.04)]`, hover: `shadow-[0_12px_24px_rgba(15,60,50,0.08)]`. Our Card component in ui/card.jsx already has these exact values. BUT many cards in pages override with `shadow-sm` or `shadow-md` or custom classes like `border-white/70 bg-white/90` which bypass the Card's built-in shadow. Audit all Card usages and remove redundant shadow overrides so the design-spec shadow is the single source. Grep for `shadow-sm` and `shadow-md` in page files.",
-  "status": "pending",
-  "blocks": [],
-  "blockedBy": []
-}

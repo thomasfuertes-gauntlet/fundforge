@@ -1,8 +1,0 @@
-{
-  "id": "44",
-  "subject": "Add font-weight import for Manrope 200-800 range",
-  "description": "Design reference imports Manrope with weights 200-800 via Google Fonts URL. Check if our index.html or CSS includes this import. If fonts are loading from tailwind config alone without the Google Fonts import, we're getting system fallback for some weights. Verify by checking if `font-weight: 200` (extralight) actually renders differently from 400. The import URL should be: `https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@200;300;400;500;600;700;800&display=swap`",
-  "status": "pending",
-  "blocks": [],
-  "blockedBy": []
-}
