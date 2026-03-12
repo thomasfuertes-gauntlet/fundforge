@@ -107,6 +107,8 @@ export default function CampaignPage() {
                 <img
                   src={campaign.heroImage}
                   alt={campaign.title}
+                  width={800}
+                  height={600}
                   className="h-full w-full object-cover object-center"
                   fetchPriority="high"
                   data-testid="campaign-hero-image"
@@ -231,6 +233,8 @@ export default function CampaignPage() {
                         <img
                           src={img}
                           alt={`${campaign.title} detail ${i + 1}`}
+                          width={1200}
+                          height={800}
                           loading="lazy"
                           className="h-full w-full object-cover object-center"
                         />

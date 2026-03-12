@@ -131,6 +131,8 @@ function CampaignGrid({ campaigns }) {
                 <img
                   src={c.heroImage}
                   alt={c.title}
+                  width={800}
+                  height={600}
                   loading="lazy"
                   className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
                 />
@@ -528,6 +530,8 @@ export default function CommunityPage() {
                       <img
                         src={update.image}
                         alt={update.title}
+                        width={800}
+                        height={600}
                         loading="lazy"
                         className="rounded-lg aspect-[16/10] object-cover w-full"
                       />

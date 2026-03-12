@@ -307,6 +307,8 @@ export default function ProfilePage() {
                         <img
                           src={c.heroImage}
                           alt={c.title}
+                          width={800}
+                          height={600}
                           loading="lazy"
                           className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
                         />
