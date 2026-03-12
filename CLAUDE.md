@@ -53,36 +53,9 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 
 Single Worker serves both API and static assets via `main` + `assets` in wrangler.jsonc.
 
-```
-worker/
-  index.ts              # Hono app, mounts routes, CORS
-  routes/
-    profiles.ts         # GET /, GET /:id, POST /:id/follow
-    campaigns.ts        # GET /?status=&organizerId=, GET /:id
-    donations.ts        # GET /?campaignId=, POST / (atomic campaign update via db.batch)
-    community.ts        # GET / (computed aggregates/leaderboard/trending via SQL)
-  db/
-    schema.sql          # 3 tables: profiles, campaigns, donations
-    seed.ts             # Reads JSON fixtures -> INSERT statements
-    seed.sql            # Generated output (do not edit directly)
-  lib/
-    transforms.ts       # snake_case DB rows -> camelCase API shapes
-```
-
 - **D1 binding:** `DB` -> `fundforge_db` (database_id in wrangler.jsonc)
 - **useData.js pattern:** Hooks init with fixture data (instant render), fetch from API in background, fallback silently on error
-- **DonateModal:** Optimistic UI - shows success immediately, POSTs to `/api/donations` fire-and-forget
 - **Community aggregates:** No community table - computed on read via SQL (SUM, COUNT, JOIN)
-
-## Deliverables
-
-- GitHub repo with clean commit history + README
-- Demo video (3-5 min)
-- Pre-Search document (AI conversation transcript)
-- Architecture document (1-2 pages)
-- AI cost analysis (dev spend + production projections)
-- Deployed application (public URL)
-- Social post tagging @GauntletAI
 
 ## Performance Targets
 
@@ -128,7 +101,6 @@ GoFundMe engineering interviewers evaluating a one-week sprint. They'll review t
 - **Confidence + Craft:** Pixel-level attention to spacing, typography hierarchy, and interaction polish. The demo should feel like a shipped product, not a prototype.
 
 ### Anti-Patterns
-- No pure black (#000000) anywhere - use #0F3C32 or #111827
 - No center-aligned body text - left-align for readability
 - No generic placeholder content - all fixture data tells a coherent, specific story
 - No gratuitous animations - every motion serves a UX purpose (reveal, feedback, urgency)

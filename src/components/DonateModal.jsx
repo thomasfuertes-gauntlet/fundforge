@@ -12,6 +12,8 @@ import { trackDonateComplete } from "@/lib/analytics";
 import { postDonation } from "@/lib/useData";
 import { Heart, Users, CheckCircle2, Share2 } from "lucide-react";
 
+// KEY-DECISION 2026-03: Optimistic UI - shows success immediately, POSTs to /api/donations fire-and-forget.
+// Donation appears in feed before server confirms. Prioritizes UX over consistency for demo context.
 const PRESET_AMOUNTS = [25, 50, 100, 250];
 
 function emit(type, payload = {}) {
