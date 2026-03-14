@@ -86,7 +86,24 @@ export default function CampaignPage() {
   const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$" });
 
   if (!campaign) return <NotFound type="campaign" />;
-  if (!community || !donations) return null;
+  if (!community || !donations)
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-16">
+            <div className="space-y-8 lg:col-span-7">
+              <div className="aspect-[4/3] animate-pulse rounded-xl bg-muted/60" />
+              <div className="space-y-3">
+                <div className="h-8 w-3/4 animate-pulse rounded-lg bg-muted" />
+                <div className="h-4 w-full animate-pulse rounded bg-muted" />
+                <div className="h-4 w-5/6 animate-pulse rounded bg-muted" />
+              </div>
+            </div>
+            <div className="h-80 animate-pulse rounded-xl bg-muted/60 lg:col-span-5" />
+          </div>
+        </div>
+      </div>
+    );
 
   const progressPercent = Math.min(Math.round((campaign.raised / campaign.goal) * 100), 100);
   const leaderboardEntry = community.leaderboard.find(

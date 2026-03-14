@@ -86,7 +86,35 @@ export default function HomePage() {
   const { data: community } = useCommunity();
   const { data: profiles } = useProfiles();
 
-  if (!community || !profiles) return null;
+  if (!community || !profiles)
+    return (
+      <div className="app-shell min-h-screen bg-background">
+        <div className="app-shell__orb app-shell__orb--left" />
+        <div className="app-shell__orb app-shell__orb--right" />
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 md:py-28 lg:px-16">
+          <div className="grid items-end gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div className="space-y-8">
+              <div className="space-y-5">
+                <div className="h-3 w-32 animate-pulse rounded-full bg-muted" />
+                <div className="space-y-3">
+                  <div className="h-12 w-4/5 animate-pulse rounded-lg bg-muted" />
+                  <div className="h-12 w-3/5 animate-pulse rounded-lg bg-muted" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-full animate-pulse rounded bg-muted" />
+                  <div className="h-4 w-4/5 animate-pulse rounded bg-muted" />
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="h-12 w-44 animate-pulse rounded-full bg-muted" />
+                <div className="h-12 w-40 animate-pulse rounded-full bg-muted" />
+              </div>
+            </div>
+            <div className="h-80 animate-pulse rounded-xl bg-muted/60" />
+          </div>
+        </div>
+      </div>
+    );
 
   const { aggregates } = community;
   const raisedInK = Math.round(aggregates.totalRaised / 1_000);

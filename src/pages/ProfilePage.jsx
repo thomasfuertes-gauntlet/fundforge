@@ -63,7 +63,19 @@ export default function ProfilePage() {
   const { data: allProfiles } = useProfiles();
 
   if (!profile) return <NotFound type="profile" />;
-  if (!campaigns || !allProfiles) return null;
+  if (!campaigns || !allProfiles)
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
+          <div className="h-64 animate-pulse rounded-xl bg-muted/60" />
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="h-48 animate-pulse rounded-xl bg-muted/40" />
+            <div className="h-48 animate-pulse rounded-xl bg-muted/40" />
+            <div className="h-48 animate-pulse rounded-xl bg-muted/40" />
+          </div>
+        </div>
+      </div>
+    );
 
   const otherProfiles = allProfiles.filter((p) => p.id !== profile.id);
   const activeCampaigns = campaigns.filter((c) => c.status === "active");

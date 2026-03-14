@@ -7,6 +7,16 @@ function useFetch(url, { enabled = true } = {}) {
 
   const fetchData = useCallback(async () => {
     if (!enabled) return;
+
+    // Consume server-injected preload data if available (one-shot)
+    const preloaded = window.__PRELOAD__?.[url];
+    if (preloaded !== undefined) {
+      delete window.__PRELOAD__[url];
+      setData(preloaded);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(url);

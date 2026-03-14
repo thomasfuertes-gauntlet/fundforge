@@ -328,7 +328,19 @@ export default function CommunityPage() {
     [profiles]
   );
 
-  if (!community || !activeCampaigns) return null;
+  if (!community || !activeCampaigns)
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
+          <div className="mb-12 h-56 animate-pulse rounded-3xl bg-muted/60 lg:mb-16" />
+          <div className="grid gap-5 lg:grid-cols-12">
+            <div className="h-96 animate-pulse rounded-xl bg-muted/40 lg:col-span-4" />
+            <div className="h-96 animate-pulse rounded-xl bg-muted/40 lg:col-span-3" />
+            <div className="h-96 animate-pulse rounded-xl bg-muted/40 lg:col-span-5" />
+          </div>
+        </div>
+      </div>
+    );
 
   const { aggregates, leaderboard, trending } = community;
 
