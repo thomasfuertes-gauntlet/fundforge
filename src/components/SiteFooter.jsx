@@ -1,4 +1,5 @@
-import { Users, LucideGithub, Globe } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Users, LucideGithub, Globe, BarChart3 } from "lucide-react";
 
 export default function SiteFooter() {
   return (
@@ -21,6 +22,14 @@ export default function SiteFooter() {
 
           {/* Links */}
           <div className="flex items-center gap-5">
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-1.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              data-testid="footer-dashboard"
+            >
+              <BarChart3 className="h-4 w-4" />
+              A/B Dashboard
+            </Link>
             <a
               href="https://github.com/tomfuertes/gofundme-interview"
               target="_blank"

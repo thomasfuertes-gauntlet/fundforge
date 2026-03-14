@@ -13,6 +13,7 @@ import NotFound from "@/components/NotFound";
 import { usePageView, useScrollDepth } from "@/lib/useAnalytics";
 import { trackDonateClick } from "@/lib/analytics";
 import useCountUp from "@/lib/useCountUp";
+import { ab } from "@/lib/ab";
 import { cn } from "@/lib/utils";
 import { formatCurrency, formatDate, initials } from "@/lib/format";
 import {
@@ -71,12 +72,21 @@ export default function CampaignPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  // A/B: treatment removes scroll-triggered animations for speed perception test
+  const skipAnimations = ab('animations');
+
   const { data: campaign } = useCampaign(id);
   const { data: organizer } = useProfile(campaign?.organizerId);
   const { data: donations } = useDonations(campaign?.id);
   const { data: community } = useCommunity();
 
+  // All hooks must be called before any early return (Rules of Hooks)
+  const [raisedRef, raisedDisplay] = useCountUp(campaign?.raised ?? 0, { prefix: "$" });
+  const [backersRef, backersDisplay] = useCountUp(campaign?.backerCount ?? 0);
+  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$" });
+
   if (!campaign) return <NotFound type="campaign" />;
+  if (!community || !donations) return null;
 
   const progressPercent = Math.min(Math.round((campaign.raised / campaign.goal) * 100), 100);
   const leaderboardEntry = community.leaderboard.find(
@@ -87,10 +97,6 @@ export default function CampaignPage() {
     : (campaign.updates || []).slice(0, 2);
 
   const readingTime = Math.ceil(campaign.story.join(" ").split(/\s+/).length / 200);
-
-  const [raisedRef, raisedDisplay] = useCountUp(campaign.raised, { prefix: "$" });
-  const [backersRef, backersDisplay] = useCountUp(campaign.backerCount);
-  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign.averageGift, { prefix: "$" });
 
   return (
     <div className="min-h-screen bg-background">
@@ -372,14 +378,22 @@ export default function CampaignPage() {
                     </div>
                   </div>
 
-                  <AnimatedProgress
-                    value={progressPercent}
-                    className={cn(
-                      "h-3 bg-primary/15",
-                      progressPercent >= 75 && "animate-progress-glow"
-                    )}
-                    data-testid="campaign-progress"
-                  />
+                  {skipAnimations ? (
+                    <Progress
+                      value={progressPercent}
+                      className="h-3 bg-primary/15"
+                      data-testid="campaign-progress"
+                    />
+                  ) : (
+                    <AnimatedProgress
+                      value={progressPercent}
+                      className={cn(
+                        "h-3 bg-primary/15",
+                        progressPercent >= 75 && "animate-progress-glow"
+                      )}
+                      data-testid="campaign-progress"
+                    />
+                  )}
                   {progressPercent >= 90 ? (
                     <Badge
                       className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-primary hover:bg-primary/10"
@@ -413,18 +427,32 @@ export default function CampaignPage() {
                       </p>
                       {campaign.raised >= campaign.goal && (
                         <div className="mt-2">
-                          <AnimatedProgress
-                            value={Math.min(
-                              Math.round(
-                                ((campaign.raised - campaign.goal) /
-                                  (campaign.stretchGoal.amount - campaign.goal)) *
-                                  100
-                              ),
-                              100
-                            )}
-                            delay={300}
-                            className="h-2 bg-amber-200/50 [&>div]:bg-amber-500"
-                          />
+                          {skipAnimations ? (
+                            <Progress
+                              value={Math.min(
+                                Math.round(
+                                  ((campaign.raised - campaign.goal) /
+                                    (campaign.stretchGoal.amount - campaign.goal)) *
+                                    100
+                                ),
+                                100
+                              )}
+                              className="h-2 bg-amber-200/50 [&>div]:bg-amber-500"
+                            />
+                          ) : (
+                            <AnimatedProgress
+                              value={Math.min(
+                                Math.round(
+                                  ((campaign.raised - campaign.goal) /
+                                    (campaign.stretchGoal.amount - campaign.goal)) *
+                                    100
+                                ),
+                                100
+                              )}
+                              delay={300}
+                              className="h-2 bg-amber-200/50 [&>div]:bg-amber-500"
+                            />
+                          )}
                         </div>
                       )}
                     </div>
@@ -535,8 +563,11 @@ export default function CampaignPage() {
                       {donations.slice(0, 5).map((d, i) => (
                         <div
                           key={d.id}
-                          className="flex items-center justify-between rounded-2xl border border-secondary bg-secondary/40 px-4 py-3 opacity-0 animate-fade-slide-in"
-                          style={{ animationDelay: `${i * 100}ms` }}
+                          className={cn(
+                            "flex items-center justify-between rounded-2xl border border-secondary bg-secondary/40 px-4 py-3",
+                            !skipAnimations && "opacity-0 animate-fade-slide-in"
+                          )}
+                          style={skipAnimations ? undefined : { animationDelay: `${i * 100}ms` }}
                           data-testid={`donation-${d.id}`}
                         >
                           <div className="min-w-0">

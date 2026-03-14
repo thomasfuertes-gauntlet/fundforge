@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ab } from "@/lib/ab";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
 import { useCommunity, useProfiles } from "@/lib/useData";
@@ -68,8 +69,12 @@ function HeroStats({ totalRaised, activeCampaigns, avgTrust, organizers }) {
 
 export default function HomePage() {
   usePageView("home");
+  const altHeadline = ab('headline-copy');
   const { data: community } = useCommunity();
   const { data: profiles } = useProfiles();
+
+  if (!community || !profiles) return null;
+
   const { aggregates } = community;
   const avgTrust = Math.round(
     profiles.reduce((sum, p) => sum + p.trust.score, 0) / profiles.length
@@ -83,8 +88,11 @@ export default function HomePage() {
           Interview project
         </Badge>
         <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-          Crowdfunding built on{" "}
-          <span className="text-primary">trust</span>
+          {altHeadline ? (
+            <>Fund with <span className="text-primary">confidence</span></>
+          ) : (
+            <>Crowdfunding built on{" "}<span className="text-primary">trust</span></>
+          )}
         </h1>
         <p className="mt-3 max-w-2xl text-xl font-serif leading-snug text-foreground/80">
           A closed-loop ecosystem where reputation drives donations, not just
