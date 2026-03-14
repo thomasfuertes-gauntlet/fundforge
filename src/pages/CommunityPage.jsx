@@ -404,9 +404,9 @@ export default function CommunityPage() {
                 prefix="$"
                 suffix="K"
                 label="total raised across the community"
-                className="rounded-2xl bg-primary p-5 text-primary-foreground"
-                valueClassName="text-3xl font-serif"
-                labelClassName="mt-1.5 text-sm text-primary-foreground/75"
+                className="rounded-[1.5rem] bg-emerald-950 p-5 text-white"
+                valueClassName="text-3xl font-serif text-white"
+                labelClassName="mt-1.5 text-sm text-white/75"
                 testId="community-total-raised"
               />
 
