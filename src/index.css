@@ -96,6 +96,69 @@
   animation: progress-glow 2s ease-in-out infinite;
 }
 
+/* ─── Design System Utilities (from ShowcasePage reference) ─── */
+
+/* Decorative gradient orbs behind page content */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+}
+.app-shell__orb {
+  position: fixed;
+  width: 45vw;
+  height: 45vw;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: -1;
+}
+.app-shell__orb--left {
+  top: -10%;
+  left: -15%;
+  background: radial-gradient(circle, #0F3C32, transparent);
+}
+.app-shell__orb--right {
+  bottom: -10%;
+  right: -15%;
+  background: radial-gradient(circle, #115E59, transparent);
+}
+
+/* Frosted glass card effect */
+.glass-panel {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Editorial card with hover lift */
+.editorial-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.editorial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 60, 50, 0.08);
+}
+
+/* Section eyebrow label */
+.section-eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.24em] text-primary/70;
+}
+
+/* Monospace code preview block */
+.code-panel {
+  @apply rounded-2xl border border-border/60 bg-muted/40 p-4;
+}
+
+/* Scroll-triggered reveal animation */
+.section-reveal {
+  animation: fade-slide-in 0.6s ease-out both;
+}
+
+.stagger-2 {
+  animation-delay: 150ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

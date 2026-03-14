@@ -3,6 +3,7 @@ import { ab } from "@/lib/ab";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
 import { useCommunity, useProfiles } from "@/lib/useData";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -11,11 +12,16 @@ import {
   Users,
   User,
   ArrowRight,
+  ArrowUpRight,
+  MoveRight,
   ShieldCheck,
+  CircleDollarSign,
   TrendingUp,
   Target,
   Heart,
   BarChart3,
+  Leaf,
+  Sparkles,
 } from "lucide-react";
 
 const PAGES = [
@@ -39,30 +45,37 @@ const PAGES = [
   },
 ];
 
+const TRUST_PILLARS = [
+  { icon: CircleDollarSign, label: "Conversion without pressure" },
+  { icon: Users, label: "Community with visible momentum" },
+  { icon: ShieldCheck, label: "Trust signals on every surface" },
+];
+
 const TRUST_INPUTS = [
   { label: "Fulfillment history", weight: "40%", icon: Target },
   { label: "Update consistency", weight: "30%", icon: BarChart3 },
   { label: "Repeat donor confidence", weight: "30%", icon: Heart },
 ];
 
+const PALETTE_TOKENS = [
+  { name: "Deep Forest Green", value: "#0F3C32", note: "Primary. Evokes stability, wealth, and nature." },
+  { name: "Mint Foam", value: "#E8F3F1", note: "Secondary. Soft background for contrast." },
+  { name: "Amber", value: "#D97706", note: "Accent. Warm, urgent action color for CTAs." },
+  { name: "Gray 900", value: "#111827", note: "Text primary. Never pure #000." },
+];
+
+const TYPE_SPEC = [
+  { label: "Display heading", style: "text-4xl font-bold font-serif tracking-tight", preview: "Crowdfunding, framed as trust." },
+  { label: "Section heading", style: "text-2xl font-semibold font-serif", preview: "Three interconnected pages." },
+  { label: "Body text", style: "text-base leading-relaxed font-sans", preview: "Campaign, Community, and Profile share data, tokens, and a composite trust model." },
+];
+
 function CountStat({ end, prefix = "", suffix = "", label }) {
   const [ref, display] = useCountUp(end, { prefix, suffix });
   return (
-    <div ref={ref}>
-      <p className="text-3xl font-serif text-primary">{display}</p>
-      <p className="text-sm text-muted-foreground">{label}</p>
-    </div>
-  );
-}
-
-function HeroStats({ totalRaised, activeCampaigns, avgTrust, organizers }) {
-  const raisedInK = Math.round(totalRaised / 1_000);
-  return (
-    <div className="mt-10 flex flex-wrap gap-6">
-      <CountStat end={raisedInK} prefix="$" suffix="K" label="total raised" />
-      <CountStat end={activeCampaigns} label="active campaigns" />
-      <CountStat end={avgTrust} label="avg trust score" />
-      <CountStat end={organizers} label="verified organizers" />
+    <div ref={ref} className="rounded-[1.5rem] border border-secondary bg-secondary/70 p-4">
+      <p className="text-2xl font-serif text-primary">{display}</p>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">{label}</p>
     </div>
   );
 }
@@ -76,55 +89,203 @@ export default function HomePage() {
   if (!community || !profiles) return null;
 
   const { aggregates } = community;
+  const raisedInK = Math.round(aggregates.totalRaised / 1_000);
   const avgTrust = Math.round(
     profiles.reduce((sum, p) => sum + p.trust.score, 0) / profiles.length
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <div className="mx-auto max-w-5xl px-6 py-20 md:px-12 md:py-28 lg:px-16">
-        <Badge variant="secondary" className="mb-4">
-          Interview project
-        </Badge>
-        <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-          {altHeadline ? (
-            <>Fund with <span className="text-primary">confidence</span></>
-          ) : (
-            <>Crowdfunding built on{" "}<span className="text-primary">trust</span></>
-          )}
-        </h1>
-        <p className="mt-3 max-w-2xl text-xl font-serif leading-snug text-foreground/80">
-          A closed-loop ecosystem where reputation drives donations, not just
-          stories.
-        </p>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          FundForge explores how trust signals, social proof, and behavioral
-          economics can reshape crowdfunding. Three interconnected pages share
-          data, design tokens, and a composite trust model.
-        </p>
+    <div className="app-shell min-h-screen bg-background">
+      <div className="app-shell__orb app-shell__orb--left" />
+      <div className="app-shell__orb app-shell__orb--right" />
 
-        {/* Quick stats */}
-        <HeroStats
-          totalRaised={aggregates.totalRaised}
-          activeCampaigns={aggregates.activeCampaigns}
-          avgTrust={avgTrust}
-          organizers={profiles.length}
-        />
+      {/* ─── Hero: 2-column layout matching ShowcasePage ─── */}
+      <div className="mx-auto max-w-7xl px-6 py-20 md:px-12 md:py-28 lg:px-16">
+        <div className="grid items-end gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          {/* Left: Headline + CTAs + Trust Pillars */}
+          <div className="space-y-8">
+            <div className="space-y-5">
+              <p className="section-eyebrow">
+                Design system as an API
+              </p>
+              <h1 className="max-w-3xl text-4xl font-bold leading-[0.98] tracking-tight sm:text-5xl lg:text-[4.6rem]">
+                {altHeadline ? (
+                  <>One premium editorial language for <span className="text-primary">confidence</span>.</>
+                ) : (
+                  <>One premium editorial language for Campaign, Community, and Profile.</>
+                )}
+              </h1>
+              <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-lg">
+                A closed-loop ecosystem where reputation drives donations, not just stories.
+                Trust signals, social proof, and behavioral economics reshape crowdfunding.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Button
+                asChild
+                variant="accent"
+                size="lg"
+                className="shadow-[0_18px_45px_rgba(217,119,6,0.22)]"
+              >
+                <Link to="/campaign/campaign-1">
+                  Explore conversion module
+                  <MoveRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+              >
+                <Link to="/profile/profile-1">
+                  View trust layer
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {TRUST_PILLARS.map(({ icon: Icon, label }) => (
+                <Card key={label} className="editorial-card border-white/70 bg-white/80">
+                  <CardContent className="flex items-center gap-3 p-4">
+                    <div className="rounded-full bg-secondary p-2 text-primary">
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <p className="text-sm font-medium text-foreground">{label}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Config card with live stats */}
+          <div className="section-reveal stagger-2 space-y-6">
+            <Card className="glass-panel overflow-hidden border-white/60 bg-white/75">
+              <CardContent className="space-y-6 p-6 lg:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="section-eyebrow">Live metrics</p>
+                    <h3 className="mt-2 text-2xl font-serif text-foreground">
+                      Brand tokens first, screens second.
+                    </h3>
+                  </div>
+                  <Badge className="rounded-full bg-primary px-3 py-1 text-primary-foreground">
+                    System Ready
+                  </Badge>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <CountStat end={raisedInK} prefix="$" suffix="K" label="Prototype raises funded through one token system." />
+                  <CountStat end={aggregates.activeCampaigns} label="Sample campaigns across categories, community, and profile." />
+                  <CountStat end={avgTrust} suffix=" / 100" label="Editorial trust score bridging eligibility + 1." />
+                </div>
+
+                <div className="code-panel">
+                  <pre className="whitespace-pre-wrap font-mono text-sm leading-7 text-muted-foreground">{`// design_guidelines.json
+primary:  #0F3C32  // Deep Forest Green
+accent:   #D97706  // Amber conversion
+heading:  Libre Baskerville
+body:     Manrope
+radius:   rounded-xl (cards)
+          rounded-full (buttons)`}</pre>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
 
-      {/* Three Pages */}
-      <div className="mx-auto max-w-5xl px-6 pb-24 md:px-12 lg:px-16">
-        <h2 className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          The ecosystem
-        </h2>
+      {/* ─── Design Tokens Section ─── */}
+      <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
+        <div className="space-y-10">
+          <div className="max-w-3xl space-y-4">
+            <p className="section-eyebrow">Style guide</p>
+            <h2 className="text-3xl font-serif text-foreground sm:text-4xl">
+              A trustworthy palette, an editorial type rhythm, and token-level consistency.
+            </h2>
+            <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+              Color, typography, spacing, and card treatment stay stable so each page
+              feels authored by the same team.
+            </p>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+            {/* Color Palette */}
+            <Card className="editorial-card border-white/70 bg-white/90">
+              <CardContent className="space-y-6 p-6 lg:p-8">
+                <div className="flex items-center gap-3">
+                  <Leaf className="h-5 w-5 text-primary" />
+                  <h3 className="text-xl font-serif text-foreground">Core color palette</h3>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {PALETTE_TOKENS.map((token) => (
+                    <div key={token.value} className="rounded-[1.5rem] border border-border/80 p-4">
+                      <div
+                        className="h-16 w-full rounded-xl"
+                        style={{ backgroundColor: token.value }}
+                      />
+                      <div className="mt-4 space-y-1">
+                        <p className="text-lg font-semibold text-foreground">{token.name}</p>
+                        <p className="font-mono text-sm text-muted-foreground">{token.value}</p>
+                        <p className="text-sm leading-6 text-muted-foreground">{token.note}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="grid gap-6">
+              {/* Typography */}
+              <Card className="editorial-card border-white/70 bg-white/90">
+                <CardContent className="space-y-5 p-6 lg:p-8">
+                  <div className="flex items-center gap-3">
+                    <Sparkles className="h-5 w-5 text-sky-800" />
+                    <h3 className="text-xl font-serif text-foreground">Typography hierarchy</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {TYPE_SPEC.map((spec) => (
+                      <div key={spec.label} className="rounded-[1.5rem] border border-border/80 bg-muted/40 p-4">
+                        <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                          {spec.label}
+                        </p>
+                        <p className={`mt-3 ${spec.style} text-foreground`}>
+                          {spec.preview}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Spacing Rules */}
+              <Card className="editorial-card border-white/70 bg-gradient-to-br from-primary via-primary to-gradient-end text-primary-foreground">
+                <CardContent className="space-y-5 p-6 lg:p-8">
+                  <h3 className="text-xl font-serif">Spacing + radius rules</h3>
+                  <div className="grid gap-3 text-sm leading-6 text-primary-foreground/80 sm:grid-cols-2">
+                    <p>Sections breathe at 6rem to 8rem vertical spacing.</p>
+                    <p>Cards use 1.25rem to 1.75rem radius for softness without blur.</p>
+                    <p>Responsive grids stack early to avoid horizontal overflow.</p>
+                    <p>Call-to-action moments reserve amber for contrast and urgency.</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Ecosystem Cards ─── */}
+      <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
+        <p className="section-eyebrow mb-2">The ecosystem</p>
         <p className="mb-8 max-w-xl text-2xl font-serif leading-snug text-foreground">
           Three pages, one feedback loop.
         </p>
         <div className="grid gap-5 sm:grid-cols-3">
           {PAGES.map(({ to, label, icon: Icon, description }) => (
             <Link key={to} to={to} className="block">
-              <Card className="h-full border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <Card className="editorial-card h-full border-white/70 bg-white/90">
                 <CardContent className="flex flex-col gap-4 p-6">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
                     <Icon className="h-5 w-5 text-primary" />
@@ -145,14 +306,11 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Trust Model */}
-      <div className="mx-auto max-w-5xl px-6 pb-24 md:px-12 lg:px-16">
+      {/* ─── Trust Model ─── */}
+      <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
         <div className="grid gap-8 lg:grid-cols-2">
-          {/* Explanation */}
           <div>
-            <h2 className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-              Trust model
-            </h2>
+            <p className="section-eyebrow mb-2">Trust model</p>
             <p className="mb-4 text-2xl font-serif leading-snug text-foreground">
               Reputation is visible, measurable, and human.
             </p>
@@ -177,7 +335,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Live preview card */}
           <Card
             className="overflow-hidden border-white/70 bg-gradient-to-br from-primary via-primary to-gradient-end text-primary-foreground"
           >
@@ -223,11 +380,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Stack */}
-      <div className="mx-auto max-w-5xl px-6 pb-24 md:px-12 lg:px-16">
-        <h2 className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          Built with
-        </h2>
+      {/* ─── Built With ─── */}
+      <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
+        <p className="section-eyebrow mb-2">Built with</p>
         <div className="flex flex-wrap gap-2">
           {[
             "React 19",
