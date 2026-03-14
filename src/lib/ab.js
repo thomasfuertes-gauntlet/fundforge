@@ -28,9 +28,20 @@ function ab(expName) {
   return buckets.get(expName);
 }
 
-ab.convert = (expName) => {
-  if (!buckets.has(expName)) return; // no impression = no conversion
-  track(visitorId, expName, buckets.get(expName) ? 'treatment' : 'control', 'conversion');
+// Track arbitrary funnel events (e.g., 'cta_click', 'donate_open', 'donate_complete')
+ab.track = (expName, eventType) => {
+  if (!buckets.has(expName)) return; // no impression = no tracking
+  track(visitorId, expName, buckets.get(expName) ? 'treatment' : 'control', eventType);
+};
+
+// Shorthand for final conversion event
+ab.convert = (expName) => ab.track(expName, 'donate_complete');
+
+// Forward an event to ALL active experiments (called from analytics.emit)
+ab.trackAll = (eventType) => {
+  for (const [expName] of buckets) {
+    ab.track(expName, eventType);
+  }
 };
 
 // Expose bucket map for dashboard introspection

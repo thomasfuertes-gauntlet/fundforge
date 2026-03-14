@@ -8,7 +8,7 @@ import { BarChart3, FlaskConical, Users, TrendingUp, Fingerprint } from "lucide-
 // Normal CDF via error function approximation (Abramowitz & Stegun)
 function normalCDF(x) {
   const t = 1 / (1 + 0.2316419 * Math.abs(x));
-  const d = 0.3989422804014327; // 1/√(2π)
+  const d = 0.3989422804014327;
   const p =
     d *
     Math.exp((-x * x) / 2) *
@@ -17,7 +17,6 @@ function normalCDF(x) {
   return x > 0 ? 1 - p : p;
 }
 
-// P(treatment > control) via Beta-Binomial normal approximation
 function pWin(cConv, cTotal, tConv, tTotal) {
   if (cTotal === 0 || tTotal === 0) return 0.5;
   const cRate = cConv / cTotal;
@@ -29,27 +28,56 @@ function pWin(cConv, cTotal, tConv, tTotal) {
   return normalCDF((tRate - cRate) / se);
 }
 
-function reshapeResults(rows) {
+// Ordered funnel steps - each step's conv rate is relative to the previous step
+const FUNNEL_ORDER = ['impression', 'scroll_depth', 'donate_click', 'donate_complete', 'share_click'];
+const STEP_LABELS = {
+  impression: 'Impressions',
+  scroll_depth: 'Engaged (scroll)',
+  donate_click: 'Donate clicked',
+  donate_complete: 'Donated',
+  share_click: 'Shared',
+};
+
+function reshapeResults(rows, totalVisitors) {
   const map = {};
   for (const r of rows) {
     if (!map[r.experiment]) map[r.experiment] = {};
     const key = `${r.variation}_${r.event_type}`;
     map[r.experiment][key] = r.unique_visitors;
   }
+
   return Object.entries(map).map(([name, d]) => {
+    // Build funnel steps with data
+    const steps = FUNNEL_ORDER
+      .filter((step) => d[`control_${step}`] || d[`treatment_${step}`])
+      .map((step, i, arr) => {
+        const cCount = d[`control_${step}`] || 0;
+        const tCount = d[`treatment_${step}`] || 0;
+        const prevStep = i > 0 ? arr[i - 1] : null;
+        const cPrev = prevStep ? (d[`control_${prevStep}`] || 0) : totalVisitors;
+        const tPrev = prevStep ? (d[`treatment_${prevStep}`] || 0) : totalVisitors;
+        return {
+          step,
+          label: STEP_LABELS[step] || step,
+          control: { count: cCount, rate: cPrev > 0 ? cCount / cPrev : 0 },
+          treatment: { count: tCount, rate: tPrev > 0 ? tCount / tPrev : 0 },
+        };
+      });
+
+    // Overall conversion: donate_complete / impression
     const cImp = d.control_impression || 0;
-    const cConv = d.control_conversion || 0;
+    const cConv = d.control_donate_complete || 0;
     const tImp = d.treatment_impression || 0;
-    const tConv = d.treatment_conversion || 0;
+    const tConv = d.treatment_donate_complete || 0;
     const cRate = cImp > 0 ? cConv / cImp : 0;
     const tRate = tImp > 0 ? tConv / tImp : 0;
     const lift = cRate > 0 ? (tRate - cRate) / cRate : 0;
+
     return {
       name,
-      control: { impressions: cImp, conversions: cConv, rate: cRate },
-      treatment: { impressions: tImp, conversions: tConv, rate: tRate },
-      lift,
-      pWin: pWin(cConv, cImp, tConv, tImp),
+      steps,
+      totalVisitors: cImp + tImp,
+      overall: { cRate, tRate, lift, pWin: pWin(cConv, cImp, tConv, tImp) },
     };
   });
 }
@@ -58,39 +86,19 @@ function pct(n) {
   return (n * 100).toFixed(1) + "%";
 }
 
-function VariationRow({ label, data, highlight }) {
-  return (
-    <div className={`rounded-xl border p-4 ${highlight ? "border-primary/30 bg-secondary/40" : "border-border/60 bg-muted/30"}`}>
-      <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">
-        {label}
-      </p>
-      <div className="grid grid-cols-3 gap-4 text-center">
-        <div>
-          <p className="text-2xl font-serif text-foreground">{data.impressions}</p>
-          <p className="text-xs text-muted-foreground">visitors</p>
-        </div>
-        <div>
-          <p className="text-2xl font-serif text-foreground">{data.conversions}</p>
-          <p className="text-xs text-muted-foreground">conversions</p>
-        </div>
-        <div>
-          <p className="text-2xl font-serif text-foreground">{pct(data.rate)}</p>
-          <p className="text-xs text-muted-foreground">conv rate</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function DashboardPage() {
   usePageView("dashboard");
   const [experiments, setExperiments] = useState([]);
+  const [totalVisitors, setTotalVisitors] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/ab/results")
       .then((r) => r.json())
-      .then((rows) => setExperiments(reshapeResults(rows)))
+      .then((data) => {
+        setTotalVisitors(data.totalVisitors);
+        setExperiments(reshapeResults(data.rows, data.totalVisitors));
+      })
       .catch(() => setExperiments([]))
       .finally(() => setLoading(false));
   }, []);
@@ -107,7 +115,9 @@ export default function DashboardPage() {
           </h1>
         </div>
         <p className="text-muted-foreground mb-10">
-          Live experiment results from Analytics Engine + D1.
+          Live experiment results from D1. {totalVisitors > 0 && (
+            <span className="font-medium text-foreground">{totalVisitors.toLocaleString()} unique visitors tracked.</span>
+          )}
         </p>
 
         {/* Session Info */}
@@ -164,33 +174,59 @@ export default function DashboardPage() {
                       <FlaskConical className="h-4 w-4 text-primary/60" />
                       <h2 className="text-lg font-semibold text-foreground">{exp.name}</h2>
                     </div>
-                    <Badge
-                      variant="secondary"
-                      className="rounded-full"
-                    >
+                    <Badge variant="secondary" className="rounded-full">
                       <Users className="h-3 w-3 mr-1" />
-                      {exp.control.impressions + exp.treatment.impressions} total
+                      {exp.totalVisitors.toLocaleString()} visitors
                     </Badge>
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <VariationRow label="Control" data={exp.control} />
-                    <VariationRow label="Treatment" data={exp.treatment} highlight />
+                  {/* Funnel Table */}
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border/40">
+                          <th className="text-left py-2 pr-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Step</th>
+                          <th className="text-right py-2 px-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">Control</th>
+                          <th className="text-right py-2 px-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">Conv %</th>
+                          <th className="text-right py-2 px-3 text-xs font-medium uppercase tracking-widest text-primary/70">Treatment</th>
+                          <th className="text-right py-2 pl-3 text-xs font-medium uppercase tracking-widest text-primary/70">Conv %</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {exp.steps.map((s, i) => (
+                          <tr key={s.step} className={i < exp.steps.length - 1 ? "border-b border-border/20" : ""}>
+                            <td className="py-2.5 pr-4 text-muted-foreground">{s.label}</td>
+                            <td className="py-2.5 px-3 text-right font-medium text-foreground">{s.control.count.toLocaleString()}</td>
+                            <td className="py-2.5 px-3 text-right text-muted-foreground">
+                              {i === 0 ? "-" : pct(s.control.rate)}
+                            </td>
+                            <td className="py-2.5 px-3 text-right font-medium text-foreground">{s.treatment.count.toLocaleString()}</td>
+                            <td className="py-2.5 pl-3 text-right text-muted-foreground">
+                              {i === 0 ? "-" : pct(s.treatment.rate)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
 
-                  {/* Stats Summary */}
+                  {/* Overall Stats */}
                   <div className="flex flex-wrap items-center gap-4 rounded-xl border border-border/60 bg-muted/20 p-4">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm text-muted-foreground">Overall conv:</span>
+                      <span className="text-sm font-medium text-foreground">{pct(exp.overall.cRate)} → {pct(exp.overall.tRate)}</span>
+                    </div>
                     <div className="flex items-center gap-1.5">
                       <TrendingUp className="h-4 w-4 text-primary/60" />
                       <span className="text-sm text-muted-foreground">Lift:</span>
-                      <span className={`text-sm font-semibold ${exp.lift > 0 ? "text-green-700" : exp.lift < 0 ? "text-red-700" : "text-foreground"}`}>
-                        {exp.lift > 0 ? "+" : ""}{pct(exp.lift)}
+                      <span className={`text-sm font-semibold ${exp.overall.lift > 0 ? "text-green-700" : exp.overall.lift < 0 ? "text-red-700" : "text-foreground"}`}>
+                        {exp.overall.lift > 0 ? "+" : ""}{pct(exp.overall.lift)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <BarChart3 className="h-4 w-4 text-primary/60" />
                       <span className="text-sm text-muted-foreground">P(treatment wins):</span>
-                      <span className="text-sm font-semibold text-foreground">{pct(exp.pWin)}</span>
+                      <span className="text-sm font-semibold text-foreground">{pct(exp.overall.pWin)}</span>
                     </div>
                   </div>
                 </CardContent>

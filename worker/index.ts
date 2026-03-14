@@ -8,7 +8,6 @@ import { abRoutes } from "./routes/ab";
 
 type Bindings = {
   DB: D1Database;
-  AB?: AnalyticsEngineDataset;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();

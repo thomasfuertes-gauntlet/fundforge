@@ -78,3 +78,5 @@ CREATE TABLE IF NOT EXISTS ab_events (
   timestamp TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_ab_exp_event ON ab_events(experiment, event_type);
+CREATE INDEX IF NOT EXISTS idx_ab_visitor ON ab_events(visitor_id);
+CREATE INDEX IF NOT EXISTS idx_ab_exp_var_ts ON ab_events(experiment, variation, event_type, timestamp);

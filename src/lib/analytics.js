@@ -12,7 +12,12 @@
  *
  * In production, replace `emit()` with a POST to /api/events or a
  * third-party like Segment, Amplitude, or a Cloudflare Worker endpoint.
+ *
+ * A/B integration: emit() auto-forwards funnel events (donate_click,
+ * donate_complete, share_click, scroll_depth) to all active experiments
+ * via ab.trackAll(). No per-page AB calls needed.
  */
+import { ab } from "./ab";
 
 // ─── Session ────────────────────────────────────
 const SESSION_KEY = "ff_session_id";
@@ -38,6 +43,13 @@ function emit(type, payload = {}) {
     ...payload,
   };
   eventLog.push(event);
+
+  // Forward funnel events to all active AB experiments
+  // KEY-DECISION 2026-03: AB hooks into analytics.emit() so pages don't need
+  // explicit ab.track() calls - single event bus, no duplication.
+  if (type !== "web_vital" && type !== "error" && type !== "page_view") {
+    ab.trackAll(type);
+  }
 
   // Structured console output grouped by type
   if (import.meta.env.DEV) {

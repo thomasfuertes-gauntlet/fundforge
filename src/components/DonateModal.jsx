@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import { trackDonateComplete } from "@/lib/analytics";
-import { ab } from "@/lib/ab";
 import { postDonation } from "@/lib/useData";
 import { Heart, Users, CheckCircle2, Share2 } from "lucide-react";
 
@@ -60,8 +59,6 @@ export default function DonateModal({
     setSubmitting(true);
     // Optimistic: show success immediately, POST in background
     trackDonateComplete(campaignId, amount);
-    ab.convert('animations');
-    ab.convert('headline-copy');
     setCompletedAmount(amount);
     setDonationComplete(true);
     setSubmitting(false);

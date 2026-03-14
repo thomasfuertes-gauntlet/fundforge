@@ -12,11 +12,5 @@
       "database_name": "fundforge_db",
       "database_id": "e4a318eb-1dd7-4d2e-bbb1-4e498ba7685c"
     }
-  ],
-  "analytics_engine_datasets": [
-    {
-      "binding": "AB",
-      "dataset": "ab_testing"
-    }
   ]
 }
