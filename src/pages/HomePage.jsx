@@ -29,26 +29,26 @@ const PAGES = [
     to: "/campaign/campaign-1",
     label: "Campaign",
     icon: Flame,
-    description: "Conversion through goal-gradient, social proof, and donor momentum.",
+    description: "Editorial story layout with anchoring, goal-gradient urgency, stretch goals, and matching sponsors.",
   },
   {
     to: "/community",
     label: "Community",
     icon: Users,
-    description: "Competitive altruism via leaderboards, trending signals, and aggregate impact.",
+    description: "Bento leaderboard ranked by trust-weighted score, trending momentum badges, and aggregate impact.",
   },
   {
     to: "/profile/profile-1",
     label: "Profile",
     icon: User,
-    description: "Trust composition built from fulfillment, transparency, and repeat support.",
+    description: "Transparent trust breakdown with verification tiers, campaign history, and network impact.",
   },
 ];
 
 const TRUST_PILLARS = [
-  { icon: CircleDollarSign, label: "Conversion without pressure" },
-  { icon: Users, label: "Community with visible momentum" },
-  { icon: ShieldCheck, label: "Trust signals on every surface" },
+  { icon: ShieldCheck, label: "Composite trust scoring" },
+  { icon: BarChart3, label: "Full-funnel A/B analytics" },
+  { icon: CircleDollarSign, label: "Behavioral economics patterns" },
 ];
 
 const TRUST_INPUTS = [
@@ -106,18 +106,19 @@ export default function HomePage() {
           <div className="space-y-8">
             <div className="space-y-5">
               <p className="section-eyebrow">
-                Design system as an API
+                GoFundMe reimagined
               </p>
               <h1 className="max-w-3xl text-4xl font-bold leading-[0.98] tracking-tight sm:text-5xl lg:text-[4.6rem]">
                 {altHeadline ? (
-                  <>One premium editorial language for <span className="text-primary">confidence</span>.</>
+                  <>What if <span className="text-primary">reputation</span> drove donations, not just stories?</>
                 ) : (
-                  <>One premium editorial language for Campaign, Community, and Profile.</>
+                  <>Crowdfunding where <span className="text-primary">trust</span> is the product.</>
                 )}
               </h1>
               <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-lg">
-                A closed-loop ecosystem where reputation drives donations, not just stories.
-                Trust signals, social proof, and behavioral economics reshape crowdfunding.
+                Three connected pages with a composite trust score, full-funnel A/B testing,
+                and behavioral economics baked into every conversion surface.
+                Built in one week with AI-accelerated development.
               </p>
             </div>
 
@@ -129,7 +130,7 @@ export default function HomePage() {
                 className="shadow-[0_18px_45px_rgba(217,119,6,0.22)]"
               >
                 <Link to="/campaign/campaign-1">
-                  Explore conversion module
+                  See a live campaign
                   <MoveRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -138,8 +139,8 @@ export default function HomePage() {
                 variant="outline"
                 size="lg"
               >
-                <Link to="/profile/profile-1">
-                  View trust layer
+                <Link to="/dashboard">
+                  View A/B dashboard
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -165,30 +166,30 @@ export default function HomePage() {
               <CardContent className="space-y-6 p-6 lg:p-8">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="section-eyebrow">Live metrics</p>
+                    <p className="section-eyebrow">Live from D1</p>
                     <h3 className="mt-2 text-2xl font-serif text-foreground">
-                      Brand tokens first, screens second.
+                      Real data, edge-first.
                     </h3>
                   </div>
                   <Badge className="rounded-full bg-primary px-3 py-1 text-primary-foreground">
-                    System Ready
+                    Cloudflare Workers
                   </Badge>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <CountStat end={raisedInK} prefix="$" suffix="K" label="Prototype raises funded through one token system." />
-                  <CountStat end={aggregates.activeCampaigns} label="Sample campaigns across categories, community, and profile." />
-                  <CountStat end={avgTrust} suffix=" / 100" label="Editorial trust score bridging eligibility + 1." />
+                  <CountStat end={raisedInK} prefix="$" suffix="K" label="Total raised across all campaigns in the ecosystem." />
+                  <CountStat end={aggregates.activeCampaigns} label="Active campaigns with live progress, donations, and updates." />
+                  <CountStat end={avgTrust} suffix=" / 100" label="Average trust score across verified organizers." />
                 </div>
 
                 <div className="code-panel">
-                  <pre className="whitespace-pre-wrap font-mono text-sm leading-7 text-muted-foreground">{`// design_guidelines.json
-primary:  #0F3C32  // Deep Forest Green
-accent:   #D97706  // Amber conversion
-heading:  Libre Baskerville
-body:     Manrope
-radius:   rounded-xl (cards)
-          rounded-full (buttons)`}</pre>
+                  <pre className="whitespace-pre-wrap font-mono text-sm leading-7 text-muted-foreground">{`// Trust score (visible on every surface)
+trust = fulfillment(40%) + updates(30%)
+      + repeat_donors(30%)
+
+// A/B funnel: impression → scroll
+//   → donate_click → donate_complete
+// Dual-write: D1 (query) + sendBeacon`}</pre>
                 </div>
               </CardContent>
             </Card>
@@ -200,13 +201,13 @@ radius:   rounded-xl (cards)
       <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
         <div className="space-y-10">
           <div className="max-w-3xl space-y-4">
-            <p className="section-eyebrow">Style guide</p>
+            <p className="section-eyebrow">Design system</p>
             <h2 className="text-3xl font-serif text-foreground sm:text-4xl">
-              A trustworthy palette, an editorial type rhythm, and token-level consistency.
+              Editorial craft, not generic SaaS.
             </h2>
             <p className="text-sm leading-7 text-muted-foreground sm:text-base">
-              Color, typography, spacing, and card treatment stay stable so each page
-              feels authored by the same team.
+              Serif headings signal credibility. Amber converts. Deep green anchors trust.
+              Every token is shared across all three pages for visual coherence.
             </p>
           </div>
 
