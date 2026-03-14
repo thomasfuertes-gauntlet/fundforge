@@ -8,10 +8,17 @@ export default function useCountUp(end, { duration = 1500, prefix = "", suffix =
   const ref = useRef(null);
   const [value, setValue] = useState(0);
   const hasAnimated = useRef(false);
+  const lastEnd = useRef(end);
+
+  // Reset animation when target value changes (e.g., 0 → real data after async load)
+  if (end !== lastEnd.current) {
+    lastEnd.current = end;
+    if (end > 0) hasAnimated.current = false;
+  }
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || hasAnimated.current) return;
+    if (!el || hasAnimated.current || end === 0) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
