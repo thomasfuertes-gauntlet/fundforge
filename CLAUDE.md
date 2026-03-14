@@ -85,7 +85,7 @@ Single Worker serves both API and static assets via `main` + `assets` in wrangle
 ### Gotchas
 - Campaign stories use `string[]` (array of paragraphs) not a single string. Render as `<p>` tags.
 - `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.
-- Community aggregates are computed via SQL in `/api/community` - do not edit `community.json` directly, it's a seed artifact.
+- Community aggregates are computed via SQL in `/api/community` - there is no community table. Data is live-computed on read.
 
 ## Design Context
 
