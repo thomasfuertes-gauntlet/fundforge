@@ -109,7 +109,7 @@ export default function DonateModal({
         {donationComplete ? (
           /* ─── Success State ─── */
           <div
-            className="flex flex-col items-center gap-5 rounded-2xl bg-gradient-to-br from-primary via-primary to-primary/90 px-6 py-10 text-white -m-6"
+            className="flex flex-col items-center gap-5 rounded-2xl bg-gradient-to-br from-primary via-primary to-gradient-end px-6 py-10 text-white -m-6"
             data-testid="donate-success"
           >
             <div className="animate-scale-in">
@@ -180,7 +180,7 @@ export default function DonateModal({
                     type="button"
                     onClick={() => handlePreset(value)}
                     data-testid={`donate-preset-${value}`}
-                    className={`rounded-xl border-2 px-4 py-3 text-lg font-semibold transition-all ${
+                    className={`rounded-[1.5rem] border-2 px-4 py-3 text-lg font-semibold transition-all ${
                       !isCustom && selected === value
                         ? "border-accent bg-accent/10 text-accent"
                         : "border-border bg-card text-foreground hover:border-primary/30"
@@ -207,7 +207,7 @@ export default function DonateModal({
                   }}
                   onFocus={handleCustomFocus}
                   data-testid="donate-custom-input"
-                  className={`w-full rounded-xl border-2 bg-card py-3 pl-9 pr-4 text-lg font-semibold outline-none transition-all placeholder:font-normal placeholder:text-muted-foreground/60 ${
+                  className={`w-full rounded-[1.5rem] border-2 bg-card py-3 pl-9 pr-4 text-lg font-semibold outline-none transition-all placeholder:font-normal placeholder:text-muted-foreground/60 ${
                     isCustom
                       ? "border-accent ring-2 ring-accent/20"
                       : "border-border focus:border-accent"

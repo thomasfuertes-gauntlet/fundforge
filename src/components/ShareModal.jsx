@@ -89,7 +89,7 @@ export default function ShareModal({ open, onOpenChange, campaignId, campaignTit
               type="button"
               onClick={() => handleShare({ label, action })}
               data-testid={`share-${label.toLowerCase().replace(" ", "-")}`}
-              className="flex flex-col items-center gap-2 rounded-xl border-2 border-border bg-card px-4 py-4 text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-muted/50"
+              className="flex flex-col items-center gap-2 rounded-[1.5rem] border-2 border-border bg-card px-4 py-4 text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-muted/50"
             >
               <Icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
               {label}
