@@ -36,7 +36,7 @@ npm run deploy    # builds + deploys to Cloudflare Workers
 |---|---|
 | Frontend | React 19 + Vite 7 + React Router 7 |
 | Styling | Tailwind 3 + shadcn/ui + Radix primitives |
-| Data | D1 database (SQLite) + JSON fixture fallbacks in `src/data/` |
+| Data | D1 database (SQLite) seeded from JSON fixtures in `worker/db/` |
 | Analytics | Custom event bus + Web Vitals (dev: console, prod: POST endpoint) |
 | Deploy | Cloudflare Workers (static assets with SPA fallback) |
 
@@ -63,14 +63,9 @@ Community leaderboard ranks by `totalRaised * (trustScore / 100)`, not raw dolla
 
 ## Data Architecture
 
-JSON fixtures in `src/data/` seed the D1 database:
+JSON fixtures in `worker/db/` seed the D1 database. Organizer profiles, campaigns, donations, and precomputed community aggregates.
 
-- **4 organizer profiles** with trust data, verification tiers, bios
-- **26 campaigns** (7 active + 17 funded + 2 unfunded) with stories, testimonials, updates
-- **15 recent donations** with messages and timestamps
-- **Precomputed community aggregates** - leaderboard, trending, metrics
-
-Cross-references: `campaign.organizerId` -> `profile.id`, `donation.campaignId` -> `campaign.id`. Helpers in `data/index.js` (`getProfile`, `getCampaign`, `getCampaignsByOrganizer`, `getDonationsByCampaign`).
+Cross-references: `campaign.organizerId` -> `profile.id`, `donation.campaignId` -> `campaign.id`. Data access via hooks in `src/lib/useData.js`.
 
 ## Instrumentation
 
@@ -99,8 +94,6 @@ A single Cloudflare Worker serves both the SPA and the API. No separate backend 
 
 React 19 with Vite 7 and React Router 7. Code-split via `React.lazy` at the route level - each page is a separate chunk. The `@/` path alias maps to `src/`.
 
-**Data loading pattern:** `useData` hooks initialize with JSON fixture data for instant render, then fetch from `/api/*` in the background. If the API fails, fixtures remain visible. This gives zero-loading-state UX while keeping the door open for live data.
-
 **Optimistic UI:** The donate modal shows success immediately and POSTs to `/api/donations` fire-and-forget. The donation appears in the feed before the server confirms.
 
 ### Backend
@@ -114,7 +107,7 @@ Hono on Cloudflare Workers with D1 (SQLite at the edge). Four route modules:
 | `/api/donations` | `GET /`, `POST /` | POST atomically updates campaign raised amount via `db.batch` |
 | `/api/community` | `GET /` | No table - aggregates computed on read via SQL joins |
 
-D1 schema: 3 tables (`profiles`, `campaigns`, `donations`). Seeded from JSON fixtures via `npm run seed:generate`. `transforms.ts` converts snake_case DB rows to camelCase API shapes.
+D1 schema: 4 tables (`profiles`, `campaigns`, `donations`, `ab_events`). Seeded via `wrangler d1 execute fundforge_db --file=worker/db/seed.sql`. `transforms.ts` converts snake_case DB rows to camelCase API shapes.
 
 ### Cross-Page Data Consistency
 
@@ -123,7 +116,7 @@ The core challenge: an organizer on the campaign page must show the same data on
 ### Key Trade-offs
 
 - **Edge SQLite over Postgres/Supabase:** D1 is colocated with the Worker - zero network hop for queries. Good enough for a demo dataset; wouldn't scale to millions of rows without read replicas.
-- **Fixture fallbacks over loading spinners:** Users see content immediately. Trade-off is stale data on first paint if the DB has diverged from fixtures.
+- **Null-render over loading spinners:** Pages return `null` until data arrives, avoiding layout shift. Trade-off is a blank flash on first paint before the API responds.
 - **Single Worker over separate API:** Simpler deployment (one `wrangler deploy`), but means API and assets share the same Worker limits.
 - **Optimistic donations over confirmed:** Better UX for a demo. In production you'd want server confirmation before showing success.
 
@@ -133,7 +126,7 @@ The core challenge: an organizer on the campaign page must show the same data on
 src/
   components/ui/              # shadcn/ui components (Button, Card, Dialog, etc.)
   components/                 # SiteHeader, DonateModal, ErrorBoundary, RevealOnScroll
-  data/                       # JSON fixtures + lookup helpers
+  lib/useData.js              # Data hooks (fetch from /api/*)
   lib/                        # format.js, utils.js, analytics.js, useAnalytics.js
   pages/                      # HomePage, CampaignPage, CommunityPage, ProfilePage
   App.jsx                     # Router + lazy code splitting

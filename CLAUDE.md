@@ -45,7 +45,7 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 
 - **Frontend:** React 19 + Vite 7 + Tailwind 3 + shadcn/ui + React Router 7
 - **Backend:** Hono on Cloudflare Workers + D1 (SQLite)
-- **Data layer:** D1 database (seeded from JSON fixtures in `src/data/`). Hooks in `src/lib/useData.js` fetch from `/api/*` with fixture fallbacks.
+- **Data layer:** D1 database (seeded from JSON fixtures). Hooks in `src/lib/useData.js` fetch from `/api/*`.
 - **Analytics:** instrumentation (page views, conversion events, Web Vitals, error tracking)
 - **Dev server:** `npx vite` (port 5173) + `npx wrangler dev` (port 8787). Vite proxies `/api` to wrangler.
 
@@ -54,7 +54,6 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 Single Worker serves both API and static assets via `main` + `assets` in wrangler.jsonc.
 
 - **D1 binding:** `DB` -> `fundforge_db` (database_id in wrangler.jsonc)
-- **useData.js pattern:** Hooks init with fixture data (instant render), fetch from API in background, fallback silently on error
 - **Community aggregates:** No community table - computed on read via SQL (SUM, COUNT, JOIN)
 
 ## Performance Targets
