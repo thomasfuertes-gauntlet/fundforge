@@ -7,7 +7,7 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const dataDir = resolve(__dirname, "../../src/data");
+const dataDir = resolve(__dirname, "data");
 
 function readJSON(filename: string) {
   return JSON.parse(readFileSync(resolve(dataDir, filename), "utf-8"));

@@ -1,9 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
-import { useCommunity, useActiveCampaigns } from "@/lib/useData";
-import { getProfile } from "@/data";
+import { useCommunity, useActiveCampaigns, useProfiles } from "@/lib/useData";
 import { cn } from "@/lib/utils";
 import { formatCurrency, initials } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
@@ -322,6 +321,15 @@ export default function CommunityPage() {
   usePageView("community");
   const { data: community } = useCommunity();
   const { data: activeCampaigns } = useActiveCampaigns();
+  const { data: profiles } = useProfiles();
+
+  const getProfile = useCallback(
+    (id) => (profiles || []).find((p) => p.id === id),
+    [profiles]
+  );
+
+  if (!community || !activeCampaigns) return null;
+
   const { aggregates, leaderboard, trending } = community;
 
   return (

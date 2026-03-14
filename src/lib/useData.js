@@ -1,18 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
-// Fallback imports for SSR/build or when API is unavailable
-import {
-  profiles as fixtureProfiles,
-  community as fixtureCommunity,
-  getProfile as fixtureGetProfile,
-  getCampaign as fixtureGetCampaign,
-  getCampaignsByOrganizer as fixtureGetCampaignsByOrganizer,
-  getDonationsByCampaign as fixtureGetDonationsByCampaign,
-  getActiveCampaigns as fixtureGetActiveCampaigns,
-} from "@/data";
-
-function useFetch(url, { fallback, enabled = true } = {}) {
-  const [data, setData] = useState(fallback ?? null);
+function useFetch(url, { enabled = true } = {}) {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState(null);
 
@@ -26,9 +15,8 @@ function useFetch(url, { fallback, enabled = true } = {}) {
       setData(json);
       setError(null);
     } catch (err) {
-      console.warn(`[useData] fetch failed for ${url}, using fallback`, err);
+      console.error(`[useData] fetch failed for ${url}`, err);
       setError(err);
-      // Keep fallback data on error
     } finally {
       setLoading(false);
     }
@@ -42,45 +30,35 @@ function useFetch(url, { fallback, enabled = true } = {}) {
 }
 
 export function useProfiles() {
-  return useFetch("/api/profiles", { fallback: fixtureProfiles });
+  return useFetch("/api/profiles");
 }
 
 export function useProfile(id) {
-  return useFetch(`/api/profiles/${id}`, {
-    fallback: fixtureGetProfile(id),
-    enabled: Boolean(id),
-  });
+  return useFetch(`/api/profiles/${id}`, { enabled: Boolean(id) });
 }
 
 export function useCampaign(id) {
-  return useFetch(`/api/campaigns/${id}`, {
-    fallback: fixtureGetCampaign(id),
-    enabled: Boolean(id),
-  });
+  return useFetch(`/api/campaigns/${id}`, { enabled: Boolean(id) });
 }
 
 export function useCampaignsByOrganizer(profileId) {
   return useFetch(`/api/campaigns?organizerId=${profileId}`, {
-    fallback: fixtureGetCampaignsByOrganizer(profileId),
     enabled: Boolean(profileId),
   });
 }
 
 export function useActiveCampaigns() {
-  return useFetch("/api/campaigns?status=active", {
-    fallback: fixtureGetActiveCampaigns(),
-  });
+  return useFetch("/api/campaigns?status=active");
 }
 
 export function useDonations(campaignId) {
   return useFetch(`/api/donations?campaignId=${campaignId}`, {
-    fallback: fixtureGetDonationsByCampaign(campaignId),
     enabled: Boolean(campaignId),
   });
 }
 
 export function useCommunity() {
-  return useFetch("/api/community", { fallback: fixtureCommunity });
+  return useFetch("/api/community");
 }
 
 // POST helper for mutations
