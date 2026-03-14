@@ -63,6 +63,7 @@ export default function ProfilePage() {
   const { data: allProfiles } = useProfiles();
 
   if (!profile) return <NotFound type="profile" />;
+  if (!campaigns || !allProfiles) return null;
 
   const otherProfiles = allProfiles.filter((p) => p.id !== profile.id);
   const activeCampaigns = campaigns.filter((c) => c.status === "active");
