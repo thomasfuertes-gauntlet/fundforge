@@ -8,10 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "vite build && wrangler deploy && npm run db:seed:remote",
+    "deploy": "vite build && wrangler deploy",
+    "deploy:full": "npm run deploy && npm run db:seed:remote",
     "seed:generate": "tsx worker/db/seed.ts > worker/db/seed.sql",
     "db:seed": "wrangler d1 execute fundforge_db --local --file=worker/db/schema.sql && wrangler d1 execute fundforge_db --local --file=worker/db/seed.sql",
-    "db:seed:remote": "wrangler d1 execute fundforge_db --remote --file=worker/db/schema.sql && wrangler d1 execute fundforge_db --remote --file=worker/db/seed.sql"
+    "db:seed:remote": "wrangler d1 execute fundforge_db --remote --yes --file=worker/db/schema.sql && wrangler d1 execute fundforge_db --remote --yes --file=worker/db/seed.sql"
   },
   "dependencies": {
     "hono": "^4.7.0",
