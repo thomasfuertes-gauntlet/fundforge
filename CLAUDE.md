@@ -79,11 +79,11 @@ Single Worker serves both API and static assets via `main` + `assets` in wrangle
 - `README.md` is human-facing summary
 
 ### Stack Deviation from Spec
-Spec says "React / Next.js preferred" + "AWS preferred." We chose React + Vite + Hono on Cloudflare Workers. README must include rationale before interview - key points: Vite for faster DX iteration in a 1-week sprint, Hono for lightweight edge-first API (no cold starts), CF Workers + D1 for zero-config SQLite at the edge with inline data preloading (HTMLRewriter), no SSR complexity since trust/campaign data is pre-seeded not user-generated. Next.js App Router would add framework overhead without benefit for a fixture-data demo.
+Spec says "React / Next.js preferred" + "AWS preferred." Stack is React + Vite + Hono on Cloudflare Workers. Rationale documented in README under "Why Vite + Hono, Not Next.js": Vite for faster DX iteration, Hono for lightweight edge-first API (no cold starts), CF Workers + D1 for zero-config SQLite at the edge with inline data preloading (HTMLRewriter), no SSR complexity since trust/campaign data is pre-seeded not user-generated.
 
 ### Deployment
 - **URL:** https://fundforge.tomfuertes.workers.dev
-- **Platform:** Cloudflare Workers (static assets, not Pages). `npm run deploy` builds, deploys, and seeds remote D1.
+- **Platform:** Cloudflare Workers (static assets, not Pages). `npm run deploy` builds + deploys code only. `npm run deploy:full` includes remote D1 seed (use when schema or fixture data changes).
 - **SPA fallback:** `not_found_handling: "single-page-application"` in wrangler.jsonc. Do NOT use `_redirects` (causes infinite loop validation error).
 - **Data scripts:** Write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
 
