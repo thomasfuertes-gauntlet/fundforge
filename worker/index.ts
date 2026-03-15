@@ -95,13 +95,15 @@ app.all("*", async (c) => {
     if (entry) preloadData[entry[0]] = entry[1];
   }
 
-  // Link headers as fallback for any endpoints that failed inline
-  const linkHeader = preloads
-    .map((href) => `<${href}>; rel=preload; as=fetch; crossorigin`)
-    .join(", ");
-
+  // Only send Link preload headers for endpoints that FAILED to inline
+  const failedPreloads = preloads.filter((href) => !(href in preloadData));
   const headers = new Headers(response.headers);
-  headers.append("Link", linkHeader);
+  if (failedPreloads.length > 0) {
+    const linkHeader = failedPreloads
+      .map((href) => `<${href}>; rel=preload; as=fetch; crossorigin`)
+      .join(", ");
+    headers.append("Link", linkHeader);
+  }
 
   // Inject preload data into HTML - escape < to prevent XSS via </script>
   const json = JSON.stringify(preloadData).replace(/</g, "\\u003c");

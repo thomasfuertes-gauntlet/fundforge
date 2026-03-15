@@ -7,10 +7,15 @@ import SiteFooter from "@/components/SiteFooter";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import NotFound from "@/components/NotFound";
 
+// KEY-DECISION 2026-03-15: HomePage is eagerly loaded (bundled with main chunk)
+// because it's the primary landing page. Lazy-loading it creates a sequential
+// waterfall: main JS → parse → discover route → fetch chunk → render.
+// Other pages remain lazy since they're navigated to, not landed on.
+import HomePage from "@/pages/HomePage";
+
 const CampaignPage = lazy(() => import("@/pages/CampaignPage"));
 const CommunityPage = lazy(() => import("@/pages/CommunityPage"));
 const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
-const HomePage = lazy(() => import("@/pages/HomePage"));
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 
 function ScrollToTop() {
