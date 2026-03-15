@@ -37,7 +37,7 @@ export default function NotFound({ type = "page" }) {
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button asChild variant="default" size="lg" className="rounded-full">
-            <Link to="/community">
+            <Link to="/communities/fundforge">
               Browse community
             </Link>
           </Button>

@@ -35,7 +35,7 @@ app.get("/api/health", (c) => c.json({ status: "ok" }));
 
 const STATIC_PRELOADS: Record<string, string[]> = {
   "/": ["/api/community", "/api/profiles"],
-  "/community": ["/api/community", "/api/campaigns?status=active", "/api/profiles"],
+  "/communities/fundforge": ["/api/community", "/api/campaigns?status=active", "/api/profiles"],
 };
 
 function getPreloadsForPath(path: string): string[] {

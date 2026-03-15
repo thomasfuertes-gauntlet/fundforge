@@ -43,7 +43,7 @@ export function prefetchRoute(path) {
   const profileMatch = path.match(/^\/profile\/([^/]+)$/);
   if (profileMatch) return ROUTE_APIS.profile(profileMatch[1]).forEach(prefetch);
 
-  if (path === "/community") return ROUTE_APIS.community().forEach(prefetch);
+  if (path.startsWith("/communities/")) return ROUTE_APIS.community().forEach(prefetch);
 }
 
 function useFetch(url, { enabled = true } = {}) {

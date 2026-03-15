@@ -620,7 +620,7 @@ export default function CampaignPage() {
                   {/* Leaderboard Prompt */}
                   {leaderboardEntry && leaderboardEntry.rank > 1 && (
                     <Link
-                      to="/community"
+                      to="/communities/fundforge"
                       className="block"
                       data-testid="campaign-leaderboard-prompt"
                     >

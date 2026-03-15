@@ -144,7 +144,7 @@ export default function HomePage() {
                 variant="outline"
                 size="lg"
               >
-                <Link to="/community">
+                <Link to="/communities/fundforge">
                   Explore the community
                   <ArrowRight className="h-4 w-4" />
                 </Link>

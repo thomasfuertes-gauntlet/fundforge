@@ -4,7 +4,7 @@ import { Flame, LayoutGrid, Users, User } from "lucide-react";
 
 const NAV_LINKS = [
   { to: "/campaign/campaign-1", label: "Campaign", icon: Flame, match: "/campaign" },
-  { to: "/community", label: "Community", icon: LayoutGrid, match: "/community" },
+  { to: "/communities/fundforge", label: "Community", icon: LayoutGrid, match: "/communities" },
   { to: "/profile/profile-1", label: "Profile", icon: User, match: "/profile" },
 ];
 

@@ -36,7 +36,7 @@ function App() {
         <Suspense fallback={<div className="min-h-screen" />}>
         <Routes>
           <Route path="/campaign/:id" element={<CampaignPage />} />
-          <Route path="/community" element={<CommunityPage />} />
+          <Route path="/communities/:slug" element={<CommunityPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/" element={<HomePage />} />
