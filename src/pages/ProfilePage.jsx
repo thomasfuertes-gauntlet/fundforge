@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import { useProfile, useCampaignsByOrganizer, useProfiles } from "@/lib/useData";
+import CampaignCard from "@/components/CampaignCard";
 import NotFound from "@/components/NotFound";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +17,6 @@ import {
   MapPin,
   CalendarDays,
   Heart,
-  TrendingUp,
   ThumbsUp,
   MessageSquare,
   Flame,
@@ -309,55 +309,7 @@ export default function ProfilePage() {
               </h2>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {activeCampaigns.map((c) => (
-                  <Link
-                    key={c.id}
-                    to={`/campaign/${c.id}`}
-                    className="block"
-                    data-testid={`profile-campaign-${c.id}`}
-                  >
-                    <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                      <div className="aspect-[16/10] overflow-hidden">
-                        <img
-                          src={c.heroImage}
-                          alt={c.title}
-                          width={800}
-                          height={600}
-                          loading="lazy"
-                          className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                        />
-                      </div>
-                      <CardContent className="space-y-3 p-4">
-                        <div className="flex items-center gap-2">
-                          <Badge className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary">
-                            {c.category}
-                          </Badge>
-                          {c.weeklyMomentum > 20 && (
-                            <Badge className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs text-amber-900 hover:bg-amber-50">
-                              <TrendingUp className="mr-0.5 h-3 w-3" />
-                              Trending
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
-                          {c.title}
-                        </p>
-                        <AnimatedProgress
-                          value={Math.min(
-                            Math.round((c.raised / c.goal) * 100),
-                            100
-                          )}
-                          className="h-2 bg-primary/15"
-                        />
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span className="font-medium text-foreground">
-                            {formatCurrency(c.raised, { compact: true })} of{" "}
-                            {formatCurrency(c.goal, { compact: true })}
-                          </span>
-                          <span>{c.daysLeft} days left</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                  <CampaignCard key={c.id} campaign={c} testIdPrefix="profile-campaign" />
                 ))}
               </div>
             </div>
@@ -376,46 +328,74 @@ export default function ProfilePage() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {pastCampaigns.map((c) => (
-                  <Card
+                  <Link
                     key={c.id}
-                    className="border-white/70 bg-white/90"
+                    to={`/campaign/${c.id}`}
+                    className="block"
                     data-testid={`profile-past-${c.id}`}
                   >
-                    <CardContent className="space-y-3 p-5">
-                      <div className="flex items-center justify-between gap-2">
-                        <Badge
-                          className={`rounded-full px-2.5 py-0.5 text-xs ${
-                            c.status === "funded"
-                              ? "bg-secondary text-secondary-foreground hover:bg-secondary"
-                              : "bg-muted text-muted-foreground hover:bg-muted"
-                          }`}
-                        >
-                          {c.status === "funded" ? "Funded" : "Not funded"}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(
-                            (c.endedAt || c.createdAt) + "T00:00:00"
-                          ).getFullYear()}
-                        </span>
-                      </div>
-                      <p className="font-semibold leading-snug text-foreground">
-                        {c.title}
-                      </p>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="font-medium text-foreground">
-                          {formatCurrency(c.raised, { compact: true })}
-                        </span>
-                        <span>
-                          {c.backerCount.toLocaleString()} backers
-                        </span>
-                      </div>
-                      {c.summary && (
-                        <p className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
-                          {c.summary}
-                        </p>
+                    <Card className="h-full border-white/70 bg-white/90 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                      {c.heroImage && (
+                        <div className="h-32 w-full overflow-hidden">
+                          <img
+                            src={c.heroImage}
+                            alt={c.title}
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
                       )}
-                    </CardContent>
-                  </Card>
+                      <CardContent className="space-y-3 p-5">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <Badge
+                              className={`rounded-full px-2.5 py-0.5 text-xs ${
+                                c.status === "funded"
+                                  ? "bg-secondary text-secondary-foreground hover:bg-secondary"
+                                  : "bg-muted text-muted-foreground hover:bg-muted"
+                              }`}
+                            >
+                              {c.status === "funded" ? "Funded" : "Not funded"}
+                            </Badge>
+                            {c.fulfillmentStatus && c.status === "funded" && (
+                              <Badge
+                                className={`rounded-full px-2.5 py-0.5 text-xs ${
+                                  c.fulfillmentStatus === "fulfilled"
+                                    ? "bg-emerald-50 text-emerald-800 hover:bg-emerald-50"
+                                    : c.fulfillmentStatus === "delayed"
+                                      ? "bg-amber-50 text-amber-800 hover:bg-amber-50"
+                                      : "bg-sky-50 text-sky-800 hover:bg-sky-50"
+                                }`}
+                              >
+                                {c.fulfillmentStatus === "fulfilled" ? "Delivered" : c.fulfillmentStatus === "delayed" ? "Delayed" : "In Progress"}
+                              </Badge>
+                            )}
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(
+                              (c.endedAt || c.createdAt) + "T00:00:00"
+                            ).getFullYear()}
+                          </span>
+                        </div>
+                        <p className="font-semibold leading-snug text-foreground">
+                          {c.title}
+                        </p>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <span className="font-medium text-foreground">
+                            {formatCurrency(c.raised, { compact: true })}
+                          </span>
+                          <span>
+                            {c.backerCount.toLocaleString()} backers
+                          </span>
+                        </div>
+                        {c.summary && (
+                          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
+                            {c.summary}
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </div>
