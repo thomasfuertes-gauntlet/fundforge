@@ -89,9 +89,11 @@ export default function CampaignPage() {
   const { data: allActiveCampaigns } = useActiveCampaigns();
 
   // All hooks must be called before any early return (Rules of Hooks)
-  const [raisedRef, raisedDisplay] = useCountUp(campaign?.raised ?? 0, { prefix: "$", skip: skipAnimations });
-  const [backersRef, backersDisplay] = useCountUp(campaign?.backerCount ?? 0, { skip: skipAnimations });
-  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$", skip: skipAnimations });
+  // Always skip count-up on donate panel - it's above the fold, so the $0→$86K
+  // flash looks like a bug. A/B test still controls progress bars and donation feed.
+  const [raisedRef, raisedDisplay] = useCountUp(campaign?.raised ?? 0, { prefix: "$", skip: true });
+  const [backersRef, backersDisplay] = useCountUp(campaign?.backerCount ?? 0, { skip: true });
+  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$", skip: true });
 
   // Related campaigns: same category or organizer, excluding current
   const relatedCampaigns = useMemo(() => {
