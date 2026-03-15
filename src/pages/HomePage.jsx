@@ -12,16 +12,12 @@ import {
   Users,
   User,
   ArrowRight,
-  ArrowUpRight,
   MoveRight,
   ShieldCheck,
-  CircleDollarSign,
   TrendingUp,
   Target,
   Heart,
   BarChart3,
-  Leaf,
-  Sparkles,
 } from "lucide-react";
 
 const PAGES = [
@@ -29,45 +25,26 @@ const PAGES = [
     to: "/campaign/campaign-1",
     label: "Campaign",
     icon: Flame,
-    description: "Editorial story layout with anchoring, goal-gradient urgency, stretch goals, and matching sponsors.",
+    description: "See where every dollar goes. Line-item budgets, organizer track records, and a live donation feed that builds social proof.",
   },
   {
     to: "/community",
     label: "Community",
     icon: Users,
-    description: "Bento leaderboard ranked by trust-weighted score, trending momentum badges, and aggregate impact.",
+    description: "Who's raising, what's trending, and how the ecosystem is growing. Impact measured through trust, not just dollars.",
   },
   {
     to: "/profile/profile-1",
     label: "Profile",
     icon: User,
-    description: "Transparent trust breakdown with verification tiers, campaign history, and network impact.",
+    description: "Every organizer carries a trust score with visible math. Fulfillment history, update consistency, and repeat donor confidence.",
   },
-];
-
-const TRUST_PILLARS = [
-  { icon: ShieldCheck, label: "Composite trust scoring" },
-  { icon: BarChart3, label: "Full-funnel A/B analytics" },
-  { icon: CircleDollarSign, label: "Behavioral economics patterns" },
 ];
 
 const TRUST_INPUTS = [
   { label: "Fulfillment history", weight: "40%", icon: Target },
   { label: "Update consistency", weight: "30%", icon: BarChart3 },
   { label: "Repeat donor confidence", weight: "30%", icon: Heart },
-];
-
-const PALETTE_TOKENS = [
-  { name: "Deep Forest Green", value: "#0F3C32", note: "Primary. Evokes stability, wealth, and nature." },
-  { name: "Mint Foam", value: "#E8F3F1", note: "Secondary. Soft background for contrast." },
-  { name: "Amber", value: "#D97706", note: "Accent. Warm, urgent action color for CTAs." },
-  { name: "Gray 900", value: "#111827", note: "Text primary. Never pure #000." },
-];
-
-const TYPE_SPEC = [
-  { label: "Display heading", style: "text-4xl font-bold font-serif tracking-tight", preview: "Crowdfunding, framed as trust." },
-  { label: "Section heading", style: "text-2xl font-semibold font-serif", preview: "Three interconnected pages." },
-  { label: "Body text", style: "text-base leading-relaxed font-sans", preview: "Campaign, Community, and Profile share data, tokens, and a composite trust model." },
 ];
 
 function CountStat({ end, prefix = "", suffix = "", label }) {
@@ -144,9 +121,9 @@ export default function HomePage() {
                 )}
               </h1>
               <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-lg">
-                Three connected pages with a composite trust score, full-funnel A/B testing,
-                and behavioral economics baked into every conversion surface.
-                Built in one week with AI-accelerated development.
+                Donors see where money goes, whether organizers deliver,
+                and why others keep coming back. Every data point is real,
+                every page is connected, every score shows its math.
               </p>
             </div>
 
@@ -167,24 +144,11 @@ export default function HomePage() {
                 variant="outline"
                 size="lg"
               >
-                <Link to="/dashboard">
-                  View A/B dashboard
-                  <ArrowUpRight className="h-4 w-4" />
+                <Link to="/community">
+                  Explore the community
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              {TRUST_PILLARS.map(({ icon: Icon, label }) => (
-                <Card key={label} className="editorial-card border-white/70 bg-white/80">
-                  <CardContent className="flex items-center gap-3 p-4">
-                    <div className="rounded-full bg-secondary p-2 text-primary">
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <p className="text-sm font-medium text-foreground">{label}</p>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
 
@@ -194,113 +158,23 @@ export default function HomePage() {
               <CardContent className="space-y-6 p-6 lg:p-8">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="section-eyebrow">Live from D1</p>
+                    <p className="section-eyebrow">Community impact</p>
                     <h3 className="mt-2 text-2xl font-serif text-foreground">
-                      Real data, edge-first.
+                      Real numbers, real campaigns.
                     </h3>
                   </div>
                   <Badge className="rounded-full bg-primary px-3 py-1 text-primary-foreground">
-                    Cloudflare Workers
+                    Live
                   </Badge>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <CountStat end={raisedInK} prefix="$" suffix="K" label="Total raised across all campaigns in the ecosystem." />
-                  <CountStat end={aggregates.activeCampaigns} label="Active campaigns with live progress, donations, and updates." />
-                  <CountStat end={avgTrust} suffix=" / 100" label="Average trust score across verified organizers." />
-                </div>
-
-                <div className="code-panel">
-                  <pre className="whitespace-pre-wrap font-mono text-sm leading-7 text-muted-foreground">{`// Trust score (visible on every surface)
-trust = fulfillment(40%) + updates(30%)
-      + repeat_donors(30%)
-
-// A/B funnel: impression → scroll
-//   → donate_click → donate_complete
-// Dual-write: D1 (query) + sendBeacon`}</pre>
+                  <CountStat end={raisedInK} prefix="$" suffix="K" label="Total raised across all campaigns." />
+                  <CountStat end={aggregates.activeCampaigns} label="Active campaigns with live progress." />
+                  <CountStat end={avgTrust} suffix=" / 100" label="Average organizer trust score." />
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── Design Tokens Section ─── */}
-      <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
-        <div className="space-y-10">
-          <div className="max-w-3xl space-y-4">
-            <p className="section-eyebrow">Design system</p>
-            <h2 className="text-3xl font-serif text-foreground sm:text-4xl">
-              Editorial craft, not generic SaaS.
-            </h2>
-            <p className="text-sm leading-7 text-muted-foreground sm:text-base">
-              Serif headings signal credibility. Amber converts. Deep green anchors trust.
-              Every token is shared across all three pages for visual coherence.
-            </p>
-          </div>
-
-          <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-            {/* Color Palette */}
-            <Card className="editorial-card border-white/70 bg-white/90">
-              <CardContent className="space-y-6 p-6 lg:p-8">
-                <div className="flex items-center gap-3">
-                  <Leaf className="h-5 w-5 text-primary" />
-                  <h3 className="text-xl font-serif text-foreground">Core color palette</h3>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {PALETTE_TOKENS.map((token) => (
-                    <div key={token.value} className="rounded-[1.5rem] border border-border/80 p-4">
-                      <div
-                        className="h-16 w-full rounded-xl"
-                        style={{ backgroundColor: token.value }}
-                      />
-                      <div className="mt-4 space-y-1">
-                        <p className="text-lg font-semibold text-foreground">{token.name}</p>
-                        <p className="font-mono text-sm text-muted-foreground">{token.value}</p>
-                        <p className="text-sm leading-6 text-muted-foreground">{token.note}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="grid gap-6">
-              {/* Typography */}
-              <Card className="editorial-card border-white/70 bg-white/90">
-                <CardContent className="space-y-5 p-6 lg:p-8">
-                  <div className="flex items-center gap-3">
-                    <Sparkles className="h-5 w-5 text-sky-800" />
-                    <h3 className="text-xl font-serif text-foreground">Typography hierarchy</h3>
-                  </div>
-                  <div className="space-y-4">
-                    {TYPE_SPEC.map((spec) => (
-                      <div key={spec.label} className="rounded-[1.5rem] border border-border/80 bg-muted/40 p-4">
-                        <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                          {spec.label}
-                        </p>
-                        <p className={`mt-3 ${spec.style} text-foreground`}>
-                          {spec.preview}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Spacing Rules */}
-              <Card className="editorial-card border-white/70 bg-gradient-to-br from-primary via-primary to-gradient-end text-primary-foreground">
-                <CardContent className="space-y-5 p-6 lg:p-8">
-                  <h3 className="text-xl font-serif">Spacing + radius rules</h3>
-                  <div className="grid gap-3 text-sm leading-6 text-primary-foreground/80 sm:grid-cols-2">
-                    <p>Sections breathe at 6rem to 8rem vertical spacing.</p>
-                    <p>Cards use 1.25rem to 1.75rem radius for softness without blur.</p>
-                    <p>Responsive grids stack early to avoid horizontal overflow.</p>
-                    <p>Call-to-action moments reserve amber for contrast and urgency.</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </div>
       </div>
@@ -409,30 +283,6 @@ trust = fulfillment(40%) + updates(30%)
         </div>
       </div>
 
-      {/* ─── Built With ─── */}
-      <div className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-16">
-        <p className="section-eyebrow mb-2">Built with</p>
-        <div className="flex flex-wrap gap-2">
-          {[
-            "React 19",
-            "Vite 7",
-            "Tailwind CSS",
-            "shadcn/ui",
-            "React Router",
-            "Cloudflare Workers",
-            "Hono",
-            "D1 (SQLite)",
-          ].map((tech) => (
-            <Badge
-              key={tech}
-              variant="secondary"
-              className="rounded-full px-3 py-1 text-xs"
-            >
-              {tech}
-            </Badge>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
