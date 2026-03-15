@@ -49,7 +49,9 @@ CREATE TABLE IF NOT EXISTS campaigns (
   story TEXT DEFAULT '[]',                     -- JSON array of paragraph strings
   updates TEXT DEFAULT '[]',                   -- JSON array of update objects
   testimonials TEXT DEFAULT '[]',              -- JSON array of testimonial objects
-  summary TEXT                                 -- text summary for past campaigns
+  summary TEXT,                                -- text summary for past campaigns
+  delivery_timeline TEXT DEFAULT '[]',         -- JSON array of {date, stage, title, description}
+  fulfillment_status TEXT                      -- pending | in_progress | fulfilled | delayed
 );
 
 CREATE TABLE IF NOT EXISTS donations (

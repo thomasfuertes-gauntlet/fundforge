@@ -63,6 +63,8 @@ export function transformCampaign(row: Record<string, unknown>) {
   } else {
     campaign.endedAt = row.ended_at;
     campaign.summary = row.summary;
+    campaign.deliveryTimeline = JSON.parse(row.delivery_timeline as string || "[]");
+    campaign.fulfillmentStatus = row.fulfillment_status || null;
   }
 
   // Optional nested objects

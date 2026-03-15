@@ -411,7 +411,13 @@
     "createdAt": "2025-03-10",
     "endedAt": "2025-05-15",
     "weeklyMomentum": 0,
-    "summary": "Converted unused rooftop space at Eastside Elementary into outdoor classrooms and a teaching garden. Three classrooms now serve 280 students for science and environmental literacy courses."
+    "summary": "Converted unused rooftop space at Eastside Elementary into outdoor classrooms and a teaching garden. Three classrooms now serve 280 students for science and environmental literacy courses.",
+    "fulfillmentStatus": "fulfilled",
+    "deliveryTimeline": [
+      { "date": "2025-05-20", "stage": "planning", "title": "Architect hired, structural assessment", "description": "Contracted with Greenroof Design Co. to assess load capacity and create classroom layouts. Structural engineer confirmed the roof can support three modular classroom units." },
+      { "date": "2025-07-12", "stage": "in_progress", "title": "Construction began on rooftop classrooms", "description": "Modular units delivered and crane-lifted to rooftop. Waterproof membrane installed beneath all structures. Electrical and plumbing roughed in for teaching garden irrigation." },
+      { "date": "2025-09-04", "stage": "delivered", "title": "First classes held on the rooftop", "description": "280 students began fall semester with three fully equipped outdoor classrooms. Teaching garden planted with winter crops. Solar panels on classroom roofs offset 40% of the school's energy bill." }
+    ]
   },
   {
     "id": "campaign-6",
@@ -427,7 +433,12 @@
     "createdAt": "2024-09-01",
     "endedAt": "2024-11-10",
     "weeklyMomentum": 0,
-    "summary": "Established a lending library of power tools, gardening equipment, and construction supplies. Over 600 residents have borrowed items in the first year, saving an estimated $180,000 in individual purchases."
+    "summary": "Established a lending library of power tools, gardening equipment, and construction supplies. Over 600 residents have borrowed items in the first year, saving an estimated $180,000 in individual purchases.",
+    "fulfillmentStatus": "fulfilled",
+    "deliveryTimeline": [
+      { "date": "2024-11-20", "stage": "planning", "title": "Secured storefront lease and began tool procurement", "description": "Signed a 2-year lease on the vacant hardware store at 23rd and Hawthorne. Began purchasing tools from wholesale suppliers and accepting donations from local contractors." },
+      { "date": "2025-01-15", "stage": "delivered", "title": "Tool Library opened to the public", "description": "Grand opening with 340 tools available for lending. Implemented a library-card checkout system. Over 200 residents signed up in the first week." }
+    ]
   },
   {
     "id": "campaign-7",
@@ -459,7 +470,13 @@
     "createdAt": "2025-06-01",
     "endedAt": "2025-08-20",
     "weeklyMomentum": 0,
-    "summary": "Installed 12 managed beehives and pollinator gardens across three community sites. First honey harvest yielded 180 pounds, distributed free to participating families."
+    "summary": "Installed 12 managed beehives and pollinator gardens across three community sites. First honey harvest yielded 180 pounds, distributed free to participating families.",
+    "fulfillmentStatus": "fulfilled",
+    "deliveryTimeline": [
+      { "date": "2025-09-01", "stage": "planning", "title": "Site preparation and beekeeper training", "description": "Cleared three sites for pollinator gardens. Enrolled 18 community volunteers in a 6-week urban beekeeping certification course with the Oregon Beekeepers Association." },
+      { "date": "2025-10-15", "stage": "in_progress", "title": "Hive installation and garden planting", "description": "Installed 12 top-bar hives across the three community sites. Planted 2,000 square feet of native wildflower and herb gardens to support the colonies through winter." },
+      { "date": "2026-01-20", "stage": "delivered", "title": "First honey harvest completed", "description": "180 pounds of raw honey harvested and distributed to 150 participating families. All 12 hives survived winter. Pollinator counts in surrounding gardens up 300% since installation." }
+    ]
   },
   {
     "id": "campaign-9",
@@ -491,7 +508,12 @@
     "createdAt": "2023-08-01",
     "endedAt": "2023-10-15",
     "weeklyMomentum": 0,
-    "summary": "Redesigned the Eastside Park playground with wheelchair-accessible equipment, sensory play areas, and rubberized surfacing. Now serves 12 children with mobility needs who previously could not use the park."
+    "summary": "Redesigned the Eastside Park playground with wheelchair-accessible equipment, sensory play areas, and rubberized surfacing. Now serves 12 children with mobility needs who previously could not use the park.",
+    "fulfillmentStatus": "fulfilled",
+    "deliveryTimeline": [
+      { "date": "2023-11-01", "stage": "planning", "title": "ADA compliance review and equipment sourcing", "description": "Engaged a certified playground safety inspector (CPSI) to assess the existing site. Sourced wheelchair-accessible swing sets, transfer platforms, and sensory play panels from GameTime." },
+      { "date": "2024-01-20", "stage": "delivered", "title": "Ribbon cutting at renovated playground", "description": "Installed rubberized safety surfacing, three wheelchair-accessible play structures, a sensory garden, and shaded seating areas. 12 families with mobility-impaired children attended the opening." }
+    ]
   },
   {
     "id": "campaign-11",
@@ -603,7 +625,11 @@
     "createdAt": "2024-09-01",
     "endedAt": "2024-11-30",
     "weeklyMomentum": 0,
-    "summary": "Attempted to install fish ladders at two canal diversion points. Raised 73% of goal but construction season ended before permits cleared. Funds returned to donors."
+    "summary": "Attempted to install fish ladders at two canal diversion points. Raised 73% of goal but construction season ended before permits cleared. Funds returned to donors.",
+    "fulfillmentStatus": "delayed",
+    "deliveryTimeline": [
+      { "date": "2024-10-15", "stage": "planning", "title": "Permit applications submitted to county", "description": "Filed applications with Multnomah County for in-stream work permits at both diversion points. Environmental impact assessment initiated with Oregon DFW." }
+    ]
   },
   {
     "id": "campaign-18",
