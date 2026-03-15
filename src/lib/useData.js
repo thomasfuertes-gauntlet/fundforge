@@ -1,12 +1,49 @@
 import { useState, useEffect, useCallback } from "react";
 
+// KEY-DECISION 2026-03-15: Shared fetch cache eliminates redundant requests.
+// prefetch() warms the cache on hover; useFetch consumes it on mount.
+const fetchCache = new Map();
+
 function consumePreload(url) {
   const preloaded = window.__PRELOAD__?.[url];
   if (preloaded !== undefined) {
     delete window.__PRELOAD__[url];
     return preloaded;
   }
+  // Check hover-prefetch cache
+  if (fetchCache.has(url)) {
+    const cached = fetchCache.get(url);
+    fetchCache.delete(url);
+    return cached;
+  }
   return null;
+}
+
+// Prefetch an API endpoint into cache (called on link hover)
+export function prefetch(apiUrl) {
+  if (fetchCache.has(apiUrl) || window.__PRELOAD__?.[apiUrl]) return;
+  fetch(apiUrl)
+    .then((r) => r.ok ? r.json() : null)
+    .then((data) => { if (data) fetchCache.set(apiUrl, data); })
+    .catch(() => {});
+}
+
+// Route → API mapping for hover prefetch
+const ROUTE_APIS = {
+  campaign: (id) => [`/api/campaigns/${id}`, `/api/donations?campaignId=${id}`],
+  profile: (id) => [`/api/profiles/${id}`, `/api/campaigns?organizerId=${id}`],
+  community: () => ["/api/community", "/api/campaigns?status=active", "/api/profiles"],
+};
+
+// Prefetch all APIs for a given route path
+export function prefetchRoute(path) {
+  const campaignMatch = path.match(/^\/campaign\/([^/]+)$/);
+  if (campaignMatch) return ROUTE_APIS.campaign(campaignMatch[1]).forEach(prefetch);
+
+  const profileMatch = path.match(/^\/profile\/([^/]+)$/);
+  if (profileMatch) return ROUTE_APIS.profile(profileMatch[1]).forEach(prefetch);
+
+  if (path === "/community") return ROUTE_APIS.community().forEach(prefetch);
 }
 
 function useFetch(url, { enabled = true } = {}) {
@@ -18,6 +55,14 @@ function useFetch(url, { enabled = true } = {}) {
 
   const fetchData = useCallback(async () => {
     if (!enabled) return;
+
+    // Check cache again (prefetch may have completed between mount and effect)
+    const cached = consumePreload(url);
+    if (cached) {
+      setData(cached);
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
     try {

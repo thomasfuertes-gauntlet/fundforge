@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import PrefetchLink from "@/components/PrefetchLink";
 import { Flame, LayoutGrid, Users, User } from "lucide-react";
 
 const NAV_LINKS = [
@@ -37,7 +38,7 @@ export default function SiteHeader() {
           {NAV_LINKS.map(({ to, label, icon: Icon, match }) => {
             const active = pathname.startsWith(match);
             return (
-              <Link
+              <PrefetchLink
                 key={to}
                 to={to}
                 aria-label={label}
@@ -50,7 +51,7 @@ export default function SiteHeader() {
               >
                 <Icon className="h-4 w-4" aria-hidden="true" />
                 <span className="hidden sm:inline">{label}</span>
-              </Link>
+              </PrefetchLink>
             );
           })}
         </nav>

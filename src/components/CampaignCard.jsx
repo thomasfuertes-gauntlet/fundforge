@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import PrefetchLink from "@/components/PrefetchLink";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedProgress } from "@/components/ui/progress";
@@ -10,7 +10,7 @@ export default function CampaignCard({ campaign, testIdPrefix = "campaign" }) {
   const progress = Math.min(Math.round((c.raised / c.goal) * 100), 100);
 
   return (
-    <Link
+    <PrefetchLink
       to={`/campaign/${c.id}`}
       className="block"
       data-testid={`${testIdPrefix}-${c.id}`}
@@ -58,6 +58,6 @@ export default function CampaignCard({ campaign, testIdPrefix = "campaign" }) {
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </PrefetchLink>
   );
 }

@@ -82,7 +82,7 @@ export default function CampaignPage() {
   // A/B: treatment removes scroll-triggered animations for speed perception test
   const skipAnimations = ab('animations');
 
-  const { data: campaign } = useCampaign(id);
+  const { data: campaign, loading: campaignLoading } = useCampaign(id);
   const { data: organizer } = useProfile(campaign?.organizerId);
   const { data: donations } = useDonations(campaign?.id);
   const { data: community } = useCommunity();
@@ -105,7 +105,7 @@ export default function CampaignPage() {
       .slice(0, 3);
   }, [allActiveCampaigns, campaign]);
 
-  if (!campaign) return <NotFound type="campaign" />;
+  if (!campaign && !campaignLoading) return <NotFound type="campaign" />;
   if (!community || !donations)
     return (
       <div className="min-h-screen bg-background">

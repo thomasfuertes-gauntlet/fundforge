@@ -113,7 +113,7 @@ export default function HomePage() {
               <p className="section-eyebrow">
                 GoFundMe reimagined
               </p>
-              <h1 className="max-w-3xl text-4xl font-bold leading-[0.98] tracking-tight sm:text-5xl lg:text-[4.6rem]">
+              <h1 className="max-w-3xl text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
                 {altHeadline ? (
                   <>What if <span className="text-primary">reputation</span> drove donations, not just stories?</>
                 ) : (

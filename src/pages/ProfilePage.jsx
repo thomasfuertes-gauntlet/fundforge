@@ -58,11 +58,11 @@ const VERIFICATION_STEPS = [
 export default function ProfilePage() {
   const { id } = useParams();
   usePageView("profile", { id });
-  const { data: profile } = useProfile(id);
+  const { data: profile, loading: profileLoading } = useProfile(id);
   const { data: campaigns } = useCampaignsByOrganizer(id);
   const { data: allProfiles } = useProfiles();
 
-  if (!profile) return <NotFound type="profile" />;
+  if (!profile && !profileLoading) return <NotFound type="profile" />;
   if (!campaigns || !allProfiles)
     return (
       <div className="min-h-screen bg-background">
