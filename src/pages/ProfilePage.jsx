@@ -357,7 +357,7 @@ export default function ProfilePage() {
                             >
                               {c.status === "funded" ? "Funded" : "Not funded"}
                             </Badge>
-                            {c.fulfillmentStatus && c.status === "funded" && (
+                            {c.fulfillmentStatus && (
                               <Badge
                                 className={`rounded-full px-2.5 py-0.5 text-xs ${
                                   c.fulfillmentStatus === "fulfilled"

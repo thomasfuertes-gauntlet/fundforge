@@ -93,6 +93,18 @@ export default function CampaignPage() {
   const [backersRef, backersDisplay] = useCountUp(campaign?.backerCount ?? 0);
   const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$" });
 
+  // Related campaigns: same category or organizer, excluding current
+  const relatedCampaigns = useMemo(() => {
+    if (!allActiveCampaigns || !campaign) return [];
+    return allActiveCampaigns
+      .filter(
+        (c) =>
+          c.id !== campaign.id &&
+          (c.category === campaign.category || c.organizerId === campaign.organizerId)
+      )
+      .slice(0, 3);
+  }, [allActiveCampaigns, campaign]);
+
   if (!campaign) return <NotFound type="campaign" />;
   if (!community || !donations)
     return (
@@ -125,18 +137,6 @@ export default function CampaignPage() {
   const readingTime = campaign.story
     ? Math.ceil(campaign.story.join(" ").split(/\s+/).length / 200)
     : 0;
-
-  // Related campaigns: same category or organizer, excluding current
-  const relatedCampaigns = useMemo(() => {
-    if (!allActiveCampaigns) return [];
-    return allActiveCampaigns
-      .filter(
-        (c) =>
-          c.id !== campaign.id &&
-          (c.category === campaign.category || c.organizerId === campaign.organizerId)
-      )
-      .slice(0, 3);
-  }, [allActiveCampaigns, campaign]);
 
   return (
     <div className="min-h-screen bg-background">
