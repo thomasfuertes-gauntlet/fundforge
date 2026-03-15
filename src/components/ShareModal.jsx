@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/sonner";
 import { trackShareClick } from "@/lib/analytics";
-import { Link2, Mail, Send, Share2, TrendingUp } from "lucide-react";
+import { Link2, Linkedin, Mail, MessageCircle, Send, Share2, TrendingUp } from "lucide-react";
 
 const SHARE_OPTIONS = [
   {
@@ -35,6 +35,28 @@ const SHARE_OPTIONS = [
     action: (url) => {
       window.open(
         `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    },
+  },
+  {
+    label: "LinkedIn",
+    icon: Linkedin,
+    action: (url) => {
+      window.open(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    },
+  },
+  {
+    label: "WhatsApp",
+    icon: MessageCircle,
+    action: (url, title) => {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
         "_blank",
         "noopener,noreferrer"
       );
@@ -82,7 +104,7 @@ export default function ShareModal({ open, onOpenChange, campaignId, campaignTit
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-3 pt-2" data-testid="share-options">
+        <div className="grid grid-cols-3 gap-3 pt-2" data-testid="share-options">
           {SHARE_OPTIONS.map(({ label, icon: Icon, action }) => (
             <button
               key={label}
