@@ -42,6 +42,7 @@ communityRoutes.get("/", async (c) => {
       SELECT
         c.id as campaign_id,
         c.title,
+        p.id as organizer_id,
         p.name as organizer_name,
         c.weekly_momentum,
         c.raised,
@@ -95,6 +96,7 @@ communityRoutes.get("/", async (c) => {
     return {
       campaignId: row.campaign_id,
       title: row.title,
+      organizerId: row.organizer_id,
       organizerName: row.organizer_name,
       tag: momentum >= 28 ? "Fastest Growth" : "Trending",
       weeklyMomentum: momentum,

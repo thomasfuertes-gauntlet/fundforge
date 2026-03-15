@@ -1,14 +1,14 @@
 import { useState, useMemo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePageView } from "@/lib/useAnalytics";
 import useCountUp from "@/lib/useCountUp";
 import { useCommunity, useActiveCampaigns, useProfiles } from "@/lib/useData";
 import { cn } from "@/lib/utils";
 import { formatCurrency, initials } from "@/lib/format";
+import CampaignCard from "@/components/CampaignCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { AnimatedProgress } from "@/components/ui/progress";
 import {
   Users,
   TrendingUp,
@@ -20,6 +20,7 @@ import {
   MessageSquare,
   CalendarDays,
   Crown,
+  Search,
 } from "lucide-react";
 
 
@@ -60,11 +61,21 @@ function CampaignGrid({ campaigns }) {
   );
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeSort, setActiveSort] = useState("Most funded");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filtered = useMemo(() => {
     let result = activeFilter === "All"
       ? campaigns
       : campaigns.filter((c) => c.category === activeFilter);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (c) =>
+          c.title.toLowerCase().includes(q) ||
+          c.category.toLowerCase().includes(q)
+      );
+    }
 
     if (activeSort === "Ending soon") {
       result = [...result].sort((a, b) => a.daysLeft - b.daysLeft);
@@ -72,13 +83,26 @@ function CampaignGrid({ campaigns }) {
       result = [...result].sort((a, b) => (b.raised / b.goal) - (a.raised / a.goal));
     }
     return result;
-  }, [campaigns, activeFilter, activeSort]);
+  }, [campaigns, activeFilter, activeSort, searchQuery]);
 
   return (
     <div className="mt-16 lg:mt-24">
-      <h2 className="mb-6 text-2xl font-serif font-semibold text-foreground">
-        Active campaigns
-      </h2>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-2xl font-serif font-semibold text-foreground">
+          Active campaigns
+        </h2>
+        <div className="relative" data-testid="campaign-search">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search campaigns..."
+            className="h-9 w-full rounded-full border border-border/60 bg-white/80 pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/10 sm:w-64"
+            data-testid="campaign-search-input"
+          />
+        </div>
+      </div>
 
       {/* Filter + sort pills */}
       <div className="mb-5 flex flex-wrap items-center gap-2" data-testid="campaign-grid-filters">
@@ -119,45 +143,19 @@ function CampaignGrid({ campaigns }) {
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {filtered.map((c) => (
-          <Link
+          <CampaignCard
             key={c.id}
-            to={`/campaign/${c.id}`}
-            className="block"
-            data-testid={`active-campaign-${c.id}`}
-          >
-            <Card className="h-full overflow-hidden border-white/70 bg-white/90 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={c.heroImage}
-                  alt={c.title}
-                  width={800}
-                  height={600}
-                  loading="lazy"
-                  className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-              <CardContent className="space-y-3 p-4">
-                <Badge className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground hover:bg-secondary">
-                  {c.category}
-                </Badge>
-                <p className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
-                  {c.title}
-                </p>
-                <AnimatedProgress
-                  value={Math.min(Math.round((c.raised / c.goal) * 100), 100)}
-                  className="h-2 bg-primary/15"
-                />
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span className="font-medium text-foreground">
-                    {formatCurrency(c.raised, { compact: true })}
-                  </span>
-                  <span>{c.daysLeft} days left</span>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
+            campaign={c}
+            testIdPrefix="active-campaign"
+          />
         ))}
       </div>
+
+      {filtered.length === 0 && (
+        <p className="py-12 text-center text-sm text-muted-foreground">
+          No campaigns match your search.
+        </p>
+      )}
     </div>
   );
 }
@@ -319,6 +317,7 @@ function LeaderboardCard({ leaderboard }) {
 
 export default function CommunityPage() {
   usePageView("community");
+  const navigate = useNavigate();
   const { data: community } = useCommunity();
   const { data: activeCampaigns } = useActiveCampaigns();
   const { data: profiles } = useProfiles();
@@ -484,7 +483,17 @@ export default function CommunityPage() {
                         </Badge>
                       </div>
                       <p className="mt-1.5 text-xs text-muted-foreground">
-                        by {item.organizerName}
+                        by{" "}
+                        <span
+                          role="link"
+                          tabIndex={0}
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/profile/${item.organizerId}`); }}
+                          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); navigate(`/profile/${item.organizerId}`); } }}
+                          className="font-medium text-primary hover:underline cursor-pointer"
+                          data-testid={`trending-organizer-${item.organizerId}`}
+                        >
+                          {item.organizerName}
+                        </span>
                       </p>
                       <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1 font-medium text-primary">
@@ -571,7 +580,16 @@ export default function CommunityPage() {
                           {update.title}
                         </p>
                         <p className="mt-0.5 text-xs text-muted-foreground truncate">
-                          {update.organizerName} &middot; {update.campaignTitle}
+                          <span
+                            role="link"
+                            tabIndex={0}
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/profile/${update.organizerId}`); }}
+                            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); navigate(`/profile/${update.organizerId}`); } }}
+                            className="font-medium text-primary hover:underline cursor-pointer"
+                          >
+                            {update.organizerName}
+                          </span>
+                          {" "}&middot; {update.campaignTitle}
                         </p>
                         <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground line-clamp-2">
                           {update.content}
