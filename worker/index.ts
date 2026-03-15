@@ -44,7 +44,7 @@ function getPreloadsForPath(path: string): string[] {
   const campaignMatch = path.match(/^\/campaign\/([^/]+)$/);
   if (campaignMatch) {
     const id = campaignMatch[1];
-    return [`/api/campaigns/${id}`, `/api/donations?campaignId=${id}`, "/api/community"];
+    return [`/api/campaigns/${id}`, `/api/donations?campaignId=${id}`, "/api/community", "/api/campaigns?status=active"];
   }
 
   const profileMatch = path.match(/^\/profile\/([^/]+)$/);

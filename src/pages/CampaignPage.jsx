@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useCampaign, useProfile, useDonations, useCommunity } from "@/lib/useData";
+import { useCampaign, useProfile, useDonations, useCommunity, useActiveCampaigns } from "@/lib/useData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress, AnimatedProgress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import CampaignCard from "@/components/CampaignCard";
 import DonateModal from "@/components/DonateModal";
 import ShareModal from "@/components/ShareModal";
 import NotFound from "@/components/NotFound";
@@ -18,13 +19,16 @@ import { cn } from "@/lib/utils";
 import { formatCurrency, formatDate, initials } from "@/lib/format";
 import {
   Heart,
+  Link2,
+  Linkedin,
+  MessageCircle,
+  Send,
   Share2,
   Clock,
   ShieldCheck,
   TrendingUp,
   CalendarDays,
   HeartHandshake,
-  MessageCircle,
   ChevronDown,
   ChevronUp,
   Trophy,
@@ -32,6 +36,9 @@ import {
   Target,
   BookOpen,
   Flame,
+  CheckCircle2,
+  AlertTriangle,
+  Package,
 } from "lucide-react";
 
 function formatRelativeTime(timestamp) {
@@ -79,6 +86,7 @@ export default function CampaignPage() {
   const { data: organizer } = useProfile(campaign?.organizerId);
   const { data: donations } = useDonations(campaign?.id);
   const { data: community } = useCommunity();
+  const { data: allActiveCampaigns } = useActiveCampaigns();
 
   // All hooks must be called before any early return (Rules of Hooks)
   const [raisedRef, raisedDisplay] = useCountUp(campaign?.raised ?? 0, { prefix: "$" });
@@ -113,7 +121,22 @@ export default function CampaignPage() {
     ? campaign.updates
     : (campaign.updates || []).slice(0, 2);
 
-  const readingTime = Math.ceil(campaign.story.join(" ").split(/\s+/).length / 200);
+  const isActive = campaign.status === "active";
+  const readingTime = campaign.story
+    ? Math.ceil(campaign.story.join(" ").split(/\s+/).length / 200)
+    : 0;
+
+  // Related campaigns: same category or organizer, excluding current
+  const relatedCampaigns = useMemo(() => {
+    if (!allActiveCampaigns) return [];
+    return allActiveCampaigns
+      .filter(
+        (c) =>
+          c.id !== campaign.id &&
+          (c.category === campaign.category || c.organizerId === campaign.organizerId)
+      )
+      .slice(0, 3);
+  }, [allActiveCampaigns, campaign]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -147,33 +170,53 @@ export default function CampaignPage() {
                   >
                     {campaign.category}
                   </Badge>
-                  <Badge
-                    className={cn(
-                      "rounded-full border px-3 py-1",
-                      campaign.daysLeft <= 3
-                        ? "border-red-200 bg-red-50 text-red-900 hover:bg-red-50"
-                        : campaign.daysLeft <= 7
-                          ? "border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-50"
-                          : "border-sky-200 bg-sky-50 text-sky-900 hover:bg-sky-50"
-                    )}
-                    data-testid="campaign-days-left"
-                  >
-                    {campaign.daysLeft <= 3 ? (
-                      <Flame className="mr-1 h-3.5 w-3.5" />
-                    ) : (
-                      <Clock className="mr-1 h-3.5 w-3.5" />
-                    )}
-                    {campaign.daysLeft <= 3
-                      ? `Final ${campaign.daysLeft} days!`
-                      : `${campaign.daysLeft} days left`}
-                  </Badge>
-                  <Badge
-                    className="rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-muted-foreground hover:bg-muted/30"
-                    data-testid="campaign-reading-time"
-                  >
-                    <BookOpen className="mr-1 h-3.5 w-3.5" />
-                    {readingTime} min read
-                  </Badge>
+                  {isActive && campaign.daysLeft != null && (
+                    <Badge
+                      className={cn(
+                        "rounded-full border px-3 py-1",
+                        campaign.daysLeft <= 3
+                          ? "border-red-200 bg-red-50 text-red-900 hover:bg-red-50"
+                          : campaign.daysLeft <= 7
+                            ? "border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-50"
+                            : "border-sky-200 bg-sky-50 text-sky-900 hover:bg-sky-50"
+                      )}
+                      data-testid="campaign-days-left"
+                    >
+                      {campaign.daysLeft <= 3 ? (
+                        <Flame className="mr-1 h-3.5 w-3.5" />
+                      ) : (
+                        <Clock className="mr-1 h-3.5 w-3.5" />
+                      )}
+                      {campaign.daysLeft <= 3
+                        ? `Final ${campaign.daysLeft} days!`
+                        : `${campaign.daysLeft} days left`}
+                    </Badge>
+                  )}
+                  {!isActive && (
+                    <Badge
+                      className={cn(
+                        "rounded-full border px-3 py-1",
+                        campaign.status === "funded"
+                          ? "border-emerald-200 bg-emerald-50 text-emerald-900 hover:bg-emerald-50"
+                          : "border-slate-200 bg-slate-50 text-slate-900 hover:bg-slate-50"
+                      )}
+                    >
+                      {campaign.status === "funded" ? (
+                        <><CheckCircle2 className="mr-1 h-3.5 w-3.5" /> Funded</>
+                      ) : (
+                        <><Clock className="mr-1 h-3.5 w-3.5" /> Ended</>
+                      )}
+                    </Badge>
+                  )}
+                  {readingTime > 0 && (
+                    <Badge
+                      className="rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-muted-foreground hover:bg-muted/30"
+                      data-testid="campaign-reading-time"
+                    >
+                      <BookOpen className="mr-1 h-3.5 w-3.5" />
+                      {readingTime} min read
+                    </Badge>
+                  )}
                   {campaign.weeklyMomentum > 20 && (
                     <Badge
                       className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-900 hover:bg-amber-50"
@@ -236,17 +279,33 @@ export default function CampaignPage() {
                   </Link>
                 )}
 
-                {/* Story */}
-                <div className="space-y-5" data-testid="campaign-story">
-                  {campaign.story.map((paragraph, i) => (
-                    <p
-                      key={i}
-                      className="text-base leading-relaxed text-muted-foreground sm:text-lg sm:leading-8"
-                    >
-                      {paragraph}
+                {/* Story (active) or Summary (funded/unfunded) */}
+                {campaign.story ? (
+                  <div className="space-y-5" data-testid="campaign-story">
+                    {campaign.story.map((paragraph, i) => (
+                      <p
+                        key={i}
+                        className="text-base leading-relaxed text-muted-foreground sm:text-lg sm:leading-8"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                ) : campaign.summary ? (
+                  <div data-testid="campaign-summary">
+                    <Badge className={cn(
+                      "mb-4 rounded-full px-3 py-1 text-xs",
+                      campaign.status === "funded"
+                        ? "bg-secondary text-secondary-foreground hover:bg-secondary"
+                        : "bg-muted text-muted-foreground hover:bg-muted"
+                    )}>
+                      {campaign.status === "funded" ? "Campaign Funded" : "Campaign Ended"}
+                    </Badge>
+                    <p className="text-base leading-relaxed text-muted-foreground sm:text-lg sm:leading-8">
+                      {campaign.summary}
                     </p>
-                  ))}
-                </div>
+                  </div>
+                ) : null}
 
                 {/* Detail Images */}
                 {campaign.images && campaign.images.length > 0 && (
@@ -364,6 +423,69 @@ export default function CampaignPage() {
                     )}
                   </button>
                 )}
+              </div>
+            )}
+
+            {/* Delivery Timeline (funded/unfunded campaigns with fulfillment data) */}
+            {!isActive && campaign.deliveryTimeline?.length > 0 && (
+              <div className="space-y-4" data-testid="delivery-timeline">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">Delivery timeline</h2>
+                  {campaign.fulfillmentStatus && (
+                    <Badge
+                      className={cn(
+                        "rounded-full px-3 py-1 text-xs",
+                        campaign.fulfillmentStatus === "fulfilled"
+                          ? "bg-emerald-50 text-emerald-800 hover:bg-emerald-50"
+                          : campaign.fulfillmentStatus === "delayed"
+                            ? "bg-amber-50 text-amber-800 hover:bg-amber-50"
+                            : "bg-sky-50 text-sky-800 hover:bg-sky-50"
+                      )}
+                      data-testid="fulfillment-status-badge"
+                    >
+                      {campaign.fulfillmentStatus === "fulfilled" && <CheckCircle2 className="mr-1 h-3.5 w-3.5" />}
+                      {campaign.fulfillmentStatus === "delayed" && <AlertTriangle className="mr-1 h-3.5 w-3.5" />}
+                      {campaign.fulfillmentStatus === "in_progress" && <Clock className="mr-1 h-3.5 w-3.5" />}
+                      {campaign.fulfillmentStatus === "fulfilled" ? "Fulfilled" : campaign.fulfillmentStatus === "delayed" ? "Delayed" : "In Progress"}
+                    </Badge>
+                  )}
+                </div>
+                <div className="relative space-y-0">
+                  {/* Vertical connector line */}
+                  <div className="absolute left-[15px] top-6 bottom-6 w-px bg-border/60" />
+                  {campaign.deliveryTimeline.map((milestone, i) => {
+                    const stageConfig = {
+                      delivered: { icon: CheckCircle2, color: "bg-emerald-100 text-emerald-700", dot: "bg-emerald-500" },
+                      verified: { icon: CheckCircle2, color: "bg-emerald-100 text-emerald-700", dot: "bg-emerald-500" },
+                      in_progress: { icon: Clock, color: "bg-sky-100 text-sky-700", dot: "bg-sky-500" },
+                      planning: { icon: Package, color: "bg-muted text-muted-foreground", dot: "bg-muted-foreground" },
+                    };
+                    const config = stageConfig[milestone.stage] || stageConfig.planning;
+                    const StageIcon = config.icon;
+                    return (
+                      <div
+                        key={i}
+                        className="relative flex gap-4 py-3"
+                        data-testid={`milestone-${i}`}
+                      >
+                        <div className={cn("z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full", config.color)}>
+                          <StageIcon className="h-4 w-4" />
+                        </div>
+                        <div className="min-w-0 flex-1 space-y-1">
+                          <p className="text-xs font-medium text-muted-foreground">
+                            {formatDate(milestone.date)}
+                          </p>
+                          <p className="font-semibold text-foreground">
+                            {milestone.title}
+                          </p>
+                          <p className="text-sm leading-relaxed text-muted-foreground">
+                            {milestone.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
@@ -543,69 +665,114 @@ export default function CampaignPage() {
                     </div>
                   </div>
 
-                  {/* CTA Buttons */}
-                  <Button
-                    variant="accent"
-                    size="lg"
-                    className="w-full shadow-[0_20px_44px_rgba(217,119,6,0.25)]"
-                    onClick={() => { trackDonateClick(campaign.id); setDonateOpen(true); }}
-                    data-testid="donate-button"
-                  >
-                    <Heart className="h-5 w-5" />
-                    Donate to this campaign
-                  </Button>
+                  {/* CTA Buttons (active campaigns only) */}
+                  {isActive && (
+                    <>
+                      <Button
+                        variant="accent"
+                        size="lg"
+                        className="w-full shadow-[0_20px_44px_rgba(217,119,6,0.25)]"
+                        onClick={() => { trackDonateClick(campaign.id); setDonateOpen(true); }}
+                        data-testid="donate-button"
+                      >
+                        <Heart className="h-5 w-5" />
+                        Donate to this campaign
+                      </Button>
 
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full"
-                    onClick={() => setShareOpen(true)}
-                    data-testid="share-button"
-                  >
-                    <Share2 className="h-5 w-5" />
-                    Share
-                  </Button>
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="w-full"
+                        onClick={() => setShareOpen(true)}
+                        data-testid="share-button"
+                      >
+                        <Share2 className="h-5 w-5" />
+                        Share
+                      </Button>
 
-                  <Separator />
-
-                  {/* Recent Donations */}
-                  {donations.length > 0 && (
-                    <div className="space-y-3" data-testid="recent-donations">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-serif text-foreground">
-                          Recent donations
-                        </h3>
-                        <HeartHandshake className="h-4 w-4 text-primary/50" />
+                      {/* Inline share platform hints */}
+                      <div className="flex items-center justify-center gap-3">
+                        {[
+                          { icon: Link2, label: "Copy link" },
+                          { icon: Send, label: "Twitter" },
+                          { icon: Share2, label: "Facebook" },
+                          { icon: Linkedin, label: "LinkedIn" },
+                          { icon: MessageCircle, label: "WhatsApp" },
+                        ].map(({ icon: Icon, label }) => (
+                          <button
+                            key={label}
+                            type="button"
+                            onClick={() => setShareOpen(true)}
+                            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+                            aria-label={`Share on ${label}`}
+                            data-testid={`share-hint-${label.toLowerCase()}`}
+                          >
+                            <Icon className="h-4 w-4" strokeWidth={1.5} />
+                          </button>
+                        ))}
                       </div>
-                      {donations.slice(0, 5).map((d, i) => (
-                        <div
-                          key={d.id}
-                          className={cn(
-                            "flex items-center justify-between rounded-2xl border border-secondary bg-secondary/40 px-4 py-3",
-                            !skipAnimations && "opacity-0 animate-fade-slide-in"
-                          )}
-                          style={skipAnimations ? undefined : { animationDelay: `${i * 100}ms` }}
-                          data-testid={`donation-${d.id}`}
-                        >
-                          <div className="min-w-0">
-                            <p className="truncate font-medium text-foreground">
-                              {d.donorName}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {formatRelativeTime(d.timestamp)}
-                              {d.message && (
-                                <span className="ml-1.5 italic">
-                                  &middot; "{d.message}"
-                                </span>
-                              )}
-                            </p>
+
+                      <p className="text-center text-xs text-muted-foreground">
+                        On average, each share inspires{" "}
+                        <span className="font-medium text-foreground">2 new donors</span>
+                      </p>
+
+                      <Separator />
+
+                      {/* Recent Donations */}
+                      {donations.length > 0 && (
+                        <div className="space-y-3" data-testid="recent-donations">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-lg font-serif text-foreground">
+                              Recent donations
+                            </h3>
+                            <HeartHandshake className="h-4 w-4 text-primary/50" />
                           </div>
-                          <p className="ml-4 shrink-0 text-base font-semibold text-primary">
-                            {formatCurrency(d.amount)}
-                          </p>
+                          {donations.slice(0, 5).map((d, i) => (
+                            <div
+                              key={d.id}
+                              className={cn(
+                                "flex items-center justify-between rounded-2xl border border-secondary bg-secondary/40 px-4 py-3",
+                                !skipAnimations && "opacity-0 animate-fade-slide-in"
+                              )}
+                              style={skipAnimations ? undefined : { animationDelay: `${i * 100}ms` }}
+                              data-testid={`donation-${d.id}`}
+                            >
+                              <div className="min-w-0">
+                                <p className="truncate font-medium text-foreground">
+                                  {d.donorName}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {formatRelativeTime(d.timestamp)}
+                                  {d.message && (
+                                    <span className="ml-1.5 italic">
+                                      &middot; "{d.message}"
+                                    </span>
+                                  )}
+                                </p>
+                              </div>
+                              <p className="ml-4 shrink-0 text-base font-semibold text-primary">
+                                {formatCurrency(d.amount)}
+                              </p>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </>
+                  )}
+
+                  {/* Funded campaign: organizer link CTA */}
+                  {!isActive && organizer && (
+                    <Link to={`/profile/${organizer.id}`} className="block">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="w-full"
+                        data-testid="view-organizer-button"
+                      >
+                        View {organizer.name}'s profile
+                      </Button>
+                    </Link>
                   )}
                 </CardContent>
               </Card>
@@ -613,6 +780,20 @@ export default function CampaignPage() {
           </div>
         </div>
       </div>
+
+      {/* Related Campaigns */}
+      {relatedCampaigns.length > 0 && (
+        <div className="mx-auto max-w-7xl px-6 pb-20 md:px-12 lg:px-16" data-testid="related-campaigns">
+          <h2 className="mb-6 text-2xl font-serif font-semibold text-foreground">
+            Related campaigns
+          </h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedCampaigns.map((c) => (
+              <CampaignCard key={c.id} campaign={c} testIdPrefix="related" />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Scroll progress bar (decorative) */}
       <div className="fixed top-14 left-0 right-0 z-30 h-0.5 bg-accent/20" aria-hidden="true">
@@ -622,8 +803,8 @@ export default function CampaignPage() {
         />
       </div>
 
-      {/* Task #4: Sticky mobile donate CTA */}
-      {!donateOpen && (
+      {/* Task #4: Sticky mobile donate CTA (active campaigns only) */}
+      {isActive && !donateOpen && (
         <div
           className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white/95 backdrop-blur-sm border-t border-border/40 px-4 py-3 pb-[env(safe-area-inset-bottom)]"
           data-testid="mobile-donate-cta"
