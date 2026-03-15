@@ -55,8 +55,10 @@ Single Worker serves both API and static assets via `main` + `assets` in wrangle
 
 - **D1 binding:** `DB` -> `fundforge_db` (database_id in wrangler.jsonc)
 - **ASSETS binding:** Worker serves HTML via `env.ASSETS.fetch()` (binding in wrangler.jsonc). This means the Worker handles ALL requests - static assets pass through, HTML gets modified.
-- **Inline data preloading:** Worker queries D1 at HTML-serve time via in-process Hono self-dispatch (`app.fetch()`), injects results as `window.__PRELOAD__` via `HTMLRewriter`. `useFetch` in `src/lib/useData.js` consumes preloaded data on first call (one-shot delete). Falls back to normal fetch if preload missing (e.g., client-side navigation).
+- **Inline data preloading:** Worker queries D1 at HTML-serve time via in-process Hono self-dispatch (`app.fetch()`), injects results as `window.__PRELOAD__` via `HTMLRewriter`. `useFetch` in `src/lib/useData.js` consumes preloaded data in `useState`'s lazy initializer (not `useEffect`) so first render has real data. Link preload headers only sent for endpoints that failed to inline.
 - **Route→API mapping:** `getPreloadsForPath()` in `worker/index.ts` maps URL paths to API endpoints. Update this when adding new pages or data dependencies.
+- **Hover prefetch:** `PrefetchLink` component (`src/components/PrefetchLink.jsx`) fires API fetches on `pointerenter`. Route→API mapping in `prefetchRoute()` (`src/lib/useData.js`). Used on nav header and CampaignCard. Data lands in `fetchCache` Map, consumed by `useFetch` on mount.
+- **Code splitting:** Homepage eagerly bundled (not lazy-loaded) to avoid landing page waterfall. Other routes use `React.lazy`.
 - **Community aggregates:** No community table - computed on read via SQL (SUM, COUNT, JOIN)
 - **Worker types:** Run `npx wrangler types` after changing wrangler.jsonc to regenerate `worker-configuration.d.ts`.
 

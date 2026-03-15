@@ -92,7 +92,7 @@ A single Cloudflare Worker serves both the SPA and the API. No separate backend 
 
 ### Frontend
 
-React 19 with Vite 7 and React Router 7. Code-split via `React.lazy` at the route level - each page is a separate chunk. The `@/` path alias maps to `src/`.
+React 19 with Vite 7 and React Router 7. Route-level code splitting via `React.lazy` for secondary pages; homepage is eagerly bundled to avoid the landing page waterfall. `PrefetchLink` warms the fetch cache on hover for instant client-side navigation. The `@/` path alias maps to `src/`.
 
 **Optimistic UI:** The donate modal shows success immediately and POSTs to `/api/donations` fire-and-forget. The donation appears in the feed before the server confirms.
 
@@ -113,11 +113,28 @@ D1 schema: 4 tables (`profiles`, `campaigns`, `donations`, `ab_events`). Seeded 
 
 The core challenge: an organizer on the campaign page must show the same data on their profile page. Solved through referential integrity - `campaign.organizerId` foreign-keys to `profile.id`, `donation.campaignId` to `campaign.id`. Community leaderboard and trending data are computed from the same underlying tables, not duplicated.
 
+### Performance Architecture
+
+Three techniques that stack to deliver SSR-quality paint without SSR complexity:
+
+1. **Inline data preloading** - The Worker queries D1 at the edge and injects results as `window.__PRELOAD__` via `HTMLRewriter`. React reads it in `useState`'s lazy initializer (not `useEffect`), so the very first render has real data. No skeleton flash, no layout shift.
+
+2. **No code-split waterfall on landing** - The homepage is eagerly bundled with the main chunk. Other routes remain lazy-loaded. This eliminates the sequential waterfall: `main JS → parse → discover route → fetch chunk → render`.
+
+3. **Hover prefetch** - `PrefetchLink` fires API fetches on `pointerenter`. The ~200ms between hover and click is enough for edge-served responses to arrive. Client-side navigation feels instant because data is already cached when the page mounts.
+
+### Why Vite + Hono, Not Next.js
+
+The spec says "React / Next.js preferred" and "AWS preferred." We chose differently:
+
+- **Vite over Next.js:** Faster DX iteration in a 1-week sprint. No SSR complexity since trust/campaign data is pre-seeded fixtures, not user-generated. The inline preload architecture achieves SSR-quality paint without hydration, server components, or framework lock-in.
+- **Cloudflare Workers + D1 over AWS:** Zero-config SQLite at the edge with no cold starts. D1 is colocated with the Worker - zero network hop for queries. `HTMLRewriter` enables the inline preload pattern natively.
+- **Hono over Express/Fastify:** Lightweight edge-first API framework. Same fetch API as Workers. Single Worker serves both SPA and API - one `wrangler deploy`.
+
 ### Key Trade-offs
 
-- **Edge SQLite over Postgres/Supabase:** D1 is colocated with the Worker - zero network hop for queries. Good enough for a demo dataset; wouldn't scale to millions of rows without read replicas.
-- **Null-render over loading spinners:** Pages return `null` until data arrives, avoiding layout shift. Trade-off is a blank flash on first paint before the API responds.
-- **Single Worker over separate API:** Simpler deployment (one `wrangler deploy`), but means API and assets share the same Worker limits.
+- **Edge SQLite over Postgres:** Good enough for a demo dataset; wouldn't scale to millions of rows without read replicas.
+- **Single Worker over separate API:** Simpler deployment, but API and assets share the same Worker limits.
 - **Optimistic donations over confirmed:** Better UX for a demo. In production you'd want server confirmation before showing success.
 
 ## Project Structure
