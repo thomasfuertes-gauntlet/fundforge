@@ -89,9 +89,9 @@ export default function CampaignPage() {
   const { data: allActiveCampaigns } = useActiveCampaigns();
 
   // All hooks must be called before any early return (Rules of Hooks)
-  const [raisedRef, raisedDisplay] = useCountUp(campaign?.raised ?? 0, { prefix: "$" });
-  const [backersRef, backersDisplay] = useCountUp(campaign?.backerCount ?? 0);
-  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$" });
+  const [raisedRef, raisedDisplay] = useCountUp(campaign?.raised ?? 0, { prefix: "$", skip: skipAnimations });
+  const [backersRef, backersDisplay] = useCountUp(campaign?.backerCount ?? 0, { skip: skipAnimations });
+  const [avgGiftRef, avgGiftDisplay] = useCountUp(campaign?.averageGift ?? 0, { prefix: "$", skip: skipAnimations });
 
   // Related campaigns: same category or organizer, excluding current
   const relatedCampaigns = useMemo(() => {
