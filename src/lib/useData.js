@@ -1,21 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 
+function consumePreload(url) {
+  const preloaded = window.__PRELOAD__?.[url];
+  if (preloaded !== undefined) {
+    delete window.__PRELOAD__[url];
+    return preloaded;
+  }
+  return null;
+}
+
 function useFetch(url, { enabled = true } = {}) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(enabled);
+  // KEY-DECISION 2026-03-15: Read preloaded data in useState initializer,
+  // not useEffect. This gives first render real data instead of a skeleton.
+  const [data, setData] = useState(() => enabled ? consumePreload(url) : null);
+  const [loading, setLoading] = useState(() => enabled && !data);
   const [error, setError] = useState(null);
 
   const fetchData = useCallback(async () => {
     if (!enabled) return;
-
-    // Consume server-injected preload data if available (one-shot)
-    const preloaded = window.__PRELOAD__?.[url];
-    if (preloaded !== undefined) {
-      delete window.__PRELOAD__[url];
-      setData(preloaded);
-      setLoading(false);
-      return;
-    }
 
     setLoading(true);
     try {
@@ -33,8 +35,10 @@ function useFetch(url, { enabled = true } = {}) {
   }, [url, enabled]);
 
   useEffect(() => {
+    // Skip fetch if we already have preloaded data
+    if (data) return;
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, data]);
 
   return { data, loading, error, refetch: fetchData };
 }
