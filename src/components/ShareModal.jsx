@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/sonner";
 import { trackShareClick } from "@/lib/analytics";
-import { Link2, Linkedin, Mail, MessageCircle, Send, Share2, TrendingUp } from "lucide-react";
+import { Link2, Linkedin, Mail, MessageCircle, Send, Share2, TrendingUp, Check } from "lucide-react";
 
 const SHARE_OPTIONS = [
   {
@@ -15,7 +16,6 @@ const SHARE_OPTIONS = [
     icon: Link2,
     action: (url) => {
       navigator.clipboard?.writeText(url);
-      toast.success("Link copied to clipboard!");
     },
   },
   {
@@ -73,18 +73,22 @@ const SHARE_OPTIONS = [
 
 export default function ShareModal({ open, onOpenChange, campaignId, campaignTitle }) {
   const url = `${window.location.origin}/campaign/${campaignId}`;
+  const [copied, setCopied] = useState(false);
 
   function handleShare(option) {
     trackShareClick(campaignId);
 
-    // Try Web Share API first on supported devices
-    if (option.label === "Copy link" && navigator.share) {
-      navigator
-        .share({ title: campaignTitle, url })
-        .catch(() => {
-          // User cancelled or API failed - fall back to clipboard
+    if (option.label === "Copy link") {
+      if (navigator.share) {
+        navigator.share({ title: campaignTitle, url }).catch(() => {
           option.action(url, campaignTitle);
         });
+        return;
+      }
+      option.action(url, campaignTitle);
+      setCopied(true);
+      toast.success("Link copied!");
+      setTimeout(() => setCopied(false), 2000);
       return;
     }
 
@@ -94,46 +98,64 @@ export default function ShareModal({ open, onOpenChange, campaignId, campaignTit
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-sm sm:rounded-2xl"
+        className="sm:max-w-md sm:rounded-2xl"
         data-testid="share-modal"
       >
         <DialogHeader>
-          <DialogTitle className="text-2xl">Share this campaign</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-xl font-serif">Share this campaign</DialogTitle>
+          <DialogDescription className="text-xs">
             Help spread the word for "{campaignTitle}"
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-3 gap-3 pt-2" data-testid="share-options">
-          {SHARE_OPTIONS.map(({ label, icon: Icon, action }) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => handleShare({ label, action })}
-              data-testid={`share-${label.toLowerCase().replace(" ", "-")}`}
-              className="flex flex-col items-center gap-2 rounded-[1.5rem] border-2 border-border bg-card px-4 py-4 text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-muted/50"
-            >
-              <Icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
-              {label}
-            </button>
-          ))}
+        {/* Compact icon row */}
+        <div className="flex items-center justify-between gap-1 pt-1" data-testid="share-options">
+          {SHARE_OPTIONS.map(({ label, icon: Icon, action }) => {
+            const isCopy = label === "Copy link";
+            return (
+              <button
+                key={label}
+                type="button"
+                onClick={() => handleShare({ label, action })}
+                data-testid={`share-${label.toLowerCase().replace(/\s+/g, "-")}`}
+                className="flex flex-1 flex-col items-center gap-1.5 rounded-xl py-3 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/80">
+                  {isCopy && copied ? (
+                    <Check className="h-4.5 w-4.5 text-primary" strokeWidth={2} />
+                  ) : (
+                    <Icon className="h-4.5 w-4.5" strokeWidth={1.5} />
+                  )}
+                </div>
+                {isCopy && copied ? "Copied!" : label}
+              </button>
+            );
+          })}
         </div>
 
-        {/* URL preview */}
-        <div className="mt-1 rounded-xl bg-muted/40 px-4 py-3">
-          <p className="truncate text-xs text-muted-foreground">{url}</p>
-        </div>
-
-        {/* Share impact metric */}
-        <div
-          className="flex items-center justify-center gap-2 rounded-xl bg-secondary/50 px-4 py-3"
-          data-testid="share-impact"
+        {/* Clickable URL bar */}
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard?.writeText(url);
+            setCopied(true);
+            toast.success("Link copied!");
+            setTimeout(() => setCopied(false), 2000);
+          }}
+          className="flex items-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-3 py-2.5 text-left transition-colors hover:bg-muted/60"
+          data-testid="share-url-copy"
         >
-          <TrendingUp className="h-4 w-4 shrink-0 text-primary/60" strokeWidth={1.5} />
-          <p className="text-sm text-center text-muted-foreground">
-            On average, each share inspires <span className="font-medium text-foreground">$50</span> in donations
-          </p>
-        </div>
+          <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">{url}</p>
+          <span className="shrink-0 text-xs font-medium text-primary">
+            {copied ? "Copied" : "Copy"}
+          </span>
+        </button>
+
+        {/* Social proof nudge */}
+        <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+          <TrendingUp className="h-3.5 w-3.5 text-primary/50" strokeWidth={1.5} />
+          Each share inspires <span className="font-medium text-foreground">$50</span> in donations
+        </p>
       </DialogContent>
     </Dialog>
   );
