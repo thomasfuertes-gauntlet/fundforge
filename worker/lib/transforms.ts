@@ -1,6 +1,10 @@
 // Row-to-API-shape transformers
 // Convert flat DB rows (snake_case) back to nested API shapes (camelCase)
 // matching the JSON fixture format exactly
+//
+// KEY-DECISION 2026-03-15: Trust score formula (inputs 0-100, output rounded integer):
+// trust_score = (fulfillment_rate * 0.4) + (update_consistency * 0.3) + (repeat_donor_confidence * 0.3)
+// Applied at fixture-seed time (profiles.json), surfaced as-stored here.
 
 export function transformProfile(row: Record<string, unknown>) {
   return {

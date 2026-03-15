@@ -70,9 +70,6 @@ Single Worker serves both API and static assets via `main` + `assets` in wrangle
 
 ## Session Learnings
 
-### Trust Score Formula
-`trust_score = (fulfillment_rate * 0.4) + (update_consistency * 0.3) + (repeat_donor_confidence * 0.3)` - all inputs 0-100%, output rounded to integer.
-
 ### Doc Hierarchy
 - `spec.md` is source of truth (never modify)
 - `CLAUDE.md` is AI context (index + shortcuts)
@@ -87,14 +84,8 @@ Spec says "React / Next.js preferred" + "AWS preferred." Stack is React + Vite +
 - **SPA fallback:** `not_found_handling: "single-page-application"` in wrangler.jsonc. Do NOT use `_redirects` (causes infinite loop validation error).
 - **Data scripts:** Write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
 
-### Data Field Gotcha
-- Trust data is nested: `profile.trust.score`, `profile.trust.fulfillmentRate`, etc. NOT `profile.trustScore`.
-- Community leaderboard has a flat `trustScore` field (duplicated for display). Don't confuse the two.
-
 ### Gotchas
-- Campaign stories use `string[]` (array of paragraphs) not a single string. Render as `<p>` tags.
 - `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.
-- Community aggregates are computed via SQL in `/api/community` - there is no community table. Data is live-computed on read.
 
 ## Design Context
 
@@ -119,7 +110,7 @@ GoFundMe engineering interviewers evaluating a one-week sprint. They'll review t
 2. **Editorial over dashboard.** Serif headings, story-first layouts, generous whitespace (py-20 minimum). Campaign pages read like longform journalism, not forms.
 3. **Conversion through psychology.** Amber donate buttons, anchoring text ("Most donors give $74"), goal-gradient urgency, social proof at decision points. Every behavioral pattern has a cite-able rationale.
 4. **Motion with meaning.** Progress bars animate on scroll (reveals progress), donation feed staggers in (implies activity), count-ups draw attention to impact numbers. No animation exists without a UX justification.
-5. **Data coherence over volume.** Four organizers with interconnected campaigns, consistent trust scores, cross-page links that resolve. A small world that feels complete beats a large world with gaps.
+5. **Data coherence over volume.** A small, interconnected world with consistent trust scores and cross-page links that resolve beats a large world with gaps.
 
 ### Accessibility Stance
 Awareness-level for interview context. Semantic HTML, reasonable contrast ratios, keyboard-navigable modals (Radix handles this). Note a11y in interview discussion but prioritize visual polish for the demo. `prefers-reduced-motion` is a backlog candidate, not a blocker.
