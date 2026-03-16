@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Community, Profile) with AI-accelerated development. Private repo at `tomfuertes/gofundme-interview`.
+One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Community, Profile) with AI-accelerated development.
 
 ## Architecture
 
@@ -22,11 +22,6 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 - **Card radius:** rounded-xl, Button radius: rounded-full
 - **No pure black (#000000)** - use #0F3C32 or #111827
 
-### Layout Patterns
-
-- Campaign: `grid grid-cols-1 lg:grid-cols-12` (7-col story + 5-col sticky donate panel)
-- Community: Bento grid `grid grid-cols-1 md:grid-cols-3` (4-col metrics + 3-col trending + 5-col leaderboard on lg)
-- Profile: Identity header with trust composition panel, campaign history in 3-col grid
 
 ## Key Files
 
@@ -76,13 +71,12 @@ Single Worker serves both API and static assets via `main` + `assets` in wrangle
 - `README.md` is human-facing summary
 
 ### Stack Deviation from Spec
-Spec says "React / Next.js preferred" + "AWS preferred." Stack is React + Vite + Hono on Cloudflare Workers. Rationale documented in README under "Why Vite + Hono, Not Next.js": Vite for faster DX iteration, Hono for lightweight edge-first API (no cold starts), CF Workers + D1 for zero-config SQLite at the edge with inline data preloading (HTMLRewriter), no SSR complexity since trust/campaign data is pre-seeded not user-generated.
+Spec says "React / Next.js preferred" + "AWS preferred." Stack is React + Vite + Hono on Cloudflare Workers. Rationale in README under "Why Vite + Hono, Not Next.js".
 
 ### Deployment
 - **URL:** https://fundforge.tomfuertes.workers.dev
 - **Platform:** Cloudflare Workers (static assets, not Pages). `npm run deploy` builds + deploys code only. `npm run deploy:full` includes remote D1 seed (use when schema or fixture data changes).
 - **SPA fallback:** `not_found_handling: "single-page-application"` in wrangler.jsonc. Do NOT use `_redirects` (causes infinite loop validation error).
-- **Data scripts:** Write `.cjs` to `$TMPDIR`, run with `node` (avoids zsh `!==` escaping issues in `-e`)
 
 ### Gotchas
 - `$TMPDIR` in sandbox resolves to `/tmp/claude` not the system tmpdir - use the resolved path for commit message files.

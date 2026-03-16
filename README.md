@@ -7,15 +7,15 @@ Premium crowdfunding experience built with AI-accelerated development. Three int
 ## Pages
 
 - **Fundraiser Campaign** (`/campaign/:id`) - Editorial story layout with sticky donation panel, organizer trust signals, donation feed, progress tracking, stretch goals, matching sponsors
-- **Community Hub** (`/community`) - Bento grid with aggregate impact metrics, trending campaigns with momentum badges, ranked leaderboard using trust-weighted scoring
+- **Community Hub** (`/communities/fundforge`) - Bento grid with aggregate impact metrics, trending campaigns with momentum badges, ranked leaderboard using trust-weighted scoring
 - **User Profile** (`/profile/:id`) - Identity dashboard with composite trust score breakdown, verification tiers, campaign history, network impact visualization
 
 ## Getting Started
 
 ```bash
 # Clone and install
-git clone https://github.com/tomfuertes/gofundme-interview.git
-cd gofundme-interview
+git clone https://github.com/thomasfuertes-gauntlet/fundforge.git
+cd fundforge
 npm ci
 
 # Development
@@ -61,11 +61,6 @@ trust_score = (fulfillment_rate * 0.4) + (update_consistency * 0.3) + (repeat_do
 
 Community leaderboard ranks by `totalRaised * (trustScore / 100)`, not raw dollars.
 
-## Data Architecture
-
-JSON fixtures in `worker/db/` seed the D1 database. Organizer profiles, campaigns, donations, and precomputed community aggregates.
-
-Cross-references: `campaign.organizerId` -> `profile.id`, `donation.campaignId` -> `campaign.id`. Data access via hooks in `src/lib/useData.js`.
 
 ## Instrumentation
 
