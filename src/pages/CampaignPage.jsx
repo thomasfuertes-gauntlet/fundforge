@@ -275,6 +275,9 @@ export default function CampaignPage() {
                           <span>
                             {organizer.trust.fulfillmentRate}% fulfillment
                           </span>
+                          <span className="inline-flex items-center gap-1 font-medium text-primary">
+                            {organizer.trust.score}/100 trust
+                          </span>
                         </div>
                       </div>
                     </div>
