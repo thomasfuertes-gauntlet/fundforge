@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ab } from "@/lib/ab";
 import { usePageView } from "@/lib/useAnalytics";
-import useCountUp from "@/lib/useCountUp";
 import { useCommunity, useProfiles } from "@/lib/useData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,16 +46,6 @@ const TRUST_INPUTS = [
   { label: "Repeat donor confidence", weight: "30%", icon: Heart },
 ];
 
-function CountStat({ end, prefix = "", suffix = "", label }) {
-  const [ref, display] = useCountUp(end, { prefix, suffix });
-  return (
-    <div ref={ref} className="rounded-[1.5rem] border border-secondary bg-secondary/70 p-4">
-      <p className="text-2xl font-serif text-primary">{display}</p>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">{label}</p>
-    </div>
-  );
-}
-
 export default function HomePage() {
   usePageView("home");
   const altHeadline = ab('headline-copy');
@@ -94,10 +83,6 @@ export default function HomePage() {
     );
 
   const { aggregates } = community;
-  const raisedInK = Math.round(aggregates.totalRaised / 1_000);
-  const avgTrust = Math.round(
-    profiles.reduce((sum, p) => sum + p.trust.score, 0) / profiles.length
-  );
 
   return (
     <div className="app-shell min-h-screen bg-background">
@@ -152,29 +137,26 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right: Config card with live stats */}
-          <div className="section-reveal stagger-2 space-y-6">
-            <Card className="glass-panel overflow-hidden border-white/60 bg-white/75">
-              <CardContent className="space-y-6 p-6 lg:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="section-eyebrow">Community impact</p>
-                    <h3 className="mt-2 text-2xl font-serif text-foreground">
-                      Real numbers, real campaigns.
-                    </h3>
-                  </div>
-                  <Badge className="rounded-full bg-primary px-3 py-1 text-primary-foreground">
-                    Live
-                  </Badge>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <CountStat end={raisedInK} prefix="$" suffix="K" label="Total raised across all campaigns." />
-                  <CountStat end={aggregates.activeCampaigns} label="Active campaigns with live progress." />
-                  <CountStat end={avgTrust} suffix=" / 100" label="Average organizer trust score." />
-                </div>
-              </CardContent>
-            </Card>
+          {/* Right: Demo video */}
+          <div className="section-reveal stagger-2">
+            <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/75 shadow-lg">
+              <div className="aspect-video">
+                <iframe
+                  src="https://www.youtube.com/embed/iuRym6kNSBc?rel=0&modestbranding=1"
+                  title="FundForge Demo"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="h-full w-full"
+                  loading="lazy"
+                />
+              </div>
+              <div className="flex items-center justify-between px-5 py-3">
+                <p className="text-sm font-medium text-foreground">3-minute demo walkthrough</p>
+                <Badge className="rounded-full bg-primary px-3 py-1 text-primary-foreground">
+                  Live
+                </Badge>
+              </div>
+            </div>
           </div>
         </div>
       </div>
