@@ -143,7 +143,6 @@ src/
   pages/                      # HomePage, CampaignPage, CommunityPage, ProfilePage
   App.jsx                     # Router + lazy code splitting
 worker/                       # Hono API + D1 database
-spec.md                       # Original problem statement
 ```
 
 ## Behavioral Economics

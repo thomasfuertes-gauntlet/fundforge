@@ -26,5 +26,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Archived scaffolding (committed as design.zip)
+# Archived design scaffolding
 design/
+design.zip

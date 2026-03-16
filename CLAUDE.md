@@ -23,9 +23,6 @@ One-week sprint to build three interconnected crowdfunding pages (Fundraiser, Co
 - **No pure black (#000000)** - use #0F3C32 or #111827
 
 
-## Key Files
-
-- `spec.md` - Original problem statement from Gauntlet
 
 ## Conventions
 
@@ -66,7 +63,6 @@ Single Worker serves both API and static assets via `main` + `assets` in wrangle
 ## Session Learnings
 
 ### Doc Hierarchy
-- `spec.md` is source of truth (never modify)
 - `CLAUDE.md` is AI context (index + shortcuts)
 - `README.md` is human-facing summary
 
