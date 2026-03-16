@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 // KEY-DECISION 2026-03-15: Shared fetch cache eliminates redundant requests.
 // prefetch() warms the cache on hover; useFetch consumes it on mount.
@@ -52,6 +52,16 @@ function useFetch(url, { enabled = true } = {}) {
   const [data, setData] = useState(() => enabled ? consumePreload(url) : null);
   const [loading, setLoading] = useState(() => enabled && !data);
   const [error, setError] = useState(null);
+  const prevUrlRef = useRef(url);
+
+  // Reset state when URL changes (same-component navigation, e.g. campaign→campaign)
+  if (url !== prevUrlRef.current) {
+    prevUrlRef.current = url;
+    const preloaded = enabled ? consumePreload(url) : null;
+    setData(preloaded);
+    setLoading(!preloaded && enabled);
+    setError(null);
+  }
 
   const fetchData = useCallback(async () => {
     if (!enabled) return;
@@ -80,7 +90,6 @@ function useFetch(url, { enabled = true } = {}) {
   }, [url, enabled]);
 
   useEffect(() => {
-    // Skip fetch if we already have preloaded data
     if (data) return;
     fetchData();
   }, [fetchData, data]);
